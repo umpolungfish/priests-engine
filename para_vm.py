@@ -59,6 +59,7 @@ class B4(enum.Enum):
     F = 'F'
     B = 'B'
 
+# Information-order join: N < T,F < B; T∨F = B
 _JOIN: dict[tuple[B4, B4], B4] = {
     (B4.N, B4.N): B4.N, (B4.N, B4.T): B4.T, (B4.N, B4.F): B4.F, (B4.N, B4.B): B4.B,
     (B4.T, B4.N): B4.T, (B4.T, B4.T): B4.T, (B4.T, B4.F): B4.B, (B4.T, B4.B): B4.B,
@@ -68,6 +69,48 @@ _JOIN: dict[tuple[B4, B4], B4] = {
 
 def b4_join(a: B4, b: B4) -> B4:
     return _JOIN[(a, b)]
+
+# Information-order meet: N < T,F < B; T∧F = N
+_MEET: dict[tuple[B4, B4], B4] = {
+    (B4.N, B4.N): B4.N, (B4.N, B4.T): B4.N, (B4.N, B4.F): B4.N, (B4.N, B4.B): B4.N,
+    (B4.T, B4.N): B4.N, (B4.T, B4.T): B4.T, (B4.T, B4.F): B4.N, (B4.T, B4.B): B4.T,
+    (B4.F, B4.N): B4.N, (B4.F, B4.T): B4.N, (B4.F, B4.F): B4.F, (B4.F, B4.B): B4.F,
+    (B4.B, B4.N): B4.N, (B4.B, B4.T): B4.T, (B4.B, B4.F): B4.F, (B4.B, B4.B): B4.B,
+}
+
+def b4_meet(a: B4, b: B4) -> B4:
+    return _MEET[(a, b)]
+
+# Belnap negation: N→N, T→F, F→T, B→B
+_BNOT: dict[B4, B4] = {B4.N: B4.N, B4.T: B4.F, B4.F: B4.T, B4.B: B4.B}
+
+def b4_bnot(a: B4) -> B4:
+    return _BNOT[a]
+
+# Truth-functional AND
+_BAND: dict[tuple[B4, B4], B4] = {
+    (B4.N, B4.N): B4.N, (B4.N, B4.T): B4.N, (B4.N, B4.F): B4.F, (B4.N, B4.B): B4.B,
+    (B4.T, B4.N): B4.N, (B4.T, B4.T): B4.T, (B4.T, B4.F): B4.F, (B4.T, B4.B): B4.B,
+    (B4.F, B4.N): B4.F, (B4.F, B4.T): B4.F, (B4.F, B4.F): B4.F, (B4.F, B4.B): B4.F,
+    (B4.B, B4.N): B4.B, (B4.B, B4.T): B4.B, (B4.B, B4.F): B4.F, (B4.B, B4.B): B4.B,
+}
+
+def b4_band(a: B4, b: B4) -> B4:
+    return _BAND[(a, b)]
+
+# Truth-functional OR
+_BOR: dict[tuple[B4, B4], B4] = {
+    (B4.N, B4.N): B4.N, (B4.N, B4.T): B4.T, (B4.N, B4.F): B4.N, (B4.N, B4.B): B4.B,
+    (B4.T, B4.N): B4.T, (B4.T, B4.T): B4.T, (B4.T, B4.F): B4.T, (B4.T, B4.B): B4.T,
+    (B4.F, B4.N): B4.N, (B4.F, B4.T): B4.T, (B4.F, B4.F): B4.F, (B4.F, B4.B): B4.B,
+    (B4.B, B4.N): B4.B, (B4.B, B4.T): B4.T, (B4.B, B4.F): B4.B, (B4.B, B4.B): B4.B,
+}
+
+def b4_bor(a: B4, b: B4) -> B4:
+    return _BOR[(a, b)]
+
+def b4_designated(a: B4) -> bool:
+    return a in (B4.T, B4.B)
 
 _TO_FLUX = {B4.N: '00', B4.T: '01', B4.F: '10', B4.B: '11'}
 
@@ -248,11 +291,29 @@ class ParaVM:
             return self.resolve(a[i])
 
         if op == 'ENGAGR':
-            self.engage(R(0))
+            r   = R(0)
+            old = self.belief_of(r)
+            if b4_designated(old):
+                self.registers[r].paradox_count += 1
+            self.set_belief(r, b4_band(old, b4_bnot(old)))
 
         elif op == 'FSPLIT':
-            for arg in a:
-                self.engage(self.parse_reg(arg))
+            # δ: Frobenius comultiplication — B→(T,F); others copy
+            if len(a) < 3:
+                return
+            src = self.parse_reg(a[0])
+            d1  = self.parse_reg(a[1])
+            d2  = self.parse_reg(a[2])
+            b = self.belief_of(src)
+            p = self.registers[src].paradox_count
+            if b == B4.B:
+                b1, b2, bump = B4.T, B4.F, 1
+            else:
+                b1, b2, bump = b, b, 0
+            self.set_belief(d1, b1)
+            self.set_belief(d2, b2)
+            self.registers[d1].paradox_count = p + bump
+            self.registers[d2].paradox_count = p + bump
 
         elif op == 'FFUSE':
             if len(a) < 2:
@@ -365,3 +426,60 @@ class ParaVM:
 
     def reset(self) -> None:
         self.__init__()
+
+
+# ── KernelState — 3-register kernel (mirrors Kernel.lean MachineState) ────────
+
+@dataclass
+class KernelState:
+    r0: B4 = B4.B
+    r1: B4 = B4.B
+    r2: B4 = B4.B
+    paradox_count: int = 0
+    cycle_count: int = 0
+
+
+def kernel_engager(r: B4) -> tuple[B4, bool]:
+    return (b4_band(r, b4_bnot(r)), b4_designated(r))
+
+
+def kernel_fsplit(r0: B4) -> tuple[B4, B4, bool]:
+    """Frobenius comultiplication δ: B→(T,F); others copy."""
+    if r0 == B4.B:
+        return (B4.T, B4.F, True)
+    return (r0, r0, True)
+
+
+def kernel_ffuse(r1: B4, r2: B4) -> tuple[B4, bool]:
+    j = b4_join(r1, r2)
+    return (j, j == B4.B)
+
+
+def kernel_step(s: KernelState) -> KernelState:
+    r0a, p1 = kernel_engager(s.r0)
+    r1a, r2a, p2 = kernel_fsplit(r0a)
+    r0b, p3 = kernel_ffuse(r1a, r2a)
+    pc = s.paradox_count + 1 + (1 if p1 else 0) + (1 if p2 else 0) + (1 if p3 else 0)
+    return KernelState(r0=r0b, r1=r1a, r2=r2a,
+                       paradox_count=pc, cycle_count=s.cycle_count + 1)
+
+
+def kernel_run(s: KernelState, n: int) -> KernelState:
+    """Run n cycles, resetting r1/r2 to B after each step (mirrors Lean `run`)."""
+    for _ in range(n):
+        s2 = kernel_step(s)
+        s = KernelState(r0=s2.r0, r1=B4.B, r2=B4.B,
+                        paradox_count=s2.paradox_count, cycle_count=s2.cycle_count)
+    return s
+
+
+# frobenius_invariant: ffuse(fsplit(r)).0 = r  ∀ r
+assert all(kernel_ffuse(*kernel_fsplit(r)[:2])[0] == r for r in B4), \
+    "frobenius_invariant violated"
+
+# run_B3: all registers stay B across all cycles (check first 8)
+_ks = KernelState()
+for _n in range(8):
+    _ks = kernel_run(_ks, 1)
+    assert _ks.r0 == B4.B and _ks.r1 == B4.B and _ks.r2 == B4.B, \
+        f"run_B3 violated at cycle {_n + 1}"

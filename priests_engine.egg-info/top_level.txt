@@ -1,3 +1,4 @@
 para_loop
 para_repl
 para_vm
+para_wasm

@@ -1,25 +1,36 @@
 commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
 =======================================================================
 
-README.md — project documentation
+Paraconsistent layer sync from MillenniumAnkh/Imscribing/Paraconsistent/
 
-  ISA reference, REPL command table, theorem statements (Theorems 1-3
-  + Frobenius identity), formal verification cross-reference to
-  MillenniumAnkh Lean 4 modules, install and usage instructions.
+para_vm.py
+──────────
+B4 operations added (mirrors Belnap.lean):
+  b4_meet(a,b)       approximation-order meet; _MEET table
+  b4_bnot(a)         negation: N→N, T→F, F→T, B→B; _BNOT table
+  b4_band(a,b)       truth-functional AND; _BAND table (16 entries)
+  b4_bor(a,b)        truth-functional OR;  _BOR  table (16 entries)
+  b4_designated(a)   T or B → True
 
-=======================================================================
+ParaVM._exec ENGAGR — corrected:
+  Old: self.engage(r) forcing B unconditionally
+  New: band(old, bnot(old)); paradox_count++ only if old was designated
+  B is the only fixed point; T/F collapse
 
-Initial commit — Paraconsistent Universal Engine (standalone)
+ParaVM._exec FSPLIT — corrected to Frobenius comultiplication:
+  src=B → d1=T, d2=F, bump=1
+  src≠B → d1=d2=src, bump=0
+  frobenius_invariant: kernel_ffuse(kernel_fsplit(r)).0 = r  ∀ r
 
-Extracted from ~/imscribing_grammar. All external engine dependencies removed.
-para_loop.py ported to use para_vm.ParaRegister directly.
+KernelState dataclass added — mirrors Kernel.lean MachineState:
+  Fields: r0, r1, r2: B4; paradox_count, cycle_count: int
+  kernel_engager, kernel_fsplit, kernel_ffuse, kernel_step, kernel_run
+  Module-load assertions: frobenius_invariant + run_B3 (8 cycles)
 
-Files:
-  para_vm.py       — ParaVM: full ParaASM ISA + text assembler (self-contained)
-  para_repl.py     — interactive REPL
-  para_loop.py     — original POC infinite loop (ported, no external deps)
-  programs/
-    frob_loop.asm  — Frobenius loop (μ∘δ = id invariant, P(n) = 4n)
-    ifix_stable.asm — IFIX stability demo (T∨B = B, Theorem 3 Case B)
-    probe.asm       — interactive belief probe, branches on N/T/F/B
-  UNLICENSE        — public domain
+para_loop.py
+────────────
+  Removed local B4 / _b4_join; imports from para_vm
+  ParaEngine._execute() ENGAGR: band(r,bnot(r)) fixed-point semantics
+  ParaEngine._execute() FSPLIT: B→(T,F) comultiplication
+  run(): pre-seeds r0=B before loop (required for ENGAGR to sustain B)
+  KERNEL comments updated to reflect true Frobenius semantics

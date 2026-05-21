@@ -12,6 +12,7 @@ dependencies = []
 [project.scripts]
 para-repl = "para_repl:repl"
 para-loop = "para_loop:run"
+para-wasm = "para_wasm:repl"
 
 [tool.setuptools]
-py-modules = ["para_vm", "para_repl", "para_loop"]
+py-modules = ["para_vm", "para_repl", "para_loop", "para_wasm"]

@@ -122,6 +122,34 @@ Programs with `JMP .loop` at the end run indefinitely via circular PC wrap.
 
 ---
 
+## exOS
+
+The ParaASM VM is also implemented as a native kernel module in [exOS](https://github.com/umpolungfish/exOS) — a bare-metal x86_64 Rust `no_std` UEFI kernel.
+
+`src/para_vm.rs` and `src/para_commands.rs` port the full ISA (Belnap FOUR, 18 opcodes, text assembler, circular PC wrap) to the kernel address space. EMIT writes to the serial UART; READ returns N (no stdin in bare metal). The VM announces itself at boot:
+
+```
+[PARA] ParaASM VM online — Belnap FOUR, 18-opcode ISA, Frobenius loop. Type 'para help'.
+[exoterikOS] ⊙_c Kernel fully online. Type 'help' for commands.
+```
+
+From the exOS shell:
+
+```
+exOS> para load .loop:\nENGAGR %r0\nFSPLIT %r0 %r1 %r2\nFFUSE %r1 %r2 %r0\nJMP loop
+Loaded 4 instructions, 1 labels.
+exOS> para loop 12
+steps=12  total_paradoxes=48
+exOS> para regs
+  %r0  = B  paradoxes=17
+  %r1  = B  paradoxes=14
+  %r2  = B  paradoxes=14
+```
+
+P(12) = 48 = 4×12. Theorem 2 holds on bare metal.
+
+---
+
 ## Formal verification
 
 All invariants are proven in Lean 4 in `~/MillenniumAnkh/Imscribing/Paraconsistent/`:

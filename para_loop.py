@@ -30,9 +30,11 @@ import re
 import sys
 import time
 import signal
-import enum
 
-from para_vm import ParaRegister as TriPhaseRegister
+from para_vm import (
+    ParaRegister as TriPhaseRegister,
+    B4, b4_join, b4_bnot, b4_band, b4_designated,
+)
 
 _REG_PAT = re.compile(r'%r(\d+)')
 
@@ -76,22 +78,9 @@ class UniversalEngine:
                 'active_registers': active, 'fixed_registers': fixed,
                 'paradox_stabilizations': paradox, 'entropy_delta': 0.0}
 
-# ── Belnap FOUR ────────────────────────────────────────────────────────────
-
-class B4(enum.Enum):
-    N = 'N'   # Neither
-    T = 'T'   # True
-    F = 'F'   # False
-    B = 'B'   # Both
+# ── Belnap helpers ─────────────────────────────────────────────────────────
 
 _FLUX_TO_B4 = {'00': B4.N, '01': B4.T, '10': B4.F, '11': B4.B}
-
-def _b4_join(a: B4, b: B4) -> B4:
-    """Belnap join (∨ in the knowledge order T,F > N; B > T,F)."""
-    if a == b:         return a
-    if a == B4.N:      return b
-    if b == B4.N:      return a
-    return B4.B        # T∨F or anything with B
 
 def _b4_from_flux(reg: TriPhaseRegister) -> B4:
     return _FLUX_TO_B4.get(reg.flux, B4.N)
@@ -127,18 +116,35 @@ class ParaEngine(UniversalEngine):
         if not regs:
             return
 
-        if 'ENGAGR' in instr or 'FSPLIT' in instr:
-            # source register → B; all targets inherit B
-            for r in regs:
-                self.registers[r].engage()
-                self._set_belief(r, B4.B)
+        if 'ENGAGR' in instr:
+            # band(r, bnot(r)): B stays B; T/F collapse
+            r   = regs[0]
+            old = self._belief(r)
+            if b4_designated(old):
+                self.registers[r].paradox_count += 1
+            self._set_belief(r, b4_band(old, b4_bnot(old)))
+
+        elif 'FSPLIT' in instr:
+            # δ: Frobenius comultiplication — B→(T,F); others copy
+            if len(regs) >= 3:
+                src, d1, d2 = regs[0], regs[1], regs[2]
+                b = self._belief(src)
+                p = self.registers[src].paradox_count
+                if b == B4.B:
+                    b1, b2, bump = B4.T, B4.F, 1
+                else:
+                    b1, b2, bump = b, b, 0
+                self._set_belief(d1, b1)
+                self._set_belief(d2, b2)
+                self.registers[d1].paradox_count = p + bump
+                self.registers[d2].paradox_count = p + bump
 
         elif 'FFUSE' in instr:
-            # join input beliefs into output
+            # μ: join input beliefs into output
             if len(regs) >= 3:
                 joined = self._belief(regs[0])
                 for r in regs[1:-1]:
-                    joined = _b4_join(joined, self._belief(r))
+                    joined = b4_join(joined, self._belief(r))
                 self._set_belief(regs[-1], joined)
 
         elif 'IFIX' in instr:
@@ -169,12 +175,12 @@ class ParaEngine(UniversalEngine):
 
 # ── loop kernel ────────────────────────────────────────────────────────────
 
-# Three instructions.  Circular PC makes this an infinite program.
-# Frobenius identity:  μ ∘ δ = id  (FFUSE ∘ FSPLIT = identity on B-state)
+# Three instructions.  r0 is seeded to B before the loop starts.
+# Frobenius identity:  μ ∘ δ = id  (B → (T,F) → B each cycle)
 KERNEL = [
-    'ENGAGR %r0',           # seed: force B on the root register
-    'FSPLIT %r0 %r1 %r2',   # δ: co-multiply — spawn two B-children
-    'FFUSE  %r1 %r2 %r0',   # μ: multiply — fold back into root
+    'ENGAGR %r0',           # band(r0,bnot(r0)): B→B fixed point
+    'FSPLIT %r0 %r1 %r2',   # δ: B→(T,F) comultiplication
+    'FFUSE  %r1 %r2 %r0',   # μ: join(T,F)=B; fold back into root
 ]
 
 # ── display ────────────────────────────────────────────────────────────────
@@ -264,6 +270,8 @@ def _render(vm: ParaEngine, t0: float, step0: int) -> str:
 def run() -> None:
     vm = ParaEngine()
     vm.program = KERNEL
+    # Seed r0=B before the loop; ENGAGR band(B,B)=B keeps it there
+    vm._set_belief(0, B4.B)
 
     t0     = time.time()
     step0  = 0
