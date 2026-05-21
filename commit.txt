@@ -1,6 +1,14 @@
 commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
 =======================================================================
 
+README.md — project documentation
+
+  ISA reference, REPL command table, theorem statements (Theorems 1-3
+  + Frobenius identity), formal verification cross-reference to
+  MillenniumAnkh Lean 4 modules, install and usage instructions.
+
+=======================================================================
+
 Initial commit — Paraconsistent Universal Engine (standalone)
 
 Extracted from ~/imscribing_grammar. All external engine dependencies removed.

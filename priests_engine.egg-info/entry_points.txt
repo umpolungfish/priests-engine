@@ -1,0 +1,3 @@
+[console_scripts]
+para-loop = para_loop:run
+para-repl = para_repl:repl
