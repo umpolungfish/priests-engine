@@ -1,0 +1,17 @@
+commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
+=======================================================================
+
+Initial commit — Paraconsistent Universal Engine (standalone)
+
+Extracted from ~/imscribing_grammar. All external engine dependencies removed.
+para_loop.py ported to use para_vm.ParaRegister directly.
+
+Files:
+  para_vm.py       — ParaVM: full ParaASM ISA + text assembler (self-contained)
+  para_repl.py     — interactive REPL
+  para_loop.py     — original POC infinite loop (ported, no external deps)
+  programs/
+    frob_loop.asm  — Frobenius loop (μ∘δ = id invariant, P(n) = 4n)
+    ifix_stable.asm — IFIX stability demo (T∨B = B, Theorem 3 Case B)
+    probe.asm       — interactive belief probe, branches on N/T/F/B
+  UNLICENSE        — public domain
