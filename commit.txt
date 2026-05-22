@@ -1,6 +1,27 @@
 commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
 =======================================================================
 
+para_vm.py
+- Added dialetheicImage: maps KernelState.r0 to Belnap (operational ↔ logical bridge)
+- Added B_is_the_only_bifurcation_point: verifies fsplit B→(T,F) distinct; all others→(r,r)
+- Added dialetheic_alignment_tri: verifies DAT tri-equivalence (operational/logical/algebraic)
+- Added measure_cost, measure_step: coherence cost and post-measurement belief (QCI_Sequences.lean)
+- Added collapse_irreversible: T/F/N cannot reach B via any unary/binary lattice op
+- Added wigner_then_collapse_cost: B-bias(2n) + T-bias(n) = 3n
+- Module-level assertions verify all new invariants at import time
+
+para_alignment.py (new)
+- BelnapCircuit dataclass: list of B4 gates; all_b, proj, join operations
+- classical_cannot_become_B: one-way barrier — proj(all-B) = all-T cannot self-join to B
+- sustain_never_collapses: all-B circuit stable under lattice ops
+- dialetheicShor: frames Belnap Shor as Φ_υ→Φ_} promotion; wraps run_belnap_shor
+- Full CLI suite: DAT display, measurement seq algebra, P vs NP bridge, Shor framing
+- Entry point: para-align (subcommands: bifur | seq | pvsnp | shor N a)
+
+pyproject.toml
+- Added para-align = "para_alignment:main" entry point
+- Added para_alignment to py-modules list
+
 Paraconsistent layer sync from MillenniumAnkh/Imscribing/Paraconsistent/
 
 para_vm.py

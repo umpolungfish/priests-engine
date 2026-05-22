@@ -516,3 +516,92 @@ for _n in range(8):
     _ks = kernel_run(_ks, 1)
     assert _ks.r0 == B4.B and _ks.r1 == B4.B and _ks.r2 == B4.B, \
         f"run_B3 violated at cycle {_n + 1}"
+
+
+# ── Dialetheic Alignment (DialetheicAlignment.lean) ───────────────────────
+
+def dialetheicImage(r0: B4) -> B4:
+    """Maps MachineState.r0 to Belnap — the operational ↔ logical bridge.
+    B (dialetheic) → B; T/F (classical) → T; N (void) → N."""
+    if r0 == B4.B:     return B4.B
+    if r0 in (B4.T, B4.F): return B4.T
+    return B4.N
+
+
+def B_is_the_only_bifurcation_point() -> bool:
+    """fsplit B → (T,F) distinct; fsplit r → (r,r) identical for r≠B.
+    Only B produces different components — the sole bifurcation point."""
+    for r in B4:
+        d1, d2, _ = kernel_fsplit(r)
+        if r == B4.B and d1 == d2:   return False
+        if r != B4.B and d1 != d2:   return False
+    return True
+
+
+def dialetheic_alignment_tri() -> dict[str, bool]:
+    """Verify all three arms of the Dialetheic Alignment Theorem (DAT).
+
+    Arm 1 (Operational): Frobenius closure at B — μ∘δ(B)=B, δ(B)=(T,F) distinct.
+    Arm 2 (Logical):     B is the only dialetheic value (both B and ¬B designated).
+    Arm 3 (Algebraic):   No explosion — N undesignated; B∧¬B=B, not void.
+    """
+    op_arm = (
+        kernel_ffuse(*kernel_fsplit(B4.B)[:2])[0] == B4.B
+        and B_is_the_only_bifurcation_point()
+    )
+    log_arm = (
+        b4_dialetheic(B4.B)
+        and not any(b4_dialetheic(x) for x in B4 if x != B4.B)
+    )
+    alg_arm = (
+        not b4_designated(B4.N)                               # N never designated
+        and b4_join(B4.T, B4.F) == B4.B                      # T∨F = B (closure)
+        and b4_designated(b4_band(B4.B, b4_bnot(B4.B)))      # B∧¬B = B (no void collapse)
+    )
+    return {'operational': op_arm, 'logical': log_arm, 'algebraic': alg_arm}
+
+
+# ── Measurement Sequence Algebra (QCI_Sequences.lean) ────────────────────
+
+def measure_cost(q: B4, bias: B4) -> int:
+    """Coherence cost of one measurement: 2 for B-bias on B, 1 for T/F-bias on B, 0 otherwise."""
+    if q != B4.B:     return 0
+    return 2 if bias == B4.B else 1
+
+
+def measure_step(q: B4, bias: B4) -> B4:
+    """Post-measurement belief. B-bias preserves B (Wigner's Friend); T/F-bias collapses B."""
+    if q == B4.B:     return B4.B if bias == B4.B else bias
+    return q
+
+
+def collapse_irreversible(q: B4) -> bool:
+    """Classical (T/F/N) cannot reach B via any unary/binary lattice op on itself.
+    B requires joining T and F from different sources — one-way barrier."""
+    if q == B4.B: return True
+    return not any(c == B4.B for c in [
+        b4_bnot(q),
+        b4_join(q, q), b4_meet(q, q),
+        b4_band(q, q), b4_bor(q, q),
+    ])
+
+
+def wigner_then_collapse_cost(n: int) -> int:
+    """Total coherence cost for n-qubit B-bias then T-bias sequence: 2n + n = 3n."""
+    return 3 * n
+
+
+# module-level verification
+assert B_is_the_only_bifurcation_point(), \
+    "B_is_the_only_bifurcation_point violated"
+assert all(dialetheic_alignment_tri().values()), \
+    "dialetheic_alignment_tri violated"
+assert measure_step(B4.B, B4.B) == B4.B,             "B_bias_preserves_super violated"
+assert measure_step(B4.B, B4.T) == B4.T,             "T_bias_collapse violated"
+assert measure_cost(B4.B, B4.B) == 2,                "B_bias_cost violated"
+assert measure_cost(B4.B, B4.T) == 1,                "T_bias_cost violated"
+assert measure_cost(B4.T, B4.T) == 0,                "measure_T_noop violated"
+assert all(collapse_irreversible(x) for x in (B4.T, B4.F, B4.N)), \
+    "collapse_irreversible violated"
+assert measure_cost(B4.B, B4.B) + measure_cost(B4.B, B4.T) == 3, \
+    "wigner_then_collapse_cost violated"

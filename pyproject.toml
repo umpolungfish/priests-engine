@@ -14,6 +14,7 @@ para-repl = "para_repl:repl"
 para-loop = "para_loop:run"
 para-wasm = "para_wasm:repl"
 para-shor = "belnap_shor:main"
+para-align = "para_alignment:main"
 
 [tool.setuptools]
-py-modules = ["para_vm", "para_repl", "para_loop", "para_wasm", "belnap_shor"]
+py-modules = ["para_vm", "para_repl", "para_loop", "para_wasm", "belnap_shor", "para_alignment"]
