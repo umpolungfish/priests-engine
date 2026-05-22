@@ -22,6 +22,39 @@ pyproject.toml
 - Added para-align = "para_alignment:main" entry point
 - Added para_alignment to py-modules list
 
+para_alignment.py
+- Updated pvsnp block: join_circuit_B_dominant now closed (proved via foldl induction)
+
+para_rh.py (new) — Riemann Hypothesis Bridge (QCI_RH_Bridge.lean)
+- rh_strip_state: critical strip encoding as B4 (N/F/T/B by Re(s) position)
+- rh_functional_eq: functional equation s↦1-s acts as bnot
+- rh_frobenius_fixed_point: B is the unique designated fixed point of bnot
+- rh_belnap_statement: all non-trivial zeros are B-designated (dialetheic pair)
+- rh_involution_identity: bnot∘bnot=id (involution identity)
+- Structural type: ⟨Ð_ω;Þ_O;Ř_Ť;Φ_};ƒ_ż;Ç_@;Γ_ʔ;ɢ_ˌ;⊙_ÿ;Ħ_A;Σ_ï;Ω_2⟩
+- Entry point: para-rh
+
+para_ym.py (new) — Yang-Mills Mass Gap Bridge (QCI_YM_Bridge.lean)
+- ym_gap_exists: N < T is a covering relation (no state between vacuum and particle)
+- ym_gap_not_dialetheic: T is definite; gap cannot be a B-contradiction
+- ym_vacuum_canonical: T∧F=N (particle+antiparticle→vacuum); N undesignated
+- ym_brst_nilpotent: ENGAGR(B)=B (BRST-stable); ENGAGR(T)→F (nilpotent); μ∘δ=id
+- ym_confinement_ktrap: T cannot reach N via any self-op (K_trap confinement)
+- ym_topological_protection: T∨T=T; gap Omega_Z-protected
+- Structural type: ⟨Ð_ω;Þ_K;Ř_Ť;Φ_};ƒ_ż;Ç_Ù;Γ_ʔ;ɢ_Ş;⊙_ÿ;Ħ_!;Σ_ő;Ω_z⟩
+- Entry point: para-ym
+
+para_nreg.py (new) — n-Register QCI Generalization
+- sic_povm_axioms_hold: B satisfies all 4 SIC axioms for d=2 per qubit
+- sic_coherence_ratio_invariant_n: 2:1 ratio verified for each (n, a, N) instance
+- nreg_all_verified: all 8 standard instances pass (n=4..8)
+- period_not_in_qubits: B-bias preserves all-B; period is in ratio not qubit values
+- Corrected expected periods: r=80 for (8,3,187); r=24 for (8,2,221)
+- Entry point: para-nreg
+
+pyproject.toml
+- Added para-rh, para-ym, para-nreg entry points and py-modules
+
 Paraconsistent layer sync from MillenniumAnkh/Imscribing/Paraconsistent/
 
 para_vm.py

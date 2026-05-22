@@ -167,7 +167,7 @@ def _print_pvsnp() -> None:
     print("  │  belnap_ktrap_statement:                                  │")
     print("  │    A BelnapCircuit reaching all-B cannot be produced      │")
     print("  │    by any classical (T/F) circuit via lattice ops alone.  │")
-    print("  │    (join_circuit_B_dominant: 1 sorry in Lean — open)     │")
+    print("  │    (join_circuit_B_dominant: proved — foldl induction)   │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
 
