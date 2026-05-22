@@ -112,6 +112,39 @@ def b4_bor(a: B4, b: B4) -> B4:
 def b4_designated(a: B4) -> bool:
     return a in (B4.T, B4.B)
 
+# ── Approximation order (ApproxLE from Belnap.lean) ──────────────────────
+# N ≤ everything; everything ≤ B; otherwise reflexive only.
+def b4_approx_le(a: B4, b: B4) -> bool:
+    if a == b:       return True
+    if a == B4.N:    return True
+    if b == B4.B:    return True
+    return False
+
+# ── Dialetheic predicate (DialetheicAlignment.lean: only_B_is_dialetheic) ─
+# A value is dialetheic iff it and its negation are both designated.
+def b4_dialetheic(a: B4) -> bool:
+    return b4_designated(a) and b4_designated(b4_bnot(a))
+
+# ── WH2 bijection (QCI_SICPOVM_Bridge.lean) ──────────────────────────────
+# Belnap ↔ Fin2 × Fin2: N→(0,0)=I, T→(0,1)=Z, F→(1,0)=X, B→(1,1)=XZ
+_TO_WH2:   dict[B4, tuple[int, int]] = {B4.N:(0,0), B4.T:(0,1), B4.F:(1,0), B4.B:(1,1)}
+_FROM_WH2: dict[tuple[int, int], B4] = {v: k for k, v in _TO_WH2.items()}
+
+def b4_to_wh2(a: B4) -> tuple[int, int]:
+    return _TO_WH2[a]
+
+def wh2_to_b4(ab: tuple[int, int]) -> B4:
+    return _FROM_WH2[ab]
+
+# Verify WH2 bijection and SIC-POVM axioms for B (QCI_SICPOVM_Bridge.lean)
+assert len({b4_to_wh2(v) for v in B4}) == 4,                 "belnapToWH2 not injective"
+assert all(b4_meet(B4.B, x) == x          for x in B4),      "B_meet_equiangular violated"
+assert all(b4_join(B4.B, x) == B4.B       for x in B4),      "B_join_universal violated"
+assert b4_bnot(B4.B) == B4.B,                                 "B_fixed_point_negation violated"
+assert all(b4_approx_le(x, B4.B)          for x in B4),      "B_is_top violated"
+assert b4_dialetheic(B4.B),                                   "B_is_dialetheic violated"
+assert not any(b4_dialetheic(x) for x in B4 if x != B4.B),   "only_B_is_dialetheic violated"
+
 _TO_FLUX = {B4.N: '00', B4.T: '01', B4.F: '10', B4.B: '11'}
 
 

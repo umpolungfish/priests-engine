@@ -34,3 +34,52 @@ para_loop.py
   ParaEngine._execute() FSPLIT: B→(T,F) comultiplication
   run(): pre-seeds r0=B before loop (required for ENGAGR to sustain B)
   KERNEL comments updated to reflect true Frobenius semantics
+
+MillenniumAnkh Paraconsistent sync (2026-05-22)
+────────────────────────────────────────────────
+
+para_vm.py — Belnap extensions:
+  b4_approx_le(a, b)      approximation order from ApproxLE in Belnap.lean
+                          N ≤ everything; everything ≤ B; otherwise reflexive
+  b4_dialetheic(a)        DialetheicAlignment.lean: True iff a and ¬a both designated
+                          Only B satisfies this (only_B_is_dialetheic)
+  b4_to_wh2(a)            WH2 bijection from QCI_SICPOVM_Bridge.lean:
+  wh2_to_b4(ab)             N→(0,0)=I, T→(0,1)=Z, F→(1,0)=X, B→(1,1)=XZ
+  Module-load assertions  All 4 SIC-POVM axioms for B + WH2 injectivity verified
+
+belnap_shor.py — new file:
+  Full Belnap Shor pipeline executor. Entry point: para-shor.
+  Imports B4 + lattice functions from para_vm (single source of truth).
+  Adds b4_hadamard (H|T⟩=B, H|B⟩=T) and b4_xor locally.
+
+  BelnapRegister  n-qubit register with coherence accounting
+  BelnapModExp    modular exponentiation (B-input → B-output, cost 0)
+  run_belnap_shor(n, a, N) → ShorResult with full coherence breakdown
+
+  Structural invariants (runtime + Lean verified):
+    H-cost = n, ModExp-cost = 0, B-bias = 2n, T-bias = n, ratio = 2:1
+    B propagates through all Boolean gates (no phase differentiation)
+    Φ_υ bottleneck: period encoded in coherence ratio, not in bit values
+
+  Lean reference: MillenniumAnkh/Imscribing/Paraconsistent/Shor/
+
+pyproject.toml:
+  Added para-shor = "belnap_shor:main" to [project.scripts]
+  Added "belnap_shor" to py-modules
+
+programs/dialetheic_cycle.asm — new file:
+  Demonstrates B-only dialetheism + Frobenius identity (DialetheicAlignment.lean)
+  Frobenius loop: FSPLIT → FFUSE roundtrip preserves B (μ∘δ=id)
+
+programs/sic_povm.asm — new file:
+  Demonstrates all 4 SIC-POVM axioms for B via ParaASM instructions
+  WH2 bijection: N→(0,0), B→(1,1)=XZ annotated in register layout
+
+README.md:
+  Added para-shor under Usage
+  Added dialetheic_cycle.asm and sic_povm.asm to Programs list
+  Added "Belnap Shor pipeline" section (pipeline diagram, invariant table, Φ_υ bottleneck)
+  Added "WH2 bijection and SIC-POVM axioms" subsection
+  Added "DialetheicAlignment" subsection
+  Added three new theorems to Formal verification:
+    only_B_is_dialetheic, belnapToWH2_bijective, coherence_ratio_is_two
