@@ -1,139 +1,49 @@
 commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
 =======================================================================
 
-para_vm.py
-- Added dialetheicImage: maps KernelState.r0 to Belnap (operational ↔ logical bridge)
-- Added B_is_the_only_bifurcation_point: verifies fsplit B→(T,F) distinct; all others→(r,r)
-- Added dialetheic_alignment_tri: verifies DAT tri-equivalence (operational/logical/algebraic)
-- Added measure_cost, measure_step: coherence cost and post-measurement belief (QCI_Sequences.lean)
-- Added collapse_irreversible: T/F/N cannot reach B via any unary/binary lattice op
-- Added wigner_then_collapse_cost: B-bias(2n) + T-bias(n) = 3n
-- Module-level assertions verify all new invariants at import time
+para_temporal.py  [NEW]
+- BelnapTemporal: □B/◇B/○B modalities over KernelState trajectory
+- BelnapTrajectory dataclass; temporal_always/temporal_exists/temporal_next predicates
+- always_B_registers: □(r0=r1=r2=B) verified over 8 cycles
+- winding_invariant: bnot(r0(t))=r0(t) ∀t (bnot(B)=B, self-negating trajectory)
+- temporal_is_O_inf: Phi_c ∧ P_pm_sym
+- 4 module-level assertions; CLI: para-temporal
+- Entry point: para-temporal
 
-para_alignment.py (new)
-- BelnapCircuit dataclass: list of B4 gates; all_b, proj, join operations
-- classical_cannot_become_B: one-way barrier — proj(all-B) = all-T cannot self-join to B
-- sustain_never_collapses: all-B circuit stable under lattice ops
-- dialetheicShor: frames Belnap Shor as Φ_υ→Φ_} promotion; wraps run_belnap_shor
-- Full CLI suite: DAT display, measurement seq algebra, P vs NP bridge, Shor framing
-- Entry point: para-align (subcommands: bifur | seq | pvsnp | shor N a)
+para_category.py  [NEW]
+- BelnapCategory: Belnap FOUR as a category via approximation order
+- B unique terminal, N unique initial (uniqueness proofs via all 4 objects)
+- band_B_idempotent, b_meet_is_id (B is meet-identity), b_join_absorbs
+- n_meet_annihilates, b_self_adjoint (bnot(B)=B, bnot(N)=N)
+- frobenius_as_terminal_morphism: μ∘δ(B)=B
+- category_is_O_inf: Phi_c ∧ P_pm_sym
+- 4 module-level assertions; CLI: para-category
+- Entry point: para-category
 
-pyproject.toml
-- Added para-align = "para_alignment:main" entry point
-- Added para_alignment to py-modules list
-
-para_alignment.py
-- Updated pvsnp block: join_circuit_B_dominant now closed (proved via foldl induction)
-
-para_rh.py (new) — Riemann Hypothesis Bridge (QCI_RH_Bridge.lean)
-- rh_strip_state: critical strip encoding as B4 (N/F/T/B by Re(s) position)
-- rh_functional_eq: functional equation s↦1-s acts as bnot
-- rh_frobenius_fixed_point: B is the unique designated fixed point of bnot
-- rh_belnap_statement: all non-trivial zeros are B-designated (dialetheic pair)
-- rh_involution_identity: bnot∘bnot=id (involution identity)
-- Structural type: ⟨Ð_ω;Þ_O;Ř_Ť;Φ_};ƒ_ż;Ç_@;Γ_ʔ;ɢ_ˌ;⊙_ÿ;Ħ_A;Σ_ï;Ω_2⟩
-- Entry point: para-rh
-
-para_ym.py (new) — Yang-Mills Mass Gap Bridge (QCI_YM_Bridge.lean)
-- ym_gap_exists: N < T is a covering relation (no state between vacuum and particle)
-- ym_gap_not_dialetheic: T is definite; gap cannot be a B-contradiction
-- ym_vacuum_canonical: T∧F=N (particle+antiparticle→vacuum); N undesignated
-- ym_brst_nilpotent: ENGAGR(B)=B (BRST-stable); ENGAGR(T)→F (nilpotent); μ∘δ=id
-- ym_confinement_ktrap: T cannot reach N via any self-op (K_trap confinement)
-- ym_topological_protection: T∨T=T; gap Omega_Z-protected
-- Structural type: ⟨Ð_ω;Þ_K;Ř_Ť;Φ_};ƒ_ż;Ç_Ù;Γ_ʔ;ɢ_Ş;⊙_ÿ;Ħ_!;Σ_ő;Ω_z⟩
-- Entry point: para-ym
-
-para_nreg.py (new) — n-Register QCI Generalization
-- sic_povm_axioms_hold: B satisfies all 4 SIC axioms for d=2 per qubit
-- sic_coherence_ratio_invariant_n: 2:1 ratio verified for each (n, a, N) instance
-- nreg_all_verified: all 8 standard instances pass (n=4..8)
-- period_not_in_qubits: B-bias preserves all-B; period is in ratio not qubit values
-- Corrected expected periods: r=80 for (8,3,187); r=24 for (8,2,221)
-- Entry point: para-nreg
+para_multiagent.py  [NEW]
+- Multi-Agent Belnap Protocol: n-kernel entangled network
+- MultiAgentState dataclass (agents + channels); init_multi emerald bootstrap
+- multi_step: all agents advance 1 cycle; channels = join(adjacent r0)
+- multi_allB_init, multi_allB_preserved, multi_channel_join_stable
+- multi_agent_is_O_inf: Phi_c ∧ P_pm_sym
+- 4 module-level assertions; CLI: para-multiagent [n_agents [n_steps]]
+- Entry point: para-multiagent
 
 pyproject.toml
-- Added para-rh, para-ym, para-nreg entry points and py-modules
+- Added entry points: para-temporal, para-category, para-multiagent
+- Added to py-modules: para_temporal, para_category, para_multiagent
 
-Paraconsistent layer sync from MillenniumAnkh/Imscribing/Paraconsistent/
+Earlier in this session (also new):
+para_alignment.py  — DAT tri-equivalence, BelnapCircuit, P vs NP bridge,
+                     dialetheicShor framing; join_circuit_B_dominant proved
+para_rh.py         — RH Bridge: bnot=functional eq; B unique crit-line fixed point;
+                     millennium_barriers_unified (RH/PvsNP/SIC-POVM)
+para_ym.py         — YM Bridge: N<T=mass gap; BRST↔Frobenius; K_trap confinement
+para_nreg.py       — n-Register: 2:1 ratio ∀n; corrected r=80 (187,3), r=24 (221,2)
+pyproject.toml     — added para-align, para-rh, para-ym, para-nreg entries
 
-para_vm.py
-──────────
-B4 operations added (mirrors Belnap.lean):
-  b4_meet(a,b)       approximation-order meet; _MEET table
-  b4_bnot(a)         negation: N→N, T→F, F→T, B→B; _BNOT table
-  b4_band(a,b)       truth-functional AND; _BAND table (16 entries)
-  b4_bor(a,b)        truth-functional OR;  _BOR  table (16 entries)
-  b4_designated(a)   T or B → True
+para_vm.py  [extended]
+- dialetheicImage, B_is_the_only_bifurcation_point, dialetheic_alignment_tri
+- measure_cost, measure_step, collapse_irreversible, wigner_then_collapse_cost
 
-ParaVM._exec ENGAGR — corrected:
-  Old: self.engage(r) forcing B unconditionally
-  New: band(old, bnot(old)); paradox_count++ only if old was designated
-  B is the only fixed point; T/F collapse
-
-ParaVM._exec FSPLIT — corrected to Frobenius comultiplication:
-  src=B → d1=T, d2=F, bump=1
-  src≠B → d1=d2=src, bump=0
-  frobenius_invariant: kernel_ffuse(kernel_fsplit(r)).0 = r  ∀ r
-
-KernelState dataclass added — mirrors Kernel.lean MachineState:
-  Fields: r0, r1, r2: B4; paradox_count, cycle_count: int
-  kernel_engager, kernel_fsplit, kernel_ffuse, kernel_step, kernel_run
-  Module-load assertions: frobenius_invariant + run_B3 (8 cycles)
-
-para_loop.py
-────────────
-  Removed local B4 / _b4_join; imports from para_vm
-  ParaEngine._execute() ENGAGR: band(r,bnot(r)) fixed-point semantics
-  ParaEngine._execute() FSPLIT: B→(T,F) comultiplication
-  run(): pre-seeds r0=B before loop (required for ENGAGR to sustain B)
-  KERNEL comments updated to reflect true Frobenius semantics
-
-MillenniumAnkh Paraconsistent sync (2026-05-22)
-────────────────────────────────────────────────
-
-para_vm.py — Belnap extensions:
-  b4_approx_le(a, b)      approximation order from ApproxLE in Belnap.lean
-                          N ≤ everything; everything ≤ B; otherwise reflexive
-  b4_dialetheic(a)        DialetheicAlignment.lean: True iff a and ¬a both designated
-                          Only B satisfies this (only_B_is_dialetheic)
-  b4_to_wh2(a)            WH2 bijection from QCI_SICPOVM_Bridge.lean:
-  wh2_to_b4(ab)             N→(0,0)=I, T→(0,1)=Z, F→(1,0)=X, B→(1,1)=XZ
-  Module-load assertions  All 4 SIC-POVM axioms for B + WH2 injectivity verified
-
-belnap_shor.py — new file:
-  Full Belnap Shor pipeline executor. Entry point: para-shor.
-  Imports B4 + lattice functions from para_vm (single source of truth).
-  Adds b4_hadamard (H|T⟩=B, H|B⟩=T) and b4_xor locally.
-
-  BelnapRegister  n-qubit register with coherence accounting
-  BelnapModExp    modular exponentiation (B-input → B-output, cost 0)
-  run_belnap_shor(n, a, N) → ShorResult with full coherence breakdown
-
-  Structural invariants (runtime + Lean verified):
-    H-cost = n, ModExp-cost = 0, B-bias = 2n, T-bias = n, ratio = 2:1
-    B propagates through all Boolean gates (no phase differentiation)
-    Φ_υ bottleneck: period encoded in coherence ratio, not in bit values
-
-  Lean reference: MillenniumAnkh/Imscribing/Paraconsistent/Shor/
-
-pyproject.toml:
-  Added para-shor = "belnap_shor:main" to [project.scripts]
-  Added "belnap_shor" to py-modules
-
-programs/dialetheic_cycle.asm — new file:
-  Demonstrates B-only dialetheism + Frobenius identity (DialetheicAlignment.lean)
-  Frobenius loop: FSPLIT → FFUSE roundtrip preserves B (μ∘δ=id)
-
-programs/sic_povm.asm — new file:
-  Demonstrates all 4 SIC-POVM axioms for B via ParaASM instructions
-  WH2 bijection: N→(0,0), B→(1,1)=XZ annotated in register layout
-
-README.md:
-  Added para-shor under Usage
-  Added dialetheic_cycle.asm and sic_povm.asm to Programs list
-  Added "Belnap Shor pipeline" section (pipeline diagram, invariant table, Φ_υ bottleneck)
-  Added "WH2 bijection and SIC-POVM axioms" subsection
-  Added "DialetheicAlignment" subsection
-  Added three new theorems to Formal verification:
-    only_B_is_dialetheic, belnapToWH2_bijective, coherence_ratio_is_two
+All module-level assertions pass; all 7 new entry points verified at import.

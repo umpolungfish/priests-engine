@@ -17,8 +17,12 @@ para-shor = "belnap_shor:main"
 para-align = "para_alignment:main"
 para-rh    = "para_rh:main"
 para-ym    = "para_ym:main"
-para-nreg  = "para_nreg:main"
+para-nreg       = "para_nreg:main"
+para-temporal   = "para_temporal:main"
+para-category   = "para_category:main"
+para-multiagent = "para_multiagent:main"
 
 [tool.setuptools]
 py-modules = ["para_vm", "para_repl", "para_loop", "para_wasm", "belnap_shor",
-              "para_alignment", "para_rh", "para_ym", "para_nreg"]
+              "para_alignment", "para_rh", "para_ym", "para_nreg",
+              "para_temporal", "para_category", "para_multiagent"]

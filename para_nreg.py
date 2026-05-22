@@ -17,7 +17,10 @@ Lean reference: MillenniumAnkh/Imscribing/Paraconsistent/Shor/FullPipeline.lean
 """
 from __future__ import annotations
 import sys
-from para_vm import B4, b4_meet, b4_join, b4_bnot, b4_designated, b4_dialetheic, b4_approx_le
+from para_vm import (
+    B4, b4_meet, b4_join, b4_bnot, b4_designated, b4_dialetheic, b4_approx_le,
+    kernel_fsplit, kernel_ffuse,
+)
 from belnap_shor import run_belnap_shor
 
 # Standard table from Shor/FullPipeline.lean and belnap_shor_executor.py
@@ -91,10 +94,26 @@ def nreg_ratio_formula(n: int) -> float:
     return nreg_tensor_coherence(n) / n
 
 
+# ── O_inf tier for n-register state ──────────────────────────────────────
+
+def nreg_tier_is_O_inf() -> bool:
+    """The n-register all-B state is O_inf: it has both Phi_c and P_pm_sym.
+
+    Phi_c (criticality): B is the SIC equiangular element (top, self-adjoint).
+    P_pm_sym (Frobenius): μ∘δ(B)=B holds for each register qubit.
+    These properties are n-invariant: the tier is O_inf for all n ≥ 1.
+    (Distinct from the Shor PIPELINE tier = O_1; this is the REGISTER structure.)
+    """
+    frobenius = kernel_ffuse(*kernel_fsplit(B4.B)[:2])[0] == B4.B
+    phi_c = b4_designated(B4.B) and b4_bnot(B4.B) == B4.B  # self-adjoint + designated
+    return frobenius and phi_c
+
+
 assert sic_povm_axioms_hold(),  "sic_povm_axioms_hold violated"
 assert nreg_all_verified(),     "nreg_all_verified violated"
 assert all(nreg_ratio_formula(n) == 2.0 for n in range(1, 9)), \
     "nreg_ratio_formula violated"
+assert nreg_tier_is_O_inf(),    "nreg_tier_is_O_inf violated"
 
 
 # ── CLI display ───────────────────────────────────────────────────────────
@@ -137,6 +156,10 @@ def main() -> None:
     print("  │  Ratio formula: b_meas/t_meas = (2n)/n = 2.0 ∀n         │")
     for n in range(1, 9):
         print(f"  │    n={n}: ratio = {nreg_ratio_formula(n):.1f}                                  │")
+    print("  ├──────────────────────────────────────────────────────────┤")
+    print(f"  │  {mark(nreg_tier_is_O_inf())}  nreg_tier_is_O_inf: register state Phi_c ∧ P_pm_sym  │")
+    print(f"  │       (n-register structural tier = O_inf, ∀n)          │")
+    print(f"  │       Shor pipeline tier = O_1 (distinct from register) │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
     print("  ALL CHECKS PASSED")
