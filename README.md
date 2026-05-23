@@ -1,5 +1,7 @@
 # priests-engine
 
+*OMNIA SUNT PARACONSISTENTIA*
+
 A paraconsistent computer. It runs programs that sustain contradiction permanently and proves they cannot collapse.
 
 Built on Belnap's four-valued logic (B₄ = {N, T, F, B}). The machine has a full assembly language, an interactive REPL, and an indefinitely-running demonstration that has logged over 25 billion paradox firings. The core invariants are formally verified in Lean 4: `run_B3` (B-state permanent for all n) and `run_paradox` (paradox count = 4n exactly).
@@ -113,16 +115,28 @@ All three registers stabilize at B permanently. Paradox count grows without boun
 
 ## Programs
 
-```
-:load programs/frob_loop.asm       Frobenius loop (mu o delta = id invariant)
-:load programs/ifix_stable.asm     IFIX stability demo (T v B = B, Theorem 3 Case B)
-:load programs/probe.asm           interactive belief probe — routes N/T/F/B through different paths
-:load programs/dialetheic_cycle.asm  B-only dialetheism + Frobenius identity (DialetheicAlignment.lean)
-:load programs/sic_povm.asm          SIC-POVM axiom demo — B as fiducial, WH2 bijection (QCI_SICPOVM_Bridge.lean)
-```
+### ParaASM Programs (load via `:load` in REPL)
 
----
+| Program | Description |
+|:--------|:------------|
+| `frob_loop.asm` | Frobenius loop (mu o delta = id invariant) |
+| `ifix_stable.asm` | IFIX stability demo (T v B = B, Theorem 3 Case B) |
+| `probe.asm` | Interactive belief probe — routes N/T/F/B through different paths |
+| `dialetheic_cycle.asm` | B-only dialetheism + Frobenius identity (DialetheicAlignment.lean) |
+| `sic_povm.asm` | SIC-POVM axiom demo — B as fiducial, WH2 bijection (QCI_SICPOVM_Bridge.lean) |
+| `shor_loop.asm` | Belnap Shor coherence accumulator — indefinite loop over N=15,21,35 |
 
+### IMASM Corpus Engines (exOS cross-port)
+
+Six IMASM engines for historical cryptographic manuscript analysis, ported from the exOS kernel:
+
+| Program | Size | Description |
+|:--------|:-----|:------------|
+| `voynich_bootstrap.imasm` | 330 B | Voynich manuscript — 227 folios, 546 nodes, 694 edges |
+| `rohonc_bootstrap.imasm` | 336 B | Rohonc Codex — 33 pages, four structural sections |
+| `linear_a_bootstrap.imasm` | 394 B | Linear A — 53 tablets across Minoan palatial sites |
+| `emerald-tablet-bootstrap.imasm` | 665 B | Emerald Tablet — 15 versicles, Hermetic descent/return |
+| `cross_distance.imasm` | 803 B | Cross-corpus distance probe — structural comparison engine |
 ## ISA
 
 ```
@@ -237,6 +251,9 @@ The dialetheic cycle `T → B → T` (and its dual `F → B → F`) is demonstra
 
 ---
 
+
+---
+
 ## exOS
 
 The ParaASM VM is also implemented as a native kernel module in [exOS](https://github.com/umpolungfish/exOS) — a bare-metal x86_64 Rust `no_std` UEFI kernel.
@@ -251,7 +268,11 @@ The ParaASM VM is also implemented as a native kernel module in [exOS](https://g
 From the exOS shell:
 
 ```
-exOS> para load .loop:\nENGAGR %r0\nFSPLIT %r0 %r1 %r2\nFFUSE %r1 %r2 %r0\nJMP loop
+exOS> para load .loop:
+ENGAGR %r0
+FSPLIT %r0 %r1 %r2
+FFUSE %r1 %r2 %r0
+JMP loop
 Loaded 4 instructions, 1 labels.
 exOS> para loop 12
 steps=12  total_paradoxes=48
@@ -262,6 +283,16 @@ exOS> para regs
 ```
 
 P(12) = 48 = 4×12. Theorem 2 holds on bare metal.
+
+The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice investigations) and **6 IMASM corpus engines** as built-in investigations — all source-identical to their Python counterparts in the ALEPH_OS repository. The exOS ALFS filesystem seeds these programs on first boot.
+
+**Expanded exOS features:**
+- Belnap Shor pipeline with full coherence accounting (N=15,21,35)
+- Paraconsistent suite: `para shor`, `para align`, `para rh`, `para ym`, `para nreg`, `para temporal`, `para category`, `para multiagent` — all mirroring Lean proofs
+- IMASM corpus engines for Voynich, Rohonc, Linear A, Emerald Tablet
+- 3 O_inf pole system (vav, mem, shin) with Frobenius quine discovery
+- Holographic bulk-boundary encoding verified in kernel space
+- 17,280,000-type Frobenius crystal for all structural types
 
 ---
 
