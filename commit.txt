@@ -1,4 +1,106 @@
-commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
+quantum_on_classical_demo.py: quantum period-finding on classical hardware (2026-05-30)
+======================================================================================
+
+  Demonstration script for the IG structural claim:
+  a classical x86_64 CPU running Belnap lattice ops computes at structural
+  type O_inf — the same type as a quantum system — with Lean certification.
+
+  Imports belnap_shor.py (find_period, coherence_costs) from priests-engine.
+  Falls back to canonical N=15, a=7 values when engine not on path.
+  Displays full Lean certification chain (6 theorems from DialetheicOperator.lean
+  and BelnapQFT.lean). Accepts N, a as CLI args.
+
+  Usage: python quantum_on_classical_demo.py [N a]
+  Entry: python quantum_on_classical_demo.py 15 7  →  ALL CHECKS PASSED
+
+Previous: para_repl.py: :ls file browser + :load by number + readline ANSI fix (2026-05-29)
+=================================================================
+
+  readline counts every character in the prompt string, including invisible
+  ANSI escape sequences, toward cursor position.  Without wrapping, line
+  editing (backspace, arrows, history) puts the cursor in the wrong column.
+
+  Changes:
+    - Add :ls [dir] command: numbered list of .asm/.imasm files with first-line
+      descriptions; currently-loaded file marked with ⌾; stores list for :load
+    - Add :load <n> by number from last :ls (in addition to filename)
+    - :load with no arg now runs :ls instead of printing usage
+    - :load resolves in order: path as-is → programs/ → parent dir
+    - _current_file tracking: set on auto-load and every :load success; ⌾
+      marker in :ls reflects it
+    - _PROG_DIR module-level constant (programs/ subdir)
+    - Fix _animate_run: vm.steps → vm.total_steps (ParaVM has no .steps attr)
+    - Import `re`; track _READLINE bool (True when readline imports)
+    - Add _ANSI_ESC_RE = re.compile(r'\033\[[0-9;]*m')
+    - Add _rl(s) helper: wraps each ANSI sequence in \001...\002
+      (RL_PROMPT_START_IGNORE / RL_PROMPT_END_IGNORE); no-op when readline
+      is absent
+    - _prompt_text() return value wrapped with _rl()
+    - Added print() blank line between program listing and first prompt
+
+Previous: figures/cfg_execution.py: live sys.settrace execution CFG (2026-05-27)
+=================================================================
+
+figures/cfg_execution.py → figures/cfg_execution.gif  (8.8 MB)
+  - sys.settrace traces an actual priests-engine run; NO hand-crafted topology
+  - 71 functions traced across para_vm, para_repl, para_loop, para_rh,
+    para_ym, para_nreg, para_alignment, para_temporal, para_category,
+    para_multiagent
+  - 135 real (caller → callee) call edges from live execution
+  - Frobenius nodes confirmed to fire: k_fsplit, k_ffuse, k_step, k_engager
+  - Gold = Frobenius kernel; orange = Belnap ops; blue = VM; purple = REPL
+  - 150 frames (build phase reveals call order + flow wave), 15 fps
+  - Layout: graphviz dot with spring fallback
+
+
+Previous: CFGs: animated ParaASM / Millennium / module graphs (2026-05-26)
+=================================================================
+
+figures/cfg_paraasm.py → figures/cfg_paraasm.gif  (0.7 MB)
+  - ParaASM opcode flow: PUSH/load → bit ops → Frobenius kernel → HALT
+  - Frobenius cycle: FSPLIT→STEP→FFUSE→JMP→FSPLIT in gold
+  - 130 frames (build + flow wave), 15 fps
+
+figures/cfg_millennium.py → figures/cfg_millennium.gif  (0.2 MB)
+  - RH/YM/PNP/SIC → bridge nodes → B → UNITY convergence
+  - Gold edges: all reduction paths to B
+
+figures/cfg_modules.py → figures/cfg_modules.gif  (0.4 MB)
+  - 12-module dependency graph; para_vm as core
+  - Frobenius cycle: para_vm→para_loop→para_repl→para_vm
+
+README.md
+  - New "Animated CFGs" section with all three GIF references + render commands
+
+
+Previous: PRIESTS_ENGINE.md: TikZ diagrams replace mermaid (2026-05-26)
+=======================================================================
+
+PRIESTS_ENGINE.md
+  - Replaced 7 mermaid code blocks with PNG image references (figures/fig1-7.png)
+  - figures/render_tikz.py: standalone TikZ source for all 7 diagrams
+    (Belnap lattice, Frobenius kernel, δ/μ round-trip, DAT, Millennium
+    convergence, Shor pipeline, category structure)
+  - Consistent dark-fill IG colour scheme (Bgreen/Bblue/Bamber/Bred/Bpurple)
+  - Compiled via pdflatex + pdfcrop + pdftoppm @220dpi; transparent background
+
+PRIESTS_ENGINE.tex: LuaLaTeX formatting fix (2026-05-26)
+=======================================================================
+
+PRIESTS_ENGINE.tex
+  - Preamble: replaced pdflatex inputenc/T1/lmodern with fontspec + unicode-math
+    (setmainfont FreeSerif, igprimfont FreeSerif, monofont DejaVu Sans Mono,
+    igfont Everson Mono for Shavian); amssymb removed (conflicts with unicode-math);
+    calc added
+  - lstset: removed literate replacements for _/-/</>~/^ (broke code display with
+    proper monofont); replaced with upquote=true
+  - synthonbox → imscriptionbox (standard IG box name)
+  - Author line: \otimes → ⊗ (Unicode direct; text-mode crash fix)
+  - Section hierarchy: \subsection → \section, \subsubsection → \subsection
+    (was producing 0.1/0.2 numbering with no parent section)
+
+
+Previous: commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
 =======================================================================
 
 para_temporal.py  [NEW]

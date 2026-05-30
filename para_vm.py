@@ -324,11 +324,8 @@ class ParaVM:
             return self.resolve(a[i])
 
         if op == 'ENGAGR':
-            r   = R(0)
-            old = self.belief_of(r)
-            if b4_designated(old):
-                self.registers[r].paradox_count += 1
-            self.set_belief(r, b4_band(old, b4_bnot(old)))
+            r = R(0)
+            self.engage(r)
 
         elif op == 'FSPLIT':
             # δ: Frobenius comultiplication — B→(T,F); others copy

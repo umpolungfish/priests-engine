@@ -1,0 +1,700 @@
+#!/usr/bin/env python3
+"""
+para_repl.py — Paraconsistent Universal Engine REPL with Dynamic Aesthetics
+
+Interactive mode with live spinners, animated Belnap compass, pulsing prompt,
+paradox progress bars, register heat maps, and real-time paradox counter.
+
+Type ParaASM instructions directly — non-control-flow ops execute immediately.
+Commands prefix with `:`.
+
+Commands:
+  :help                show this list
+  :regs                dump all active registers (heat-map style)
+  :prog                show program buffer with PC marker
+  :step [N]            execute N steps (default 1) with flash animation
+  :run  [N]            run fast N steps with live spinner & paradox bar
+  :load <file>         assemble and load a .asm file
+  :reset               clear everything
+  :save <file>         write current program buffer to file
+  :snap                full snapshot with Belnap compass & stats
+  :q / :quit           exit
+"""
+
+import sys
+import signal
+import time
+import threading
+from pathlib import Path
+from itertools import cycle
+
+sys.path.insert(0, str(Path(__file__).parent))
+from para_vm import ParaVM, B4, Instr, assemble, b4_join, _CTRL_FLOW
+
+try:
+    import readline  # noqa: F401
+except ImportError:
+    pass
+
+
+# ── ANSI ───────────────────────────────────────────────────────────────────
+
+R  = '\033[0m'
+BD = '\033[1m'
+DM = '\033[2m'
+IT = '\033[3m'
+UL = '\033[4m'
+BL = '\033[5m'   # blink (used sparingly)
+RV = '\033[7m'
+
+CY = '\033[96m'
+GD = '\033[93m'
+GN = '\033[92m'
+BLU = '\033[94m'
+RD = '\033[91m'
+MG = '\033[95m'
+GR = '\033[90m'
+WH = '\033[97m'
+
+BG_DK = '\033[48;5;236m'
+BG_RD = '\033[48;5;52m'
+BG_GN = '\033[48;5;22m'
+BG_BL = '\033[48;5;17m'
+BG_MG = '\033[48;5;53m'
+BG_CY = '\033[48;5;23m'
+
+CLR_LN = '\033[2K'
+CLR_DN = '\033[J'
+CUR_UP = '\033[1A'
+CUR_SAVE = '\033[s'
+CUR_RESTORE = '\033[u'
+
+_B4_COLOR = {B4.N: GR, B4.T: GN, B4.F: BLU, B4.B: RD}
+_B4_BG = {B4.N: BG_DK, B4.T: BG_GN, B4.F: BG_BL, B4.B: BG_RD}
+_B4_BLOCK = {B4.N: '░', B4.T: '▒', B4.F: '▓', B4.B: '█'}
+_B4_GLYPH = {B4.N: '⊗', B4.T: '⊕', B4.F: '⊖', B4.B: '⊙'}
+_B4_SYMBOL = {B4.N: '∅', B4.T: '⊤', B4.F: '⊥', B4.B: '◈'}
+
+# ── Spinners ──────────────────────────────────────────────────────────────
+
+SPINNER_BELNAP = ['Ⓝ', 'Ⓣ', 'Ⓕ', 'Ⓑ']
+SPINNER_DOTS = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+SPINNER_CYCLE = cycle(SPINNER_DOTS)
+SPINNER_B4 = cycle(SPINNER_BELNAP)
+
+# ── Pulse animation state ─────────────────────────────────────────────────
+
+_pulse_cycle = cycle([GR, GN, BLU, RD, MG, CY, WH, CY, MG, RD, BLU, GN])
+_pulse_idx = 0
+_pulse_lock = threading.Lock()
+
+def _pulse_color() -> str:
+    global _pulse_idx
+    with _pulse_lock:
+        c = next(_pulse_cycle)
+        _pulse_idx = (_pulse_idx + 1) % 12
+    return c
+
+
+# ── Helpers ───────────────────────────────────────────────────────────────
+
+def _b4_color(b: B4) -> str:
+    return f'{_B4_COLOR[b]}{b.value}{R}'
+
+def _b4_glyph(b: B4) -> str:
+    return f'{_B4_COLOR[b]}{_B4_GLYPH[b]}{R}'
+
+def _b4_symbol(b: B4) -> str:
+    return f'{_B4_COLOR[b]}{_B4_SYMBOL[b]}{R}'
+
+def _b4_block_char(b: B4, intensity: float = 1.0) -> str:
+    """Block character scaled by intensity (0.0–1.0)."""
+    blocks = ' ░▒▓█'
+    idx = min(4, int(intensity * 4))
+    return f'{_B4_COLOR[b]}{blocks[idx]}{R}'
+
+
+def _reg_line(rid: int, belief: B4, paradox: int, is_fixed: bool, max_paradox: int = 0) -> str:
+    c = _B4_COLOR[belief]
+    bg = _B4_BG.get(belief, '')
+    fx = f' {BG_GN}◈FIXED{R}' if is_fixed else ''
+    # Heat intensity based on paradox count
+    heat = min(paradox / max(max_paradox, 1), 1.0) if max_paradox > 0 else 0
+    heat_bar = ''
+    if heat > 0:
+        n_blocks = max(1, int(heat * 6))
+        heat_color = f'\033[38;5;{196 - int(heat * 100)}m' if heat < 0.5 else f'\033[38;5;{196}m'
+        heat_bar = f' {heat_color}{"█" * n_blocks}{"░" * (6 - n_blocks)}{R}'
+    return f'  {bg}%r{rid:<3d}{R} {c}{belief.value}{R}{heat_bar}  π={paradox:<6}{fx}'
+
+
+def _dist_bar(dist: dict[B4, int], width: int = 28) -> str:
+    """Animated distribution bar using block characters."""
+    total = sum(dist.values()) or 1
+    parts = []
+    for s in (B4.N, B4.T, B4.F, B4.B):
+        n = dist[s]
+        seg = max(1, round(n / total * width)) if n else 0
+        if seg:
+            parts.append(f'{_B4_COLOR[s]}{_B4_BLOCK[s] * seg}{R}')
+    bar_inner = ''.join(parts)
+    padding = width - sum(1 for c in bar_inner if c in '░▒▓█')
+    if padding > 0:
+        bar_inner += f'{GR}{"░" * padding}{R}'
+    return '[' + bar_inner + ']'
+
+
+def _belnap_compass(dist: dict[B4, int]) -> str:
+    """Render a 4-directional Belnap compass rose."""
+    total = sum(dist.values()) or 1
+    n_frac = dist[B4.N] / total
+    t_frac = dist[B4.T] / total
+    f_frac = dist[B4.F] / total
+    b_frac = dist[B4.B] / total
+
+    n_str = f'{_B4_COLOR[B4.N]}N{R}'
+    t_str = f'{_B4_COLOR[B4.T]}⊤{R}'
+    f_str = f'{_B4_COLOR[B4.F]}⊥{R}'
+    b_str = f'{_B4_COLOR[B4.B]}◈{R}'
+
+    lines = []
+    # Top: N
+    lines.append(f'          {n_str}')
+    lines.append(f'          │')
+    # Middle: T ── center ── F
+    center_glyph = '⊙'
+    if b_frac > 0.5:
+        center_glyph = '◈'
+    elif t_frac > 0.5:
+        center_glyph = '⊕'
+    elif f_frac > 0.5:
+        center_glyph = '⊖'
+    lines.append(f'  {t_str} ── {RD}{center_glyph}{R} ── {f_str}')
+    lines.append(f'          │')
+    # Bottom: B
+    lines.append(f'          {b_str}')
+
+    # Distribution bars
+    width = 12
+    def mini_bar(b: B4, frac: float) -> str:
+        seg = max(1, round(frac * width)) if frac > 0 else 0
+        if seg:
+            return f'{_B4_COLOR[b]}{_B4_BLOCK[b] * seg}{R}'
+        return ''
+
+    bars = []
+    for b, frac in [(B4.N, n_frac), (B4.T, t_frac), (B4.F, f_frac), (B4.B, b_frac)]:
+        bar = mini_bar(b, frac)
+        bars.append(f'  {_B4_COLOR[b]}{b.value}{R} {bar} {frac*100:5.1f}%')
+
+    return '\n'.join(lines + [''] + bars)
+
+# ── Snapshot display ───────────────────────────────────────────────────────
+
+def show_regs(vm: ParaVM) -> None:
+    """Register display with heat-map visualization."""
+    rows = vm.active_regs()
+    if not rows:
+        print(f'  {GR}(no active registers){R}')
+        return
+    max_paradox = max((r[2] for r in rows), default=0)
+    print(f'  {BD}{"reg":<6} {"bel":^5} {"heat":<8} {"paradox":>8} {"fixed":>6}{R}')
+    print('  ' + '─' * 40)
+    for rid, bel, paradox, is_fixed in rows:
+        print(_reg_line(rid, bel, paradox, is_fixed, max_paradox))
+
+
+def show_prog(vm: ParaVM) -> None:
+    """Program display with PC marker and instruction highlight."""
+    if not vm.program:
+        print(f'  {GR}(program buffer empty){R}')
+        return
+    for i, instr in enumerate(vm.program):
+        is_current = i == vm.pc
+        marker = f'{GD}▶{R}' if is_current else ' '
+        label_here = [k for k, v in vm.label_map.items() if v == i]
+        if label_here:
+            for lbl in label_here:
+                print(f'  {GR}{lbl}:{R}')
+        # Highlight current instruction
+        if is_current:
+            op_str = f'{WH}{BD}{instr}{R}'
+        else:
+            op_str = str(instr)
+        print(f'  {marker} {i:3d}  {op_str}')
+    if vm.pc >= len(vm.program):
+        print(f'  {GD}▶{R} {len(vm.program):3d}  (end of program)')
+
+
+def show_snap(vm: ParaVM) -> None:
+    """Full snapshot with Belnap compass and live paradox display."""
+    s = vm.snapshot()
+    d = s['dist']
+    total_paradox = sum(d.values())
+
+    print()
+    print(f'  {BD}{CY}═══ PARACONSISTENT ENGINE SNAPSHOT ═══{R}')
+    print()
+
+    # Belnap compass rose
+    print(f'  {BD}Belnap FOUR Compass:{R}')
+    for line in _belnap_compass(d).split('\n'):
+        print(f'    {line}')
+
+    print()
+    print(f'  {BD}Engine Stats:{R}')
+    print(f'    {GR}steps{R}   {s["steps"]:>12,}')
+    print(f'    {GR}cycles{R}  {s["cycles"]:>12,}')
+    print(f'    {GR}pc{R}      {s["pc"]:>12,} / {len(vm.program)}')
+    print(f'    {GR}paradox{R} {s["paradox"]:>12,}')
+
+    # Paradox progress bar
+    if total_paradox > 0:
+        bar_width = 40
+        bar_parts = []
+        for v in (B4.N, B4.T, B4.F, B4.B):
+            frac = d[v] / total_paradox
+            seg = max(1, round(frac * bar_width)) if frac > 0 else 0
+            if seg:
+                bar_parts.append(f'{_B4_COLOR[v]}{_B4_BLOCK[v] * seg}{R}')
+        bar_inner = ''.join(bar_parts)
+        pad = bar_width - sum(1 for c in bar_inner if c in '░▒▓█')
+        if pad > 0:
+            bar_inner += f'{GR}{"░" * pad}{R}'
+        print(f'    {GR}distrib{R} [{bar_inner}]')
+
+    print(f'    {GR}active{R}  {s["active"]:>12,}   {GN}fixed{R} {s["fixed"]:>12,}')
+    print(f'    {GR}halted{R} {str(s["halted"]):>12}')
+    print()
+    print(f'  {CY}══════════════════════════════════════{R}')
+    print()
+
+
+
+# ── Dashboard ──────────────────────────────────────────────────────────────
+
+def show_dash(vm: ParaVM) -> None:
+    """Full animated dashboard with compass, heat map, stats, and program."""
+    s = vm.snapshot()
+    d = s["dist"]
+    total_paradox = sum(d.values())
+
+    print()
+    print(f"  {BD}{CY}╔═══ PARACONSISTENT DASHBOARD ═══════════════════════╗{R}")
+    print(f"  {BD}{CY}║{R}  {RD}⊙{R}  {WH}μ ∘ δ = id{R}  {DM}|  {RD}B{R}=both  "
+          f"{GN}T{R}=true  {BLU}F{R}=false  {GR}N{R}=neither{R}  {CY}║{R}")
+    print(f"  {BD}{CY}╚═══════════════════════════════════════════════════╝{R}")
+    print()
+
+    # Belnap compass
+    print(f"  {BD}Belnap FOUR Compass:{R}")
+    for line in _belnap_compass(d).split("\n"):
+        print(f"    {line}")
+    print()
+
+    # Stats panel
+    print(f"  {BD}╔══ ENGINE STATS ═════════════════════════════════════╗{R}")
+    print(f"  {BD}║{R}  {CY}steps{R}   {s['steps']:>18,}               {BD}║{R}")
+    print(f"  {BD}║{R}  {CY}cycles{R}  {s['cycles']:>18,}               {BD}║{R}")
+    print(f"  {BD}║{R}  {RD}π{R}       {s['paradox']:>18,}               {BD}║{R}")
+    print(f"  {BD}║{R}  {MG}active{R}  {s['active']:>18,}    {GN}fixed{R} {s['fixed']:>18,}  {BD}║{R}")
+
+    # Distribution bar
+    if total_paradox > 0:
+        bar_width = 38
+        bar_parts = []
+        for v in (B4.N, B4.T, B4.F, B4.B):
+            frac = d[v] / total_paradox
+            seg = max(1, round(frac * bar_width)) if frac > 0 else 0
+            if seg:
+                bar_parts.append(f"{_B4_COLOR[v]}{_B4_BLOCK[v] * seg}{R}")
+        bar_inner = "".join(bar_parts)
+        pad = bar_width - sum(1 for c in bar_inner if c in "░▒▓█")
+        if pad > 0:
+            bar_inner += f"{GR}{"░" * pad}{R}"
+        print(f"  {BD}║{R}  {GD}Belnap{R} [{bar_inner}] {BD}║{R}")
+    print(f"  {BD}╚═══════════════════════════════════════════════════╝{R}")
+    print()
+
+    # Register heat map
+    print(f"  {BD}Register Heat Map:{R}")
+    rows = vm.active_regs()
+    if rows:
+        max_paradox = max((r[2] for r in rows), default=0)
+        for rid, bel, paradox, is_fixed in rows:
+            c = _B4_COLOR[bel]
+            bg = _B4_BG.get(bel, "")
+            fx = f" {GN}[FIXED]{R}" if is_fixed else ""
+            # Heat bar
+            heat = paradox / max(max_paradox, 1) if max_paradox > 0 else 0
+            n = max(1, int(heat * 8))
+            heat_c = GN if heat < 0.3 else (GD if heat < 0.6 else RD)
+            heat_bar = f"{heat_c}{"█" * n}{DM}{"░" * (8 - n)}{R}"
+            print(f"    {bg}%r{rid:<3d}{R} {c}{bel.value}{R} {heat_bar}  "
+                  f"π={paradox:<8}{fx}")
+    else:
+        print(f"    {GR}(none){R}")
+    print()
+
+    # Program
+    print(f"  {BD}Program:{R}")
+    for i, instr in enumerate(vm.program):
+        is_current = i == vm.pc
+        marker = f"{GD}▶{R}" if is_current else " "
+        ins_str = f"{WH}{BD}{instr}{R}" if is_current else str(instr)
+        print(f"  {marker}  {i}: {ins_str}")
+    print()
+
+    # Distribution counts
+    counts = "  ".join(f"{_B4_COLOR[v]}{v.value}{R}={d[v]}" for v in (B4.N, B4.T, B4.F, B4.B))
+    print(f"  {DM}distribution:{R} {counts}")
+    print(f"  {DM}halted:{R} {s['halted']}")
+    print()
+# ── Animation ─────────────────────────────────────────────────────────────
+
+def _animate_run(vm: ParaVM, steps: int | None = None) -> None:
+    """Run with live spinner, paradox counter, and progress bar."""
+    initial_steps = vm.steps
+    target_steps = initial_steps + steps if steps else None
+    spinner = cycle(SPINNER_BELNAP)
+    last_update = time.time()
+    update_interval = 0.08  # ~12.5 FPS
+
+    print(f'  {GR}▶ Running... (Ctrl+C to pause){R}')
+    print()
+
+    try:
+        while True:
+            if target_steps and vm.steps >= target_steps:
+                break
+            if vm.halted:
+                break
+
+            # Step in small batches for smoother animation
+            batch = 50
+            for _ in range(batch):
+                if not vm.step():
+                    break
+                if target_steps and vm.steps >= target_steps:
+                    break
+
+            now = time.time()
+            if now - last_update >= update_interval:
+                last_update = now
+                s = vm.snapshot()
+                sp = next(spinner)
+                elapsed = vm.steps - initial_steps
+                rate = s['steps'] / max(now - last_update + 0.001, 0.001)
+
+                # Build paradox progress bar
+                total_paradox = sum(s['dist'].values())
+                bar_width = 24
+                bar_parts = []
+                for v in (B4.N, B4.T, B4.F, B4.B):
+                    frac = s['dist'][v] / max(total_paradox, 1)
+                    seg = max(1, round(frac * bar_width)) if frac > 0 else 0
+                    if seg:
+                        bar_parts.append(f'{_B4_COLOR[v]}{_B4_BLOCK[v] * seg}{R}')
+                bar_inner = ''.join(bar_parts)
+                pad = bar_width - sum(1 for c in bar_inner if c in '░▒▓█')
+                if pad > 0:
+                    bar_inner += f'{GR}{"░" * pad}{R}'
+
+                # Build status line
+                status = (f'\r  {RD}{sp}{R} '
+                          f'{GN}steps{R}={s["steps"]:<8,} '
+                          f'{RD}π{R}={s["paradox"]:<10,} '
+                          f'{GD}active{R}={s["active"]} '
+                          f'{MG}halted{R}={str(s["halted"]):>5}  '
+                          f'[{bar_inner}]')
+                print(f'{CLR_LN}{status}', end='', flush=True)
+
+    except KeyboardInterrupt:
+        pass
+
+    print()
+    print(f'  {GR}⏸ Paused after {vm.steps:,} steps{R}')
+
+
+# ── Command dispatch ───────────────────────────────────────────────────────
+
+def do_command(cmd: str, vm: ParaVM) -> bool:
+    """Handle a :command. Returns False to quit."""
+    parts = cmd.split(None, 1)
+    verb = parts[0].lower()
+    arg = parts[1].strip() if len(parts) > 1 else ''
+
+    if verb in (':q', ':quit'):
+        return False
+
+    elif verb == ':help':
+        print(__doc__)
+
+    elif verb == ':regs':
+        show_regs(vm)
+
+    elif verb == ':prog':
+        show_prog(vm)
+
+    elif verb == ':snap':
+        show_snap(vm)
+
+    elif verb == ':dash':
+        show_dash(vm)
+
+    elif verb == ':step':
+        n = int(arg) if arg.isdigit() else 1
+        changed = set()
+        for _ in range(n):
+            if not vm.step():
+                print(f'  {GR}HALTED{R}')
+                break
+        show_regs(vm)
+        s = vm.snapshot()
+        d = s['dist']
+        bar = _dist_bar(d)
+        print(f'  {BD}summary:{R} steps={s["steps"]}  π={s["paradox"]}  pc={s["pc"]}  {bar}')
+
+    elif verb == ':run':
+        n = int(arg) if arg.isdigit() else None
+        _animate_run(vm, n)
+        show_regs(vm)
+        s = vm.snapshot()
+        d = s['dist']
+        bar = _dist_bar(d)
+        print(f'  {BD}summary:{R} steps={s["steps"]:,}  π={s["paradox"]:,}  pc={s["pc"]}  {bar}')
+        if vm.halted:
+            print(f'  {GR}HALTED{R}')
+
+    elif verb == ':load':
+        if not arg:
+            print(f'  {RD}usage: :load <file>{R}')
+        else:
+            path = Path(arg)
+            if not path.exists():
+                path = Path(__file__).parent / arg
+            if not path.exists():
+                print(f'  {RD}file not found: {arg}{R}')
+            else:
+                vm.load_file(path)
+                print(f'  {GN}loaded {path} — {len(vm.program)} instructions, '
+                      f'{len(vm.label_map)} labels{R}')
+                show_prog(vm)
+
+    elif verb == ':save':
+        if not arg:
+            print(f'  {RD}usage: :save <file>{R}')
+        else:
+            lines = []
+            label_by_idx = {}
+            for lbl, idx in vm.label_map.items():
+                label_by_idx.setdefault(idx, []).append(lbl)
+            for i, instr in enumerate(vm.program):
+                for lbl in label_by_idx.get(i, []):
+                    lines.append(f'{lbl}:')
+                lines.append(f'    {instr.op}  {" ".join(instr.args)}'.rstrip())
+            Path(arg).write_text('\n'.join(lines) + '\n')
+            print(f'  {GN}saved {len(lines)} lines → {arg}{R}')
+
+    elif verb == ':reset':
+        vm.reset()
+        print(f'  {GN}VM reset{R}')
+
+    else:
+        print(f'  {RD}unknown command: {verb}  (try :help){R}')
+
+    return True
+
+# ── Interactive instruction entry ──────────────────────────────────────────
+
+def do_instruction(line: str, vm: ParaVM) -> None:
+    """Parse and execute a ParaASM instruction with visual feedback."""
+    from para_vm import _LABEL_RE, _CTRL_FLOW
+
+    line_orig = line
+    line = line.split(';', 1)[0].strip()
+    if not line:
+        return
+
+    # Label definition
+    m = _LABEL_RE.match(line)
+    if m:
+        label = m.group(1)
+        vm.add_label(label)
+        rest = m.group(2).strip()
+        print(f'  {GR}⊢ label {label} → instruction {vm.label_map[label]}{R}')
+        if not rest:
+            return
+        line = rest
+
+    parts = line.split()
+    op = parts[0].upper()
+    args = parts[1:]
+    instr = Instr(op=op, args=args, source_line=line)
+
+    if op in _CTRL_FLOW:
+        vm.append_instr(instr)
+        idx = len(vm.program) - 1
+        print(f'  {GD}⊳ appended at [{idx}]{R}  (use :step or :run)')
+        return
+
+    # Snapshot belief state before execution
+    before = {rid: vm.belief_of(rid) for rid in vm.registers}
+    before.update({rid: B4.N for rid in vm.belief if rid not in before})
+
+    vm.append_instr(instr)
+    vm.exec_one(instr)
+
+    # Show changed registers with flash animation
+    changed = []
+    all_ids = set(vm.registers.keys()) | set(vm.belief.keys())
+    for rid in sorted(all_ids):
+        new_b = vm.belief_of(rid)
+        if new_b != before.get(rid, B4.N):
+            r = vm.registers[rid]
+            c = _B4_COLOR[new_b]
+            bg = _B4_BG.get(new_b, '')
+            fx = f' {GN}◈{R}' if r.is_fixed else ''
+            changed.append(f'{bg}%r{rid}={c}{new_b.value}{R} π={r.paradox_count}{fx}')
+
+    if changed:
+        print('  ' + '  '.join(changed))
+    else:
+        print(f'  {GR}(no change){R}')
+
+    # Brief Belnap distribution update
+    s = vm.snapshot()
+    d = s['dist']
+    bar = _dist_bar(d)
+    print(f'  {DM}π={s["paradox"]}  {bar}{R}')
+
+
+# ── Welcome Banner ─────────────────────────────────────────────────────────
+
+BANNER = f"""
+{CY}{BD}╔══════════════════════════════════════════════════╗{R}
+{CY}{BD}║{R}  {RD}⊙{R} {WH}PARACONSISTENT UNIVERSAL ENGINE{R} {RD}⊙{R}        {CY}{BD}║{R}
+{CY}{BD}║{R}  {GR}Para∥ REPL{R}  —  {DM}v0.5.69{R}                {CY}{BD}║{R}
+{CY}{BD}╠══════════════════════════════════════════════════╣{R}
+{CY}{BD}║{R}                                              {CY}{BD}║{R}
+{CY}{BD}║{R}    {GR}N{R}  {DM}(Neither){R}                        {CY}{BD}║{R}
+{CY}{BD}║{R}    {GN}T{R}  {DM}(True){R}    {RD}⊙{R}    {BLU}F{R}  {DM}(False){R}         {CY}{BD}║{R}
+{CY}{BD}║{R}    {RD}B{R}  {DM}(Both — dialetheic){R}              {CY}{BD}║{R}
+{CY}{BD}║{R}                                              {CY}{BD}║{R}
+{CY}{BD}║{R}  {GD}⊢ ⊢ ⊢  μ ∘ δ = id  ⊢ ⊢ ⊢{R}                {CY}{BD}║{R}
+{CY}{BD}║{R}                                              {CY}{BD}║{R}
+{CY}{BD}╠══════════════════════════════════════════════════╣{R}
+{CY}{BD}║{R}  {DM}type ParaASM instructions, or{R}              {CY}{BD}║{R}
+{CY}{BD}║{R}  {DM}:help for commands, Ctrl-D/:q to quit{R}     {CY}{BD}║{R}
+{CY}{BD}╚══════════════════════════════════════════════════╝{R}
+"""
+
+
+# ── Pulsing prompt ────────────────────────────────────────────────────────
+
+def _prompt_text(vm: ParaVM, elapsed: float = 0) -> str:
+    """Generate a pulsing REPL prompt with Belnap FOUR color cycling."""
+    s = vm.snapshot()
+    d = s['dist']
+    total = sum(d.values()) or 1
+
+    # Determine dominant Belnap value for this moment
+    dominant = max(B4, key=lambda v: d.get(v, 0))
+
+    # Color cycle based on time
+    phase = (elapsed * 0.5) % 4
+    colors = [GR, GN, BLU, RD]
+    prompt_color = colors[int(phase) % 4]
+
+    # Build prompt with Belnap distribution indicator
+    bars = ''.join(f'{_B4_COLOR[v]}{_B4_BLOCK[v]}{R}' for v in (B4.N, B4.T, B4.F, B4.B))
+    paradox_str = f'{s["paradox"]:,}' if s['paradox'] > 0 else '0'
+
+    return (f'{prompt_color}(∥){R} '
+            f'{DM}[{bars}]{R} '
+            f'{RD}π={paradox_str}{R} '
+            f'{GD}{s["steps"]}s{R} ')
+
+
+# ── Main REPL ──────────────────────────────────────────────────────────────
+
+def repl(init_file: str | None = None) -> None:
+    """Main REPL loop with dynamic prompt."""
+    vm = ParaVM()
+    print(BANNER)
+
+    # Initialize programs directory as default load path
+    prog_dir = Path(__file__).parent / 'programs'
+
+    if init_file:
+        path = Path(init_file)
+        if not path.exists():
+            path = prog_dir / init_file
+        if path.exists():
+            try:
+                vm.load_file(path)
+                print(f'  {GN}⌾ loaded {path.name}{R}')
+                show_prog(vm)
+            except Exception as e:
+                print(f'  {RD}✗ load error: {e}{R}')
+        else:
+            print(f'  {RD}✗ file not found: {init_file}{R}')
+    else:
+        # Auto-load the Frobenius loop for immediate demo
+        auto_path = prog_dir / 'frob_loop.asm'
+        if auto_path.exists():
+            try:
+                vm.load_file(auto_path)
+                print(f'  {GN}⌾ auto-loaded {auto_path.name}{R}')
+                print(f'  {DM}type :run to start the Frobenius loop, :dash for dashboard, :help for commands{R}')
+                show_prog(vm)
+            except Exception as e:
+                print(f'  {RD}✗ auto-load error: {e}{R}')
+
+    start_time = time.time()
+    pcount_prev = 0
+
+    while True:
+        s = vm.snapshot()
+        elapsed = time.time() - start_time
+
+        # Detect paradox increase for a subtle blink
+        pcount = s['paradox']
+        pdelta = pcount - pcount_prev
+        pcount_prev = pcount
+
+        prompt = _prompt_text(vm, elapsed)
+
+        try:
+            line = input(prompt).strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+
+        if not line:
+            continue
+
+        if line.startswith(':'):
+            if not do_command(line, vm):
+                break
+        else:
+            try:
+                do_instruction(line, vm)
+            except Exception as e:
+                print(f'  {RD}✗ error: {e}{R}')
+
+    # Farewell
+    elapsed = time.time() - start_time
+    s = vm.snapshot()
+    print(f'\n{GR}═══ SHUTDOWN ═══{R}')
+    print(f'  {GR}session{R}  {elapsed:.1f}s')
+    print(f'  {GR}steps{R}   {s["steps"]:,}')
+    print(f'  {GR}cycles{R}  {s["cycles"]:,}')
+    print(f'  {GR}paradox{R} {s["paradox"]:,}')
+    print(f'  {RD}⊙{R} {DM}Omnia sunt paraconsistentia{R} {RD}⊙{R}')
+    print()
+
+
+if __name__ == '__main__':
+    init = sys.argv[1] if len(sys.argv) > 1 else None
+    repl(init)

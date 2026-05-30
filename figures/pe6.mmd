@@ -1,0 +1,20 @@
+graph LR
+    subgraph "Belnap Shor Pipeline"
+        INIT["Initial state<br/>All registers N"] --> HAD["Hadamard layer<br/>|T⟩ → B<br/>Cost: n"]
+        HAD --> MODEXP["Modular exponentiation<br/>B propagates unchanged<br/>Cost: 0"]
+        MODEXP --> PATH1["B-bias measurement<br/>B preserved<br/>Cost: 2n"]
+        MODEXP --> PATH2["T-bias measurement<br/>B → T collapsed<br/>Cost: n"]
+    end
+
+    PATH1 --> RATIO["Coherence Ratio<br/>2 : 1<br/>(n-invariant)"]
+    PATH2 --> RATIO
+
+    RATIO --> BOTTLENECK["𐑿 → 𐑹 bottleneck<br/>Period extraction from<br/>B-only path: open"]
+    RATIO --> PROVEN["Proven: O₁ tier<br/>coherence_ratio_is_two<br/>∀ n > 0"]
+
+    style INIT fill:#3a3a4a,color:#fff
+    style HAD fill:#2d5a27,color:#fff
+    style MODEXP fill:#4a3a5a,color:#fff,stroke:#a7f
+    style RATIO fill:#2d3a5a,color:#fff,stroke:#4a9,stroke-width:2px
+    style BOTTLENECK fill:#5a2d27,color:#fff
+    style PROVEN fill:#2d5a2d,color:#fff

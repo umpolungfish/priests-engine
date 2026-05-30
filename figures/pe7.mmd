@@ -1,0 +1,19 @@
+graph TD
+    N["N (None)<br/>Initial Object<br/>∀ x: N → x (unique)"]
+    T["T (True)"]
+    F["F (False)"]
+    B["B (Both)<br/>Terminal Object<br/>∀ x: x → B (unique)"]
+
+    N --> T
+    N --> F
+    N --> B
+    T --> B
+    F --> B
+
+    T -.->|"incomparable"| F
+    F -.->|"incomparable"| T
+
+    style N fill:#5a2d27,color:#fff,stroke:#a55,stroke-width:3px
+    style B fill:#2d5a27,color:#fff,stroke:#4a9,stroke-width:3px
+    style T fill:#2d3a5a,color:#fff
+    style F fill:#5a4a2d,color:#fff

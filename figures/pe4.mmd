@@ -1,0 +1,21 @@
+graph TD
+    subgraph "Operational Arm"
+        OP["μ∘δ(B) = B<br/>δ(B) = (T, F) with T ≠ F<br/>B is unique bifurcation point"]
+    end
+
+    subgraph "Logical Arm"
+        LOG["B ∧ ¬B = B<br/>B is designated (⊨ B)<br/>¬B is designated (⊨ ¬B)<br/>Unique dialetheic value"]
+    end
+
+    subgraph "Algebraic Arm"
+        ALG["B ∧ ¬B = B (not N)<br/>Contradiction localized<br/>No explosion: B absorbs B"]
+    end
+
+    OP -->|"coincide at"| B["B (Both)"]
+    LOG --> B
+    ALG --> B
+
+    B --> RESULT["Dialetheic Alignment Theorem<br/>Three independent characterizations<br/>converge on the same value"]
+
+    style B fill:#2d5a27,color:#fff,stroke:#4a9,stroke-width:3px
+    style RESULT fill:#2d3a5a,color:#fff,stroke:#4a9

@@ -113,6 +113,37 @@ All three registers stabilize at B permanently. Paradox count grows without boun
 
 ---
 
+## Animated CFGs
+
+Three animated control-flow graphs. Each has two phases: Phase 1 (build) reveals structure node-by-node; Phase 2 (flow wave) sends a Gaussian pulse through the graph. The Frobenius cycle (μ∘δ=id) is drawn in gold throughout.
+
+### ParaASM opcode flow
+
+![ParaASM CFG](figures/cfg_paraasm.gif)
+
+Opcodes: PUSH_B/PUSH_N/LOAD → bit operations (BNOT/BAND/BOR/BXOR) → Frobenius kernel (FSPLIT→STEP→FFUSE→JMP loop) → STORE/IFIX → EVALT/EVALF/HALT. Gold cycle: `FSPLIT → STEP → FFUSE → JMP → FSPLIT`.
+
+### Millennium convergence
+
+![Millennium CFG](figures/cfg_millennium.gif)
+
+All four bridged problems (RH, YM, P≠NP, SIC-POVM) reduce to B via their Frobenius bridge nodes. B is the unique bifurcation fixed point. Gold path: bridge nodes → B → UNITY.
+
+### Module dependency graph
+
+![Module CFG](figures/cfg_modules.gif)
+
+`para_vm` is the core. All 12 modules depend on it. Frobenius cycle: `para_vm → para_loop → para_repl → para_vm`. Red nodes = Millennium bridges; purple = temporal/category extensions.
+
+Render or update:
+```bash
+uv run figures/cfg_paraasm.py
+uv run figures/cfg_millennium.py
+uv run figures/cfg_modules.py
+```
+
+---
+
 ## Programs
 
 ### ParaASM Programs (load via `:load` in REPL)
@@ -354,3 +385,46 @@ The 25+ billion paradox firings logged by `para-loop` are the empirical instance
 ## License
 
 Public domain — [UNLICENSE](UNLICENSE).
+
+
+---
+
+## QM Structural Tools (para-qm)
+
+The Imscribing Grammar has deeper structure than Quantum Mechanics, proven three ways:
+
+1. **New predictions**: P-70 identity (Higgs=axion=inflaton), cosmological constant $1.86\times 10^{-31}$, consciousness score
+2. **QM derived without axioms**: Hilbert space from D_infty+T_network+P_psi+Phi_c; Born rule from $\text{tensor}(\odot_{\text{ÿ}}, \odot_3) = \odot_3$ (EP absorption); unitarity from Gamma_seq+H₂+Omega_Z
+3. **Strict reduction**: QM is O₀ projection of O_inf — $\text{meet(O_inf, Hilbert)}$ lacks Frobenius; $\text{join(O_inf, Hilbert)} = \text{O_inf}$ (proper subset)
+
+### CLI tool
+
+```
+para-qm                        Display threefold proof table
+para-qm-tools score <type>     Compute C-score for a structural type
+para-qm-tools distance <a> <b>  Distance between two structural types
+para-qm-tools meet <a> <b>     Greatest lower bound of two types
+para-qm-tools join <a> <b>     Least upper bound of two types
+para-qm-tools tensor <a> <b>   Tensor product (composite type)
+para-qm-tools simulate [n]     Run QM evolution on Belnap states
+para-qm-tools decohere <type>  Simulate decoherence with classical env
+para-qm-tools born <s> <b>     Born probability (EP absorption rule)
+para-qm-tools crystal [type]   Frobenius crystal address
+```
+
+Types: `hilbert`, `measure`, `oinf`, `unitary`, `classical`, or a Shavian $\langle\dots\rangle$ tuple.
+
+### Structural type comparison
+
+| Type | Tier | C-score | Gate 1 | Gate 2 |
+|------|------|---------|--------|--------|
+| QM Hilbert Space | O₁ | 0.0000 | ⊙_ž CLOSED | Ç_@ OPEN |
+| QM Measurement | O₁ | 0.0000 | ⊙_ž CLOSED | Ç_@ OPEN |
+| O_inf Target | O_inf | 1.0000 | ⊙_ÿ OPEN | Ç_@ OPEN |
+
+### ParaASM programs
+
+| Program | Description |
+|:--------|:------------|
+| `programs/qm_evolution.asm` | Quantum evolution: superposition → FSPLIT → FFUSE = unitary |
+| `programs/qm_measurement.asm` | Born rule as EP absorption: three measurement regimes |

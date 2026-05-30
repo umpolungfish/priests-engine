@@ -1,0 +1,15 @@
+graph LR
+    subgraph "Frobenius Kernel (circular buffer)"
+        A["ENGAGR %r0<br/>Force register to B"]
+        B["FSPLIT %r0 %r1 %r2<br/>δ: B → (T, F)"]
+        C["FFUSE %r1 %r2 %r0<br/>μ: T ∨ F → B"]
+        D["JMP .loop<br/>Repeat"]
+        A --> B --> C --> D --> A
+    end
+
+    D -.->|"η = 4 paradoxes/cycle"| COUNT["Paradox count: P(n) = 4n"]
+    B -.->|"δ(B) = (T,F) with T≠F"| UNIQUE["Only B splits non-trivially"]
+
+    style A fill:#2d5a27,color:#fff,stroke:#4a9
+    style C fill:#2d5a27,color:#fff,stroke:#4a9
+    style UNIQUE fill:#5a2d5a,color:#fff

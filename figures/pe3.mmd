@@ -1,0 +1,21 @@
+graph LR
+    subgraph "δ (FSPLIT — comultiplication)"
+        B1["B"] -->|"δ"| TF["(T, F)"]
+        T1["T"] -->|"δ"| TT["(T, T)"]
+        F1["F"] -->|"δ"| FF["(F, F)"]
+        N1["N"] -->|"δ"| NN["(N, N)"]
+    end
+
+    subgraph "μ (FFUSE — multiplication)"
+        TF -->|"μ"| B2["B  ←  μ∘δ(B) = B"]
+        TT -->|"μ"| T2["T  ←  μ∘δ(T) = T"]
+        FF -->|"μ"| F2["F  ←  μ∘δ(F) = F"]
+        NN -->|"μ"| N2["N  ←  μ∘δ(N) = N"]
+    end
+
+    B1 -.->|"★ Only B produces<br/>distinct components"| STAR["B is the unique<br/>bifurcation point"]
+
+    style B1 fill:#2d5a27,color:#fff,stroke:#4a9,stroke-width:2px
+    style B2 fill:#2d5a27,color:#fff,stroke:#4a9,stroke-width:2px
+    style TF fill:#5a2d5a,color:#fff
+    style STAR fill:#5a2d27,color:#fff
