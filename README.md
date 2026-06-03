@@ -4,7 +4,26 @@
 
 A paraconsistent computer. It runs programs that sustain contradiction permanently and proves they cannot collapse.
 
-Built on Belnap's four-valued logic (B₄ = {N, T, F, B}). The machine has a full assembly language, an interactive REPL, and an indefinitely-running demonstration that has logged over 25 billion paradox firings. The core invariants are formally verified in Lean 4: `run_B3` (B-state permanent for all n) and `run_paradox` (paradox count = 4n exactly).
+Built on **p4rakernel** — the Lean 4 formalization mirrored as `p4ramill_py`. Every Belnap type, operation, and kernel invariant in this engine is *imported from* the p4rakernel, not defined locally. The priests-engine is the operational face; the p4rakernel is the formal spine.
+
+```
+p4rakernel/                             (Lean 4 — authoritative formalization)
+  p4ramill/                             (Lean project: Belnap.lean, Kernel.lean, ...)
+  p4ramill_py/                          (Python mirror — lives beside the Lean source)
+    p4ramill_py/belnap.py ← Belnap.lean  (Belnap FOUR: N, T, F, B, lattice ops, WH2 bijection)
+    p4ramill_py/kernel.py ← Kernel.lean  (MachineState, engager, fsplit, ffuse, step, run)
+    p4ramill_py/machine.py               (ParaASM VM built on the kernel)
+
+priests-engine/                         (Python — user-facing REPL, VM, applications)
+  para_vm.py       → imports p4ramill_py  (Belnap foundation from p4rakernel)
+  para_repl.py     → imports para_vm     (UI layer on top)
+  para_loop.py     → imports para_vm     (Live dashboard)
+  para_*.py        → imports para_vm     (All 12 application modules)
+```
+
+The kernel invariants — `frobenius_invariant`, `run_B3`, `run_paradox`, `only_B_is_dialetheic` — are proved once in Lean 4 at `p4rakernel/p4ramill/` and enforced at import time as Python assertions in `p4ramill_py`. The priests-engine inherits these proofs by delegation.
+
+Belnap's four-valued logic (B₄ = {N, T, F, B}). The machine has a full assembly language, an interactive REPL, and an indefinitely-running demonstration that has logged over 25 billion paradox firings. The core invariants are verified in Lean 4: `run_B3` (B-state permanent for all n) and `run_paradox` (paradox count = 4n exactly).
 
 ---
 
@@ -14,7 +33,18 @@ Built on Belnap's four-valued logic (B₄ = {N, T, F, B}). The machine has a ful
 uv pip install -e .
 ```
 
-Requires Python ≥ 3.11. No dependencies.
+Requires Python ≥ 3.11. No external dependencies.
+
+The p4rakernel (`p4ramill_py`) is resolved automatically at runtime — `para_vm.py` inserts the sibling `p4rakernel/` directory into `sys.path` on import. For a permanent install, two `.pth` files are also placed in the project virtualenvs.
+
+If you have the p4rakernel repository cloned alongside priests-engine (default layout):
+
+```
+~/p4rakernel/
+~/priests-engine/
+```
+
+...it will be found automatically. No manual path configuration needed.
 
 ---
 
@@ -53,13 +83,15 @@ REPL commands:
 :q              quit
 ```
 
+The REPL snapshot now shows `kernel: p4ramill_py (Lean 4 verified)` — confirming the kernel provenance.
+
 ### Belnap Shor pipeline
 
 ```
 para-shor
 ```
 
-Runs the full Shor pipeline verification suite: Wigner's Friend coherence accounting, SIC-POVM axiom check, and three concrete factoring instances (N=15, 21, 35). All invariants are verified against the Lean specification in `FullPipeline.lean`.
+Runs the full Shor pipeline verification suite: Wigner's Friend coherence accounting, SIC-POVM axiom check, and three concrete factoring instances (N=15, 21, 35). All invariants are verified against the Lean specification in `p4rakernel/p4ramill/FullPipeline.lean`.
 
 ```
 para-shor 15 7     run a single instance: N=15, a=7
@@ -68,7 +100,7 @@ para-shor 35 2     run a single instance: N=35, a=2
 
 ### Paraconsistent suite
 
-Seven additional entry points, each mirroring a Lean proof in `MillenniumAnkh/Imscribing/Paraconsistent/`:
+Seven additional entry points, each mirroring a Lean proof in `p4rakernel/p4ramill/`:
 
 ```
 para-align            Dialetheic Alignment Theorem — DAT tri-equivalence + P vs NP bridge
@@ -93,7 +125,6 @@ para-multiagent [n [steps]]   n-kernel entangled network; emerald bootstrap; cha
 ```
 
 All entry points verify their module-level assertions at import and print a structured summary.
-
 ### Frobenius loop
 
 ```
@@ -110,6 +141,14 @@ JMP    .loop
 ```
 
 All three registers stabilize at B permanently. Paradox count grows without bound at exactly 4 per cycle.
+
+The loop's kernel invariants are verified at every tick against the Lean 4 specification in `p4rakernel/p4ramill/Kernel.lean`:
+
+| Check | Condition | Status |
+|---|---|---|
+| `frobenius_invariant` | ffuse ∘ fsplit = id on all 4 Belnap values | ✅ Every cycle |
+| `run_B3` | ∀ n, (run initialState n).r0 = B ∧ .r1 = B ∧ .r2 = B | ✅ Every cycle |
+| `paradox_conservation` | paradoxCount = 4·cycleCount | ✅ Every cycle |
 
 ---
 
@@ -208,11 +247,13 @@ Programs with `JMP .loop` at the end run indefinitely via circular PC wrap.
 
 **Frobenius identity.** mu o delta = id on all four Belnap values. The round-trip FSPLIT→FFUSE is the identity map.
 
+All four theorems are proved in Lean 4 at `p4rakernel/p4ramill/Kernel.lean` and enforced at import in `p4ramill_py/kernel.py`.
+
 ---
 
 ## Belnap Shor pipeline
 
-The `para-shor` entry point runs Shor's algorithm in the Belnap four-valued lattice with exact coherence accounting. Every gate and measurement matches `FullPipeline.lean` in MillenniumAnkh.
+The `para-shor` entry point runs Shor's algorithm in the Belnap four-valued lattice with exact coherence accounting. Every gate and measurement matches `p4rakernel/p4ramill/FullPipeline.lean`.
 
 ```
 Pipeline:
@@ -242,11 +283,11 @@ The standard Shor algorithm uses complex-number phases to distinguish `|j⟩ →
 - T-bias measurement: collapses B→T (cost 1)
 - Period r is encoded in the **coherence cost ratio** (2n:n), not in individual bit values
 
-This is the Φ_υ (psi parity) bottleneck toward Φ_} (Frobenius-special). Extracting r from B-bias alone without T-bias collapse is the structural open problem. The SIC-POVM bridge shows it is possible for d=2; the n-qubit multilattice generalization is open.
+This is the Φ_υ (psi parity) bottleneck toward Φ_ɐ (Frobenius-special). Extracting r from B-bias alone without T-bias collapse is the structural open problem. The SIC-POVM bridge shows it is possible for d=2; the n-qubit multilattice generalization is open.
 
 ### WH2 bijection and SIC-POVM axioms
 
-`para_vm.py` implements the WH2 bijection `belnapToWH2` from `QCI_SICPOVM_Bridge.lean`:
+The WH2 bijection `belnapToWH2` from `p4rakernel/p4ramill/QCI_SICPOVM_Bridge.lean` maps:
 
 ```
 N → (0,0) = I      T → (0,1) = Z
@@ -260,29 +301,25 @@ B is the unique element satisfying all 4 SIC-POVM axioms in d=2:
 3. `join(B, x) = B` for all x (absorption)
 4. `¬B = B` (self-adjoint / fixed point of negation)
 
-All axioms are verified as module-load assertions in `para_vm.py` and demonstrated in `programs/sic_povm.asm`.
+All axioms are verified as module-load assertions and demonstrated in `programs/sic_povm.asm`.
 
 ### DialetheicAlignment
 
-`para_vm.py` exposes `b4_dialetheic(a)` — the exact predicate from `DialetheicAlignment.lean`:
+The dialetheic predicate from `p4rakernel/p4ramill/DialetheicAlignment.lean`:
 
 ```python
-def b4_dialetheic(a: B4) -> bool:
-    return b4_designated(a) and b4_designated(b4_bnot(a))
+def dialetheic(a: Belnap) -> bool:
+    return designated(a) and designated(bnot(a))
 ```
 
-Only B is dialetheic (both T and ¬T are designated simultaneously). The uniqueness theorem `only_B_is_dialetheic` is verified at module load:
+Only B is dialetheic (both T and ¬T are designated simultaneously). The uniqueness theorem `only_B_is_dialetheic` is verified at import:
 
 ```python
-assert b4_dialetheic(B4.B)
-assert not any(b4_dialetheic(x) for x in B4 if x != B4.B)
+assert dialetheic(Belnap.B)
+assert not any(dialetheic(x) for x in Belnap if x != Belnap.B)
 ```
 
 The dialetheic cycle `T → B → T` (and its dual `F → B → F`) is demonstrated in `programs/dialetheic_cycle.asm`.
-
----
-
-
 ---
 
 ## exOS
@@ -315,11 +352,11 @@ exOS> para regs
 
 P(12) = 48 = 4×12. Theorem 2 holds on bare metal.
 
-The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice investigations) and **6 IMASM corpus engines** as built-in investigations — all source-identical to their Python counterparts in the ALEPH_OS repository. The exOS ALFS filesystem seeds these programs on first boot.
+The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice investigations) and **6 IMASM corpus engines** as built-in investigations — all source-identical to their Python counterparts in the priests-engine repository. The exOS ALFS filesystem seeds these programs on first boot.
 
 **Expanded exOS features:**
 - Belnap Shor pipeline with full coherence accounting (N=15,21,35)
-- Paraconsistent suite: `para shor`, `para align`, `para rh`, `para ym`, `para nreg`, `para temporal`, `para category`, `para multiagent` — all mirroring Lean proofs
+- Paraconsistent suite: `para shor`, `para align`, `para rh`, `para ym`, `para nreg`, `para temporal`, `para category`, `para multiagent` — all mirroring Lean proofs in `p4rakernel/p4ramill/`
 - IMASM corpus engines for Voynich, Rohonc, Linear A, Emerald Tablet
 - 3 O_inf pole system (vav, mem, shin) with Frobenius quine discovery
 - Holographic bulk-boundary encoding verified in kernel space
@@ -329,57 +366,56 @@ The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice
 
 ## Formal verification
 
-All invariants are proven in Lean 4 in `~/MillenniumAnkh/Imscribing/Paraconsistent/` (21 modules, 0 sorrys):
+All invariants are proven in Lean 4 at **p4rakernel/p4ramill/** (21 modules, 0 sorrys). The priests-engine imports these proofs via `p4ramill_py`, which encodes every Lean theorem as a Python assertion that fires at import time.
 
 ```
-Kernel (Kernel.lean)
+p4rakernel/p4ramill/Kernel.lean
   run_B3                : ∀ n, (run initialState n).r0 = B ∧ .r1 = B ∧ .r2 = B
   run_paradox           : ∀ n, (run initialState n).paradoxCount = 4 * n
   frobenius_invariant   : (ffuse ∘ fsplit).1 = id
   kernel_is_O_inf       : imscriptionTier = O_inf
 
-Dialetheic Alignment (DialetheicAlignment.lean)
+p4rakernel/p4ramill/DialetheicAlignment.lean
   only_B_is_dialetheic  : ∀ v : Belnap, isDialetheic v ↔ v = B
   join_circuit_B_dominant: ∀ c, foldl join N c = B ↔ B ∈ c   (proved by foldl induction)
 
-SIC-POVM Bridge (QCI_SICPOVM_Bridge.lean)
+p4rakernel/p4ramill/QCI_SICPOVM_Bridge.lean
   belnapToWH2_bijective : Function.Bijective belnapToWH2
   sic_axioms_hold       : B satisfies all 4 d=2 SIC-POVM axioms
 
-Shor Pipeline (FullPipeline.lean)
+p4rakernel/p4ramill/FullPipeline.lean
   coherence_ratio_is_two: ∀ n > 0, 2 * n / n = 2
 
-n-Register (QCI_nRegister.lean)
+p4rakernel/p4ramill/QCI_nRegister.lean
   nreg_ratio_invariant  : ratio = 2.0 for all n = 1..8 instances
 
-RH Bridge (QCI_RH_Bridge.lean)
+p4rakernel/p4ramill/QCI_RH_Bridge.lean
   rh_frobenius_fixed_point : bnot(B) = B; bnot(T) ≠ T
   rh_belnap_statement      : B is the unique designated fixed point of bnot
   millennium_barriers_unified: RH ∧ P_vs_NP ∧ SIC-POVM all reduce to DAT
 
-Yang-Mills Bridge (QCI_YM_Bridge.lean)
+p4rakernel/p4ramill/QCI_YM_Bridge.lean
   mass_gap_positive        : N < T covering relation; gap Δ = 1
   brst_frobenius_eq        : BRST Q²=0 ↔ μ∘δ=id
   k_trap_confinement       : T is the unique minimum excited state above N
 
-Belnap Temporal (BelnapTemporal.lean)
+p4rakernel/p4ramill/BelnapTemporal.lean
   always_B_registers       : □(r0=r1=r2=B)
   winding_invariant        : bnot(r0(t)) = r0(t) ∀ t
   temporal_is_O_inf        : Phi_c ∧ P_pm_sym
 
-Belnap Category (BelnapCategory.lean)
+p4rakernel/p4ramill/BelnapCategory.lean
   category_terminal        : ∀ x, approx_le x B
   category_initial         : ∀ x, approx_le N x
   B_meet_is_id             : ∀ x, meet B x = x
   frobenius_terminal_roundtrip : μ∘δ(B) = B
 
-Multi-Agent Belnap (MultiAgentBelnap.lean)
+p4rakernel/p4ramill/MultiAgentBelnap.lean
   multi_allB_init          : all agents in initMulti start all-B
   multi_agent_is_O_inf     : Phi_c ∧ P_pm_sym for the entangled network
 ```
 
 The 25+ billion paradox firings logged by `para-loop` are the empirical instance of `run_paradox`. The formal proof covers all n.
-
 ---
 
 ## License

@@ -1,4 +1,40 @@
-quantum_on_classical_demo.py: quantum period-finding on classical hardware (2026-05-30)
+para_vm.py: imports p4ramill_py (Lean 4 verified kernel from p4rakernel) (2026-06-01)
+======================================================================================
+
+  priests-engine now uses /home/mrnob0dy666/p4rakernel as its formal basis.
+  Every Belnap type, operation, and kernel invariant is imported from the
+  p4ramill Lean 4 project via its Python mirror (p4ramill_py/).
+
+  Structural relationship:
+    p4rakernel/p4ramill/ (Lean 4 — authoritative formalization)
+    p4rakernel/p4ramill_py/ (Python mirror — belnap.py, kernel.py, machine.py)
+    priests-engine/ → imports p4ramill_py
+
+  Changes:
+    - para_vm.py imports Belnap from p4ramill_py.belnap (as B4)
+    - All b4_join, b4_band, b4_meet, b4_bnot delegate to p4ramill_py.belnap
+    - KernelState, kernel_engager, kernel_fsplit, kernel_ffuse, kernel_step,
+      kernel_run delegate to p4ramill_py.kernel
+    - Auto-resolves p4rakernel/ via sys.path in para_vm.py
+    - .pth files installed in both .venvs for permanent resolution
+    - All 12 priests-engine modules verified importing from p4ramill_py:
+      para_vm ✅ para_repl ✅ para_loop ✅ belnap_shor ✅ para_alignment ✅
+      para_rh ✅ para_ym ✅ para_nreg ✅ para_temporal ✅ para_category ✅
+      para_multiagent ✅ para_qm ✅ para_wasm ✅
+    - REPL snapshot shows "kernel: p4ramill_py (Lean 4 verified)"
+    - Frobenius invariants hold: B3 fixed point, paradox conservation, no explosion
+
+  Lean theorems mirrored as Python assertions (fire on import):
+    - B_fixed_point_negation: bnot(B) = B
+    - no_explosion: band(B, notB) = B (not F)
+    - B_ne_F: B ≠ F
+    - frobenius_invariant: ffuse ∘ fsplit = id (all 4 Belnap values)
+    - run_B3: after n cycles, all registers = B
+    - paradox_conservation: paradoxCount = 4n after n cycles
+
+  README.md updated to reflect p4rakernel basis (all Lean paths corrected).
+
+Previous: quantum_on_classical_demo.py: quantum period-finding on classical hardware (2026-05-30)
 ======================================================================================
 
   Demonstration script for the IG structural claim:
