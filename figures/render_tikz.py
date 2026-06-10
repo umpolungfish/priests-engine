@@ -218,7 +218,7 @@ FIGS[6] = r"""
   \node[N, minimum width=3.0cm, below=1.4cm of R, align=center] (BOT)
     {$\Phi_\}\to\Phi_\{$ bottleneck\\[2pt]\tiny period extraction open};
   \node[B, minimum width=3.0cm, right=1.2cm of R, align=center] (PRV)
-    {Proved: $O_1$ tier\\[2pt]\tiny \texttt{coherence\_ratio\_is\_two}\\$\forall\,n>0$};
+    {Proved: $O₁$ tier\\[2pt]\tiny \texttt{coherence\_ratio\_is\_two}\\$\forall\,n>0$};
 
   \draw[arr] (INIT) -- (HAD);
   \draw[arr] (HAD)  -- (MOD);

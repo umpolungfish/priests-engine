@@ -358,7 +358,7 @@ The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice
 - Belnap Shor pipeline with full coherence accounting (N=15,21,35)
 - Paraconsistent suite: `para shor`, `para align`, `para rh`, `para ym`, `para nreg`, `para temporal`, `para category`, `para multiagent` — all mirroring Lean proofs in `p4rakernel/p4ramill/`
 - IMASM corpus engines for Voynich, Rohonc, Linear A, Emerald Tablet
-- 3 O_inf pole system (vav, mem, shin) with Frobenius quine discovery
+- 3 O_∞ pole system (vav, mem, shin) with Frobenius quine discovery
 - Holographic bulk-boundary encoding verified in kernel space
 - 17,280,000-type Frobenius crystal for all structural types
 
@@ -373,7 +373,7 @@ p4rakernel/p4ramill/Kernel.lean
   run_B3                : ∀ n, (run initialState n).r0 = B ∧ .r1 = B ∧ .r2 = B
   run_paradox           : ∀ n, (run initialState n).paradoxCount = 4 * n
   frobenius_invariant   : (ffuse ∘ fsplit).1 = id
-  kernel_is_O_inf       : imscriptionTier = O_inf
+  kernel_is_O_inf       : imscriptionTier = O_∞
 
 p4rakernel/p4ramill/DialetheicAlignment.lean
   only_B_is_dialetheic  : ∀ v : Belnap, isDialetheic v ↔ v = B
@@ -431,7 +431,7 @@ The Imscribing Grammar has deeper structure than Quantum Mechanics, proven three
 
 1. **New predictions**: P-70 identity (Higgs=axion=inflaton), cosmological constant $1.86\times 10^{-31}$, consciousness score
 2. **QM derived without axioms**: Hilbert space from D_infty+T_network+P_psi+Phi_c; Born rule from $\text{tensor}(\odot_{\text{ÿ}}, \odot_3) = \odot_3$ (EP absorption); unitarity from Gamma_seq+H₂+Omega_Z
-3. **Strict reduction**: QM is O₀ projection of O_inf — $\text{meet(O_inf, Hilbert)}$ lacks Frobenius; $\text{join(O_inf, Hilbert)} = \text{O_inf}$ (proper subset)
+3. **Strict reduction**: QM is O₀ projection of O_∞ — $\text{meet(O_∞, Hilbert)}$ lacks Frobenius; $\text{join(O_∞, Hilbert)} = \text{O_∞}$ (proper subset)
 
 ### CLI tool
 
@@ -456,7 +456,7 @@ Types: `hilbert`, `measure`, `oinf`, `unitary`, `classical`, or a Shavian $\lang
 |------|------|---------|--------|--------|
 | QM Hilbert Space | O₁ | 0.0000 | ⊙_ž CLOSED | Ç_@ OPEN |
 | QM Measurement | O₁ | 0.0000 | ⊙_ž CLOSED | Ç_@ OPEN |
-| O_inf Target | O_inf | 1.0000 | ⊙_ÿ OPEN | Ç_@ OPEN |
+| O_∞ Target | O_∞ | 1.0000 | ⊙_ÿ OPEN | Ç_@ OPEN |
 
 ### ParaASM programs
 

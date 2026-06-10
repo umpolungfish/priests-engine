@@ -1,3 +1,7 @@
+SNS_PRIME.md notation migration: O_inf→O_∞, O_0→O₀, O_1→O₁, O_2→O₂ (12 files)
+
+---
+
 para_vm.py: imports p4ramill_py (Lean 4 verified kernel from p4rakernel) (2026-06-01)
 ======================================================================================
 
@@ -39,7 +43,7 @@ Previous: quantum_on_classical_demo.py: quantum period-finding on classical hard
 
   Demonstration script for the IG structural claim:
   a classical x86_64 CPU running Belnap lattice ops computes at structural
-  type O_inf — the same type as a quantum system — with Lean certification.
+  type O_∞ — the same type as a quantum system — with Lean certification.
 
   Imports belnap_shor.py (find_period, coherence_costs) from priests-engine.
   Falls back to canonical N=15, a=7 values when engine not on path.

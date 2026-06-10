@@ -91,7 +91,7 @@ def multi_channel_join_stable(n: int = 4, steps: int = 8) -> bool:
 
 
 def multi_agent_is_O_inf() -> bool:
-    """The entangled network is O_inf: Phi_c ∧ P_pm_sym at the agent level."""
+    """The entangled network is O_∞: Phi_c ∧ P_pm_sym at the agent level."""
     phi_c = b4_bnot(B4.B) == B4.B and b4_designated(B4.B)
     frobenius = kernel_ffuse(*kernel_fsplit(B4.B)[:2])[0] == B4.B
     return phi_c and frobenius

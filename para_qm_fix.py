@@ -24,7 +24,7 @@ def meet(st1: StructuralType, st2: StructuralType) -> StructuralType:
     """Greatest lower bound (shared structural floor).
 
     Takes the lesser of each primitive value on the ordinal scale.
-    meet(O_inf, Hilbert) = quantum-like type (no Frobenius, no self-modeling)
+    meet(O_∞, Hilbert) = quantum-like type (no Frobenius, no self-modeling)
     """
     cats = ['D','T','R','P','F','K','G','Gamma','Phi','H','S','Omega']
     prims1 = st1.to_tuple()
@@ -37,7 +37,7 @@ def join(st1: StructuralType, st2: StructuralType) -> StructuralType:
     """Least upper bound (minimal ceiling containing both).
 
     Takes the greater of each primitive value.
-    join(O_inf, Hilbert) = O_inf (Hilbert is a proper subset)
+    join(O_∞, Hilbert) = O_∞ (Hilbert is a proper subset)
     """
     cats = ['D','T','R','P','F','K','G','Gamma','Phi','H','S','Omega']
     prims1 = st1.to_tuple()

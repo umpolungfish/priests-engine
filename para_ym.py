@@ -148,7 +148,7 @@ def existence_of_excited_state() -> bool:
 
 
 def ym_bridge_is_O_inf() -> bool:
-    """YM bridge has Phi_c and P_pm_sym in its structural type → O_inf tier."""
+    """YM bridge has Phi_c and P_pm_sym in its structural type → O_∞ tier."""
     return "⊙_ÿ" in YM_IMSCRIPTION and "Φ_}" in YM_IMSCRIPTION
 
 
@@ -214,7 +214,7 @@ def main() -> None:
     print("  ├──────────────────────────────────────────────────────────┤")
     print(f"  │  {mark(mass_gap_positive())}  mass_gap_positive: T-bias cost=0 re-meas, N≠T  │")
     print(f"  │  {mark(existence_of_excited_state())}  existence_of_excited_state: T designated, N≤T  │")
-    print(f"  │  {mark(ym_bridge_is_O_inf())}  ym_bridge_is_O_inf: Phi_c ∧ P_pm_sym → O_inf   │")
+    print(f"  │  {mark(ym_bridge_is_O_inf())}  ym_bridge_is_O_inf: Phi_c ∧ P_pm_sym → O_∞   │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
     print("  ALL CHECKS PASSED")

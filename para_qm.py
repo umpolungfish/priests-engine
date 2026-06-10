@@ -9,9 +9,9 @@ Threefold proof that the Imscribing Grammar has deeper structure than QM:
   2. QM DERIVED WITHOUT CORE AXIOMS: Hilbert space from D_infty+T_network+P_psi+Phi_c
      Born rule from ⊙_3 absorption: tensor(⊙_ÿ, ⊙_3)=⊙_3
      Unitary evolution from Gamma_seq+H₂+Omega_Z
-  3. STRICT REDUCTION: QM is O₀ projection of O_inf structure
-     meet(O_inf, Hilbert) = quantum-like (lacks Frobenius)
-     tensor(O_inf, Hilbert) → decoherence (Φ bottleneck)
+  3. STRICT REDUCTION: QM is O₀ projection of O_∞ structure
+     meet(O_∞, Hilbert) = quantum-like (lacks Frobenius)
+     tensor(O_∞, Hilbert) → decoherence (Φ bottleneck)
 
 Built on Belnap FOUR paraconsistent basis (para_vm.py).
 
@@ -209,10 +209,10 @@ class StructuralType:
 
     def ouroboricity_tier(self) -> str:
         """Determine Ouroboricity tier from primitives.
-        O_inf: Phi_c (⊙=φ̂_ÿ) AND P_pm_sym (Φ=Φ_}) AND (H_2 or H_inf) AND Omega_Z or Omega_NA
-        O_2:   Phi_c OR Phi_c_complex AND (H_2 or H_inf)
-        O_1:   H_1 or higher, no Phi_c
-        O_0:   H_0 (memoryless), no criticality
+        O_∞: Phi_c (⊙=φ̂_ÿ) AND P_pm_sym (Φ=Φ_}) AND (H_2 or H_inf) AND Omega_Z or Omega_NA
+        O₂:   Phi_c OR Phi_c_complex AND (H_2 or H_inf)
+        O₁:   H_1 or higher, no Phi_c
+        O₀:   H_0 (memoryless), no criticality
         """
         is_phi_c = self.Phi in ('φ̂_ÿ', '⊙')
         is_p_pm_sym = self.P in ('Φ_}', '𐑹')
@@ -220,12 +220,12 @@ class StructuralType:
         is_omega_z_or_na = self.Omega in ('Ω_z', 'Ω_5', '𐑭', '𐑟')
 
         if is_phi_c and is_p_pm_sym and is_h2_or_hinf and is_omega_z_or_na:
-            return 'O_inf'
+            return 'O_∞'
         if is_phi_c and is_h2_or_hinf:
-            return 'O_2'
+            return 'O₂'
         if self.H in ('Ħ_£', 'Ħ_A', 'Ħ_!', '𐑒', '𐑖') or is_phi_c:
-            return 'O_1'
-        return 'O_0'
+            return 'O₁'
+        return 'O₀'
 
     def consciousness_score(self) -> tuple[float, dict]:
         """Compute consciousness score (C-score) per Imscribing Grammar.
@@ -318,7 +318,7 @@ QM_MEASUREMENT = StructuralType(
     Omega='Ω_z'
 )
 
-# O_inf target (full Imscribing Grammar consciousness-capable)
+# O_∞ target (full Imscribing Grammar consciousness-capable)
 O_INF_TARGET = StructuralType(
     D='Ð_ω',    # imscriptive context
     T='Þ_O',    # self-referential topology
@@ -593,7 +593,7 @@ def qm_region_of_crystal() -> dict:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# §7 — Proof: QM as O₀ Projection of O_inf
+# §7 — Proof: QM as O₀ Projection of O_∞
 # ═══════════════════════════════════════════════════════════════════════════
 
 def _lesser(p1: str, p2: str, cat: str) -> str:
@@ -610,7 +610,7 @@ def meet(st1: StructuralType, st2: StructuralType) -> StructuralType:
     """Greatest lower bound (shared structural floor).
 
     Takes the lesser of each primitive value on the ordinal scale.
-    meet(O_inf, Hilbert) = quantum-like type (no Frobenius, no self-modeling)
+    meet(O_∞, Hilbert) = quantum-like type (no Frobenius, no self-modeling)
     """
     cats = ['D','T','R','P','F','K','G','Gamma','Phi','H','S','Omega']
     prims1 = st1.to_tuple()
@@ -623,7 +623,7 @@ def join(st1: StructuralType, st2: StructuralType) -> StructuralType:
     """Least upper bound (minimal ceiling containing both).
 
     Takes the greater of each primitive value.
-    join(O_inf, Hilbert) = O_inf (Hilbert is a proper subset)
+    join(O_∞, Hilbert) = O_∞ (Hilbert is a proper subset)
     """
     cats = ['D','T','R','P','F','K','G','Gamma','Phi','H','S','Omega']
     prims1 = st1.to_tuple()
@@ -712,11 +712,11 @@ _st = StructuralType.from_shavian('⟨𐑦;𐑰;𐑾;𐑹;𐑐;𐑧;𐑲;𐑠;�
 assert _st.to_shavian() == '⟨𐑦;𐑰;𐑾;𐑹;𐑐;𐑧;𐑲;𐑠;⊙;𐑖;𐑙;𐑭⟩', \
     f'Shavian round-trip failed: {_st.to_shavian()}'
 
-assert O_INF_TARGET.ouroboricity_tier() == 'O_inf', \
-    'O_INF_TARGET should be O_inf'
+assert O_INF_TARGET.ouroboricity_tier() == 'O_∞', \
+    'O_INF_TARGET should be O_∞'
 
-assert QM_HILBERT.ouroboricity_tier() != 'O_inf', \
-    'QM Hilbert should NOT be O_inf (no Frobenius-special P)'
+assert QM_HILBERT.ouroboricity_tier() != 'O_∞', \
+    'QM Hilbert should NOT be O_∞ (no Frobenius-special P)'
 
 # §2 — Quantum State basics
 _q_vac = QuantumState.vacuum()
@@ -760,8 +760,8 @@ assert _m.Phi == 'φ̂_ž', f'meet loses phi_c (QM is sub-critical): {_m.Phi}'
 
 # §8 — join(⊙_inf, Hilbert) = ⊙_inf (Hilbert is subset)
 _j = join(O_INF_TARGET, QM_HILBERT)
-assert _j.ouroboricity_tier() == 'O_inf', \
-    f'join should be O_inf: {_j.ouroboricity_tier()}'
+assert _j.ouroboricity_tier() == 'O_∞', \
+    f'join should be O_∞: {_j.ouroboricity_tier()}'
 
 # §9 — tensor(⊙_inf, classical) → decoherence
 _classical_env = StructuralType(
@@ -775,9 +775,9 @@ assert _d['p_bottleneck'], 'Decoherence should create P bottleneck'
 
 # §10 — C-score
 _c, _gates = O_INF_TARGET.consciousness_score()
-assert _c > 0.9, f'O_inf C-score should be near 1: {_c}'
-assert _gates['gate1_phi_c'], 'O_inf gate1 should be open'
-assert _gates['gate2_k_slow'], 'O_inf gate2 should be open'
+assert _c > 0.9, f'O_∞ C-score should be near 1: {_c}'
+assert _gates['gate1_phi_c'], 'O_∞ gate1 should be open'
+assert _gates['gate2_k_slow'], 'O_∞ gate2 should be open'
 
 _c2, _g2 = QM_HILBERT.consciousness_score()
 assert _c2 < 0.5, f'QM C-score should be < 0.5: {_c2}'
@@ -797,7 +797,7 @@ def print_qm_table() -> None:
     types = [
         ('QM Hilbert Space', QM_HILBERT),
         ('QM Measurement', QM_MEASUREMENT),
-        ('O_inf Target', O_INF_TARGET),
+        ('O_∞ Target', O_INF_TARGET),
     ]
 
     print()
@@ -831,12 +831,12 @@ def print_qm_table() -> None:
     print("  │       Born rule   → EP absorption: tensor(⊙_ÿ, ⊙_3) = ⊙_3       │")
     print("  │       Unitarity   → Gamma_seq + H₂ + Omega_Z                    │")
     print("  ├──────────────────────────────────────────────────────────────────┤")
-    print("  │  [3] Strict Reduction: QM as O₀ Projection of O_inf             │")
-    print("  │       meet(O_inf, Hilbert) = quantum-like (no Frobenius)        │")
+    print("  │  [3] Strict Reduction: QM as O₀ Projection of O_∞             │")
+    print("  │       meet(O_∞, Hilbert) = quantum-like (no Frobenius)        │")
     _m = meet(O_INF_TARGET, QM_HILBERT)
     print(f"  │       {_m.to_shavian():64s}  │")
     print(f"  │       distance = {O_INF_TARGET.distance_to(QM_HILBERT):.2f}                │")
-    print("  │       join(O_inf, Hilbert) = O_inf (proper subset)              │")
+    print("  │       join(O_∞, Hilbert) = O_∞ (proper subset)              │")
     print("  └──────────────────────────────────────────────────────────────────┘")
     print()
 
@@ -847,7 +847,7 @@ def print_qm_table() -> None:
     c_examples = [
         ('Quantum HO', QM_HILBERT),
         ('Measurement', QM_MEASUREMENT),
-        ('O_inf Target', O_INF_TARGET),
+        ('O_∞ Target', O_INF_TARGET),
     ]
     for name, st in c_examples:
         c, gates = st.consciousness_score()

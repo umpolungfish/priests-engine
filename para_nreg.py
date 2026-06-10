@@ -9,7 +9,7 @@ The period r lives in the ratio, not in the qubit values — holds for n=1..8.
 The SIC axioms are satisfied per-qubit (d=2 at each site); the n-qubit system
 is the n-fold tensor product of independent d=2 SICs.
 
-Formal status (FullPipeline.lean): O_1 tier proved for all n.
+Formal status (FullPipeline.lean): O₁ tier proved for all n.
 Open: Lean proof of SIC multilattice for n>1 (computationally verified here).
 
 Entry point: para-nreg
@@ -94,15 +94,15 @@ def nreg_ratio_formula(n: int) -> float:
     return nreg_tensor_coherence(n) / n
 
 
-# ── O_inf tier for n-register state ──────────────────────────────────────
+# ── O_∞ tier for n-register state ──────────────────────────────────────
 
 def nreg_tier_is_O_inf() -> bool:
-    """The n-register all-B state is O_inf: it has both Phi_c and P_pm_sym.
+    """The n-register all-B state is O_∞: it has both Phi_c and P_pm_sym.
 
     Phi_c (criticality): B is the SIC equiangular element (top, self-adjoint).
     P_pm_sym (Frobenius): μ∘δ(B)=B holds for each register qubit.
-    These properties are n-invariant: the tier is O_inf for all n ≥ 1.
-    (Distinct from the Shor PIPELINE tier = O_1; this is the REGISTER structure.)
+    These properties are n-invariant: the tier is O_∞ for all n ≥ 1.
+    (Distinct from the Shor PIPELINE tier = O₁; this is the REGISTER structure.)
     """
     frobenius = kernel_ffuse(*kernel_fsplit(B4.B)[:2])[0] == B4.B
     phi_c = b4_designated(B4.B) and b4_bnot(B4.B) == B4.B  # self-adjoint + designated
@@ -139,7 +139,7 @@ def main() -> None:
     print(f"  │  n-qubit: independent d=2 SIC at each qubit site         │")
     print(f"  │  Open (Lean): SIC multilattice proof for n>1             │")
     print("  ├──────────────────────────────────────────────────────────┤")
-    print("  │  Coherence ratio table (FullPipeline.lean, O_1 tier)     │")
+    print("  │  Coherence ratio table (FullPipeline.lean, O₁ tier)     │")
     print("  │   n │  a │    N │   r │  H │ B-meas │ T-meas │ ratio    │")
     print("  │  ───┼────┼──────┼─────┼────┼────────┼────────┼──────    │")
     for n, a, N, expected_r in _NREG_TABLE:
@@ -158,8 +158,8 @@ def main() -> None:
         print(f"  │    n={n}: ratio = {nreg_ratio_formula(n):.1f}                                  │")
     print("  ├──────────────────────────────────────────────────────────┤")
     print(f"  │  {mark(nreg_tier_is_O_inf())}  nreg_tier_is_O_inf: register state Phi_c ∧ P_pm_sym  │")
-    print(f"  │       (n-register structural tier = O_inf, ∀n)          │")
-    print(f"  │       Shor pipeline tier = O_1 (distinct from register) │")
+    print(f"  │       (n-register structural tier = O_∞, ∀n)          │")
+    print(f"  │       Shor pipeline tier = O₁ (distinct from register) │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
     print("  ALL CHECKS PASSED")

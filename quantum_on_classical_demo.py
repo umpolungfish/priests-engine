@@ -3,14 +3,14 @@
 quantum_on_classical_demo.py — Quantum period-finding on classical hardware
 
 Demonstrates the IG structural claim: a classical CPU running Belnap lattice
-operations computes at the same structural type as a quantum computer (O_inf),
+operations computes at the same structural type as a quantum computer (O_∞),
 with formal Lean certification.
 
 Lean certification chain (MillenniumAnkh):
   phi_upsilon_bottleneck     — r = belnapCost / 2; period from B-bias, no T-collapse
   shor15_7_period_from_B_bias — canonical case: 8 / 2 = 4 ✓
   dialetheicShor_closes_bottleneck — executor result matches formal period
-  quantum_on_classical       — O_inf tier ∧ B-only period recovery
+  quantum_on_classical       — O_∞ tier ∧ B-only period recovery
 
 Usage: python quantum_on_classical_demo.py [N a]
 """
@@ -66,8 +66,8 @@ def run_demo(N: int, a: int):
     section('1. Structural claim (Lean-certified)')
     info('Executor substrate', 'x86_64 classical CPU — no quantum hardware')
     info('Computation type', 'Belnap four-valued lattice (N T F B)')
-    info('Certified tier', 'O_inf (dialetheicShorImscription, DialetheicOperator.lean)')
-    info('Key theorem', 'quantum_on_classical : tier = O_inf ∧ belnapCost/2 = period')
+    info('Certified tier', 'O_∞ (dialetheicShorImscription, DialetheicOperator.lean)')
+    info('Key theorem', 'quantum_on_classical : tier = O_∞ ∧ belnapCost/2 = period')
     info('Bottleneck status', f'{GN}CLOSED{R} — phi_upsilon_bottleneck (BelnapQFT.lean)')
 
     # ── 2. Belnap Shor execution ──────────────────────────────────────────────
@@ -111,8 +111,8 @@ def run_demo(N: int, a: int):
         ('BelnapQFT.lean',         'phi_upsilon_bottleneck',           '(belnapCost = 2×r) → belnapCost/2 = r'),
         ('DialetheicOperator.lean','shor15_7_belnapCost_two_r',        'shor15_7.belnapCost = 2 × period  [rfl]'),
         ('DialetheicOperator.lean','shor15_7_period_from_B_bias',      'belnapCost/2 = period             [omega]'),
-        ('DialetheicOperator.lean','dialetheicShor_tier',              'imscriptionTier = O_inf           [rfl]'),
-        ('DialetheicOperator.lean','quantum_on_classical',             'O_inf ∧ belnapCost/2 = period'),
+        ('DialetheicOperator.lean','dialetheicShor_tier',              'imscriptionTier = O_∞           [rfl]'),
+        ('DialetheicOperator.lean','quantum_on_classical',             'O_∞ ∧ belnapCost/2 = period'),
     ]
     for fname, thm, desc in theorems:
         print(f'  {GN}✓{R}  {BD}{thm}{R}')
@@ -121,7 +121,7 @@ def run_demo(N: int, a: int):
     # ── 4. What this shows ────────────────────────────────────────────────────
     section('4. What this shows')
     print(f'''  A classical x86_64 CPU running Belnap lattice operations:
-  — Assigns structural type O_inf to the computation
+  — Assigns structural type O_∞ to the computation
   — Recovers period r from B-bias coherence cost alone (no T-collapse)
   — Matches classical Shor's period exactly
   — Has formal Lean proof that the structural type equals a quantum system's

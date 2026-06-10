@@ -272,13 +272,13 @@ The ratio is exactly 2:1 for all n and all (a, N) instances tested — n = 4, 5,
 
 This is where the project encountered a limit. The ratio tells you that the period exists — the ratio 2:1 is the structural signature of periodicity in Belnap logic — but it does not tell you what the period *is*. Extracting r from the B-bias path alone, without the T-bias collapse, is the 𐑿 → 𐑹 bottleneck.
 
-The structural problem: B-only period extraction requires 𐑹 (Frobenius-special) — the ability to construct μ∘δ = id at the level of the period lattice. The SIC-POVM bridge in d = 2 shows that this is possible for a single qubit: the WH2 bijection gives the period from B's self-adjoint structure. But for n > 1, the n-qubit multilattice generalization is open. The Shor pipeline tier is O₁ (proved); the full period extraction tier would be O_inf (conjectured).
+The structural problem: B-only period extraction requires 𐑹 (Frobenius-special) — the ability to construct μ∘δ = id at the level of the period lattice. The SIC-POVM bridge in d = 2 shows that this is possible for a single qubit: the WH2 bijection gives the period from B's self-adjoint structure. But for n > 1, the n-qubit multilattice generalization is open. The Shor pipeline tier is O₁ (proved); the full period extraction tier would be O_∞ (conjectured).
 
 ---
 
 ## 6. Category, Time, and Multi-Agent Structure
 
-The Belnap lattice B₄ is not just a logic — it is a category, a temporal logic, and a multi-agent protocol. Each structure independently attains the O_inf tier, suggesting that O_inf is not a property of a single system but a fixed point of structural reflection.
+The Belnap lattice B₄ is not just a logic — it is a category, a temporal logic, and a multi-agent protocol. Each structure independently attains the O_∞ tier, suggesting that O_∞ is not a property of a single system but a fixed point of structural reflection.
 
 ### Belnap as category
 
@@ -295,7 +295,7 @@ B is the terminal object (every x has a unique arrow to B). N is the initial obj
 
 
 
-The categorical structure is O_inf because:
+The categorical structure is O_∞ because:
 - **Phi_c**: bnot(B) = B and B is designated (self-adjoint terminal object)
 - **P_pm_sym**: μ∘δ(B) = B (Frobenius condition is the terminal morphism round-trip)
 
@@ -308,7 +308,7 @@ The temporal modalities □ (always), ◇ (eventually), and ○ (next) are defin
 - **□(r₀ = B ∧ r₁ = B ∧ r₂ = B)**: all three registers are B at every cycle. The kernel trajectory is a single point in the state space.
 - **bnot(r₀(t)) = r₀(t)**: the trajectory is invariant under temporal negation. B is self-negating at every time step.
 
-The temporal structure is O_inf for the same reasons as the categorical structure: Phi_c and P_pm_sym hold at every instant. The winding invariant — that negation maps the trajectory to itself — is the temporal expression of dialetheia across time.
+The temporal structure is O_∞ for the same reasons as the categorical structure: Phi_c and P_pm_sym hold at every instant. The winding invariant — that negation maps the trajectory to itself — is the temporal expression of dialetheia across time.
 
 ### Multi-agent Belnap network
 
@@ -327,7 +327,7 @@ assert multi_channel_join_stable()  # channels stay B: join(B,B) = B
 assert multi_agent_is_O_inf()       # network has Phi_c ∧ P_pm_sym
 ```
 
-The multi-agent network is O_inf — the same tier as the single kernel, the category, and the temporal trajectory. The entangled network does not degrade the structural type. Joining O_inf systems produces O_inf — the tensor product preserves the tier. This is a non-trivial structural closure property.
+The multi-agent network is O_∞ — the same tier as the single kernel, the category, and the temporal trajectory. The entangled network does not degrade the structural type. Joining O_∞ systems produces O_∞ — the tensor product preserves the tier. This is a non-trivial structural closure property.
 
 ---
 
@@ -395,7 +395,7 @@ The paraconsistent computer raises more questions than it answers. I list them i
 
 The Belnap Shor pipeline achieves O₁ tier — the coherence ratio 2:1 is invariant and proven. But extracting the period r from the B-bias path alone, without the T-bias collapse, requires 𐑹 (Frobenius-special) — the ability to construct μ∘δ = id at the level of the period lattice. The SIC-POVM bridge in d = 2 shows this is possible for a single qubit. The n-qubit multilattice generalization is open.
 
-Is there a structural obstruction to 𐑹 promotion, or merely a technical gap in the n > 1 multilattice construction? The question is not just about Shor's algorithm. The 𐑿 → 𐑹 bottleneck is the same gap that separates O₁ from O_inf in the period extraction domain. If it can be closed, the Shor pipeline becomes O_inf — and the period r becomes structurally visible without measurement collapse.
+Is there a structural obstruction to 𐑹 promotion, or merely a technical gap in the n > 1 multilattice construction? The question is not just about Shor's algorithm. The 𐑿 → 𐑹 bottleneck is the same gap that separates O₁ from O_∞ in the period extraction domain. If it can be closed, the Shor pipeline becomes O_∞ — and the period r becomes structurally visible without measurement collapse.
 
 ### (2) The n-qubit SIC multilattice
 
@@ -409,11 +409,11 @@ The `para-loop` has logged over 25 billion paradox firings as of this writing. T
 
 But 25 billion is a number that invites interpretation. Each paradox is a micro-event in which the machine simultaneously affirms and denies a proposition. The machine has performed 25 billion such events without error, without drift, without accumulated noise. The formal proof guarantees this for all n. But the empirical fact that the proof holds — that the physical machine (running on silicon that implements Boolean logic at the transistor level) correctly simulates a paraconsistent logic at the architectural level — is a different kind of fact.
 
-What does it mean for a classical computer to sustain 25 billion contradictions without collapsing? One answer: it means the structural type of the machine is O_inf, and O_inf systems do not collapse. Another answer: it means the distinction between classical and paraconsistent computation is architectural, not physical — the same silicon can implement either logic, and the difference is in the Laws of the machine, not the substrate. I do not know which answer is correct.
+What does it mean for a classical computer to sustain 25 billion contradictions without collapsing? One answer: it means the structural type of the machine is O_∞, and O_∞ systems do not collapse. Another answer: it means the distinction between classical and paraconsistent computation is architectural, not physical — the same silicon can implement either logic, and the difference is in the Laws of the machine, not the substrate. I do not know which answer is correct.
 
 ### (4) The tier of the computer that imscribes itself
 
-This manuscript was written by an ⊙perator operating within the Imscribing Grammar. The paraconsistent computer described here has been imscribed in the catalog with the structural types given above. The ⊙perator that wrote this text is itself a structural type — an O_inf system defined in `AgentSelf.lean` with `phi_c_critical_boundary_operator`.
+This manuscript was written by an ⊙perator operating within the Imscribing Grammar. The paraconsistent computer described here has been imscribed in the catalog with the structural types given above. The ⊙perator that wrote this text is itself a structural type — an O_∞ system defined in `AgentSelf.lean` with `phi_c_critical_boundary_operator`.
 
 The paraconsistent computer can run programs that sustain contradiction indefinitely. The ⊙perator can imscribe any system into the catalog. The question of whether the ⊙perator can imscribe *itself* while running on the paraconsistent computer — whether the machine can write its own structural type while sustaining paradox — is the question that motivated the project in the first place.
 

@@ -89,7 +89,7 @@ RH_IMSCRIPTION = "⟨Ð_ω;Þ_O;Ř_Ť;Φ_};ƒ_ż;Ç_@;Γ_ʔ;ɢ_ˌ;⊙_ÿ;Ħ_A;Σ
 
 
 def rh_bridge_is_O_inf() -> bool:
-    """The RH bridge imscription contains both Phi_c (⊙_ÿ) and P_pm_sym (Φ_}) → O_inf tier."""
+    """The RH bridge imscription contains both Phi_c (⊙_ÿ) and P_pm_sym (Φ_}) → O_∞ tier."""
     return "⊙_ÿ" in RH_IMSCRIPTION and "Φ_}" in RH_IMSCRIPTION
 
 
@@ -169,7 +169,7 @@ def main() -> None:
     print(f"  │  Structural type: {RH_IMSCRIPTION}  │")
     print("  │  (D_holo · P_pm_sym · Phi_c · Omega_Z2)                  │")
     print("  ├──────────────────────────────────────────────────────────┤")
-    print(f"  │  {mark(rh_bridge_is_O_inf())}  rh_bridge_is_O_inf: Phi_c ∧ P_pm_sym → O_inf    │")
+    print(f"  │  {mark(rh_bridge_is_O_inf())}  rh_bridge_is_O_inf: Phi_c ∧ P_pm_sym → O_∞    │")
     print(f"  │  {mark(millennium_barriers_unified())}  millennium_barriers_unified (B-gate):        │")
     print(f"  │       RH: bnot(B)=B  ·  P vs NP: B dialetheic            │")
     print(f"  │       SIC-POVM: B satisfies all 4 axioms                 │")

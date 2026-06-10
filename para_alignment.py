@@ -188,7 +188,7 @@ def _print_shor_framing(instances: list[tuple[int, int]]) -> None:
     print("  ├──────────────────────────────────────────────────────────┤")
     print("  │  Φ_} gap: extracting r from B-bias alone is the open     │")
     print("  │  problem (FullPipeline.lean, shor_pipeline_tier proved    │")
-    print("  │  O_1; Φ_} bottleneck = B-only period extraction).        │")
+    print("  │  O₁; Φ_} bottleneck = B-only period extraction).        │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
 
