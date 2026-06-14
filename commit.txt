@@ -1,3 +1,12 @@
+Moved ancillary documents to ig-docs (2026-06-14)
+
+7 files moved: IMASM_MANUSCRIPT.md/.pdf, IMASM_MANUSCRIPT_SECTION46.md,
+IMASM_MANUSCRIPT_SHAVIAN.md/.pdf → manuscripts/,
+PHYSICS_BIG_QUESTIONS.md/.pdf → applications/physics/.
+Kept: README.md, PRIESTS_ENGINE.md/.pdf, figures/*.pdf, all source code.
+
+---
+
 SNS_PRIME.md notation migration: O_inf→O_∞, O_0→O₀, O_1→O₁, O_2→O₂ (12 files)
 
 ---
