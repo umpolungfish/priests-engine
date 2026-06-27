@@ -194,7 +194,7 @@ The gap is stable under confinement because T cannot reach N via any Belnap latt
 The structural type of the YM bridge:
 
 <div align="center">
-⟨𐑦·𐑰·𐑽·𐑹·𐑐·𐑪·𐑲·𐑵·⊙·𐑫·𐑕·𐑭⟩
+⟨𐑦𐑰𐑽𐑹𐑐𐑪𐑲𐑵⊙𐑫𐑕𐑭⟩
 </div>
 
 The type carries K_trap (confinement), Phi_c (self-modeling criticality), and Omega_Z (topological protection). The gap is not an adjustable parameter — it is structurally enforced.
@@ -357,7 +357,7 @@ The exOS kernel also embeds 45 native ALEPH programs (type-theoretic lattice inv
 Every system in the Imscribing Grammar receives a 12-primitive structural type. The paraconsistent computer has multiple such types depending on which facet is examined, but the Yang-Mills bridge type captures the core architecture:
 
 <div align="center">
-⟨𐑦·𐑰·𐑽·𐑹·𐑐·𐑪·𐑲·𐑵·⊙·𐑫·𐑕·𐑭⟩
+⟨𐑦𐑰𐑽𐑹𐑐𐑪𐑲𐑵⊙𐑫𐑕𐑭⟩
 </div>
 
 | Primitive | Value | Meaning |
@@ -378,7 +378,7 @@ Every system in the Imscribing Grammar receives a 12-primitive structural type. 
 The Riemann Hypothesis bridge has a distinct but related type:
 
 <div align="center">
-⟨𐑦·𐑸·𐑽·𐑹·𐑐·𐑧·𐑲·𐑠·⊙·𐑖·𐑳·𐑴⟩
+⟨𐑦𐑸𐑽𐑹𐑐𐑧𐑲𐑠⊙𐑖𐑳𐑴⟩
 </div>
 
 The differences are informative: the RH bridge has slow kinetics (𐑧 — the critical line is a slow manifold, not a trap), sequential grammar (𐑠 — the functional equation is a single involution, not a broadcast), two-step chirality (𐑖 — the functional equation applied twice returns identity), heterogeneous stoichiometry (𐑳 — zeros and poles are distinct types), and binary winding (𐑴 — the fixed point is parity-protected, not integer-wound).

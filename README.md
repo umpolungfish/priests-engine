@@ -148,7 +148,7 @@ The loop's kernel invariants are verified at every tick against the Lean 4 speci
 |---|---|---|
 | `frobenius_invariant` | ffuse ∘ fsplit = id on all 4 Belnap values | ✅ Every cycle |
 | `run_B3` | ∀ n, (run initialState n).r0 = B ∧ .r1 = B ∧ .r2 = B | ✅ Every cycle |
-| `paradox_conservation` | paradoxCount = 4·cycleCount | ✅ Every cycle |
+| `paradox_conservation` | paradoxCount = 4cycleCount | ✅ Every cycle |
 
 ---
 
