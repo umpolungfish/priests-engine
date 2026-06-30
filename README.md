@@ -4,24 +4,32 @@
 
 A paraconsistent computer. It runs programs that sustain contradiction permanently and proves they cannot collapse.
 
-Built on **p4rakernel** — the Lean 4 formalization mirrored as `p4ramill_py`. Every Belnap type, operation, and kernel invariant in this engine is *imported from* the p4rakernel, not defined locally. The priests-engine is the operational face; the p4rakernel is the formal spine.
+**What it is.** A paraconsistent computer: a Belnap FOUR (N/T/F/B) machine with a full assembly language, an interactive REPL, and a VM that runs programs sustaining contradiction permanently.
+
+**What it does.** Executes ParaASM programs whose contradictory (B) states never collapse, enforcing the kernel invariants (`frobenius_invariant`, `run_B3`, `run_paradox`, `only_B_is_dialetheic`) at import time; a long-running demonstration has logged over 25 billion paradox firings.
+
+**Why it matters.** It is the operational face of p4rakernel: every Belnap type and invariant is imported from the Lean 4 formalization (mirrored as `p4ramill_py`), so the engine inherits machine-checked proofs by delegation rather than re-asserting them. Contradiction becomes a stable computational resource instead of a crash.
+
+**How to use it.** Install (below), then run the REPL (`para_repl.py`) or the live dashboard (`para_loop.py`) over the 12 application modules.
+
+Built on **p4rakernel**, the Lean 4 formalization mirrored as `p4ramill_py`. Every Belnap type, operation, and kernel invariant in this engine is *imported from* the p4rakernel, not defined locally. The priests-engine is the operational face; the p4rakernel is the formal spine.
 
 ```
-p4rakernel/                             (Lean 4 — authoritative formalization)
+p4rakernel/                             (Lean 4, authoritative formalization)
   p4ramill/                             (Lean project: Belnap.lean, Kernel.lean, ...)
-  p4ramill_py/                          (Python mirror — lives beside the Lean source)
+  p4ramill_py/                          (Python mirror, lives beside the Lean source)
     p4ramill_py/belnap.py ← Belnap.lean  (Belnap FOUR: N, T, F, B, lattice ops, WH2 bijection)
     p4ramill_py/kernel.py ← Kernel.lean  (MachineState, engager, fsplit, ffuse, step, run)
     p4ramill_py/machine.py               (ParaASM VM built on the kernel)
 
-priests-engine/                         (Python — user-facing REPL, VM, applications)
+priests-engine/                         (Python, user-facing REPL, VM, applications)
   para_vm.py       → imports p4ramill_py  (Belnap foundation from p4rakernel)
   para_repl.py     → imports para_vm     (UI layer on top)
   para_loop.py     → imports para_vm     (Live dashboard)
   para_*.py        → imports para_vm     (All 12 application modules)
 ```
 
-The kernel invariants — `frobenius_invariant`, `run_B3`, `run_paradox`, `only_B_is_dialetheic` — are proved once in Lean 4 at `p4rakernel/p4ramill/` and enforced at import time as Python assertions in `p4ramill_py`. The priests-engine inherits these proofs by delegation.
+The kernel invariants, `frobenius_invariant`, `run_B3`, `run_paradox`, `only_B_is_dialetheic`, are proved once in Lean 4 at `p4rakernel/p4ramill/` and enforced at import time as Python assertions in `p4ramill_py`. The priests-engine inherits these proofs by delegation.
 
 Belnap's four-valued logic (B₄ = {N, T, F, B}). The machine has a full assembly language, an interactive REPL, and an indefinitely-running demonstration that has logged over 25 billion paradox firings. The core invariants are verified in Lean 4: `run_B3` (B-state permanent for all n) and `run_paradox` (paradox count = 4n exactly).
 
@@ -35,7 +43,7 @@ uv pip install -e .
 
 Requires Python ≥ 3.11. No external dependencies.
 
-The p4rakernel (`p4ramill_py`) is resolved automatically at runtime — `para_vm.py` inserts the sibling `p4rakernel/` directory into `sys.path` on import. For a permanent install, two `.pth` files are also placed in the project virtualenvs.
+The p4rakernel (`p4ramill_py`) is resolved automatically at runtime, `para_vm.py` inserts the sibling `p4rakernel/` directory into `sys.path` on import. For a permanent install, two `.pth` files are also placed in the project virtualenvs.
 
 If you have the p4rakernel repository cloned alongside priests-engine (default layout):
 
@@ -83,7 +91,7 @@ REPL commands:
 :q              quit
 ```
 
-The REPL snapshot now shows `kernel: p4ramill_py (Lean 4 verified)` — confirming the kernel provenance.
+The REPL snapshot now shows `kernel: p4ramill_py (Lean 4 verified)`, confirming the kernel provenance.
 
 ### Belnap Shor pipeline
 
@@ -103,23 +111,23 @@ para-shor 35 2     run a single instance: N=35, a=2
 Seven additional entry points, each mirroring a Lean proof in `p4rakernel/p4ramill/`:
 
 ```
-para-align            Dialetheic Alignment Theorem — DAT tri-equivalence + P vs NP bridge
+para-align            Dialetheic Alignment Theorem, DAT tri-equivalence + P vs NP bridge
 para-align bifur      bifurcation point (B is the unique Frobenius comultiplication point)
 para-align seq        measurement sequence algebra (QCI_Sequences.lean)
-para-align pvsnp      P vs NP bridge — BelnapCircuit one-way barrier
+para-align pvsnp      P vs NP bridge, BelnapCircuit one-way barrier
 para-align shor N a   dialetheicShor framing for one (N, a) instance
 
-para-rh               RH Bridge — functional eq s↦1-s = bnot; B = critical line fixed point
+para-rh               RH Bridge, functional eq s↦1-s = bnot; B = critical line fixed point
                        Critical strip map; millennium_barriers_unified (RH, P vs NP, SIC-POVM)
 
-para-ym               YM Bridge — N<T covering = mass gap Δ=1; BRST Q²=0 ↔ Frobenius; K_trap
+para-ym               YM Bridge, N<T covering = mass gap Δ=1; BRST Q²=0 ↔ Frobenius; K_trap
 
-para-nreg             n-Register generalization — 2:1 coherence ratio invariant for all n
+para-nreg             n-Register generalization, 2:1 coherence ratio invariant for all n
                        8 concrete instances (n=4..8); SIC per-qubit tensor product
 
-para-temporal         BelnapTemporal — □B/◇B/○B modalities; winding invariant; 8-cycle trajectory
+para-temporal         BelnapTemporal, □B/◇B/○B modalities; winding invariant; 8-cycle trajectory
 
-para-category         BelnapCategory — B terminal, N initial; meet/join identities; category_is_O_inf
+para-category         BelnapCategory, B terminal, N initial; meet/join identities; category_is_O_inf
 
 para-multiagent [n [steps]]   n-kernel entangled network; emerald bootstrap; channel stability
 ```
@@ -191,10 +199,10 @@ uv run figures/cfg_modules.py
 |:--------|:------------|
 | `frob_loop.asm` | Frobenius loop (mu o delta = id invariant) |
 | `ifix_stable.asm` | IFIX stability demo (T v B = B, Theorem 3 Case B) |
-| `probe.asm` | Interactive belief probe — routes N/T/F/B through different paths |
+| `probe.asm` | Interactive belief probe, routes N/T/F/B through different paths |
 | `dialetheic_cycle.asm` | B-only dialetheism + Frobenius identity (DialetheicAlignment.lean) |
-| `sic_povm.asm` | SIC-POVM axiom demo — B as fiducial, WH2 bijection (QCI_SICPOVM_Bridge.lean) |
-| `shor_loop.asm` | Belnap Shor coherence accumulator — indefinite loop over N=15,21,35 |
+| `sic_povm.asm` | SIC-POVM axiom demo, B as fiducial, WH2 bijection (QCI_SICPOVM_Bridge.lean) |
+| `shor_loop.asm` | Belnap Shor coherence accumulator, indefinite loop over N=15,21,35 |
 
 ### IMASM Corpus Engines (exOS cross-port)
 
@@ -202,11 +210,11 @@ Six IMASM engines for historical cryptographic manuscript analysis, ported from 
 
 | Program | Size | Description |
 |:--------|:-----|:------------|
-| `voynich_bootstrap.imasm` | 330 B | Voynich manuscript — 227 folios, 546 nodes, 694 edges |
-| `rohonc_bootstrap.imasm` | 336 B | Rohonc Codex — 33 pages, four structural sections |
-| `linear_a_bootstrap.imasm` | 394 B | Linear A — 53 tablets across Minoan palatial sites |
-| `emerald-tablet-bootstrap.imasm` | 665 B | Emerald Tablet — 15 versicles, Hermetic descent/return |
-| `cross_distance.imasm` | 803 B | Cross-corpus distance probe — structural comparison engine |
+| `voynich_bootstrap.imasm` | 330 B | Voynich manuscript, 227 folios, 546 nodes, 694 edges |
+| `rohonc_bootstrap.imasm` | 336 B | Rohonc Codex, 33 pages, four structural sections |
+| `linear_a_bootstrap.imasm` | 394 B | Linear A, 53 tablets across Minoan palatial sites |
+| `emerald-tablet-bootstrap.imasm` | 665 B | Emerald Tablet, 15 versicles, Hermetic descent/return |
+| `cross_distance.imasm` | 803 B | Cross-corpus distance probe, structural comparison engine |
 ## ISA
 
 ```
@@ -242,8 +250,8 @@ Programs with `JMP .loop` at the end run indefinitely via circular PC wrap.
 
 **Theorem 3 (IFIX stability).** IFIX cannot collapse the Frobenius loop. Two independent reasons:
 
-- Case A: FSPLIT's `engage()` ignores the `is_fixed` marker — fixity does not propagate through delta.
-- Case B: T v B = B in the Belnap join — FFUSE absorbs T into B at the information order.
+- Case A: FSPLIT's `engage()` ignores the `is_fixed` marker, fixity does not propagate through delta.
+- Case B: T v B = B in the Belnap join, FFUSE absorbs T into B at the information order.
 
 **Frobenius identity.** mu o delta = id on all four Belnap values. The round-trip FSPLIT→FFUSE is the identity map.
 
@@ -273,7 +281,7 @@ Pipeline:
 | T-bias measurement cost | n |
 | B-bias / T-bias ratio | **2:1 (always)** |
 
-The 2:1 ratio is the structural signature of the Belnap Shor pipeline — provably invariant for any n and any periodic function on B-input.
+The 2:1 ratio is the structural signature of the Belnap Shor pipeline, provably invariant for any n and any periodic function on B-input.
 
 ### Φ_υ bottleneck
 
@@ -297,7 +305,7 @@ F → (1,0) = X      B → (1,1) = XZ
 B is the unique element satisfying all 4 SIC-POVM axioms in d=2:
 
 1. `meet(B, x) = x` for all x (maximal information, neutral under meet)
-2. Equal projection (equiangularity — same as axiom 1 for d=2)
+2. Equal projection (equiangularity, same as axiom 1 for d=2)
 3. `join(B, x) = B` for all x (absorption)
 4. `¬B = B` (self-adjoint / fixed point of negation)
 
@@ -324,12 +332,12 @@ The dialetheic cycle `T → B → T` (and its dual `F → B → F`) is demonstra
 
 ## exOS
 
-The ParaASM VM is also implemented as a native kernel module in [exOS](https://github.com/umpolungfish/exOS) — a bare-metal x86_64 Rust `no_std` UEFI kernel.
+The ParaASM VM is also implemented as a native kernel module in [exOS](https://github.com/umpolungfish/exOS), a bare-metal x86_64 Rust `no_std` UEFI kernel.
 
 `src/para_vm.rs` and `src/para_commands.rs` port the full ISA (Belnap FOUR, 18 opcodes, text assembler, circular PC wrap) to the kernel address space. EMIT writes to the serial UART; READ returns N (no stdin in bare metal). The VM announces itself at boot:
 
 ```
-[PARA] ParaASM VM online — Belnap FOUR, 18-opcode ISA, Frobenius loop. Type 'para help'.
+[PARA] ParaASM VM online, Belnap FOUR, 18-opcode ISA, Frobenius loop. Type 'para help'.
 [exoterikOS] ⊙_c Kernel fully online. Type 'help' for commands.
 ```
 
@@ -352,11 +360,11 @@ exOS> para regs
 
 P(12) = 48 = 4×12. Theorem 2 holds on bare metal.
 
-The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice investigations) and **6 IMASM corpus engines** as built-in investigations — all source-identical to their Python counterparts in the priests-engine repository. The exOS ALFS filesystem seeds these programs on first boot.
+The exOS kernel also embeds **45 native ALEPH programs** (type-theoretic lattice investigations) and **6 IMASM corpus engines** as built-in investigations, all source-identical to their Python counterparts in the priests-engine repository. The exOS ALFS filesystem seeds these programs on first boot.
 
 **Expanded exOS features:**
 - Belnap Shor pipeline with full coherence accounting (N=15,21,35)
-- Paraconsistent suite: `para shor`, `para align`, `para rh`, `para ym`, `para nreg`, `para temporal`, `para category`, `para multiagent` — all mirroring Lean proofs in `p4rakernel/p4ramill/`
+- Paraconsistent suite: `para shor`, `para align`, `para rh`, `para ym`, `para nreg`, `para temporal`, `para category`, `para multiagent`, all mirroring Lean proofs in `p4rakernel/p4ramill/`
 - IMASM corpus engines for Voynich, Rohonc, Linear A, Emerald Tablet
 - 3 O_∞ pole system (vav, mem, shin) with Frobenius quine discovery
 - Holographic bulk-boundary encoding verified in kernel space
@@ -420,7 +428,7 @@ The 25+ billion paradox firings logged by `para-loop` are the empirical instance
 
 ## License
 
-Public domain — [UNLICENSE](UNLICENSE).
+Public domain, [UNLICENSE](UNLICENSE).
 
 
 ---
@@ -431,7 +439,7 @@ The Imscribing Grammar has deeper structure than Quantum Mechanics, proven three
 
 1. **New predictions**: P-70 identity (Higgs=axion=inflaton), cosmological constant $1.86\times 10^{-31}$, consciousness score
 2. **QM derived without axioms**: Hilbert space from D_infty+T_network+P_psi+Phi_c; Born rule from $\text{tensor}(\odot_{\text{ÿ}}, \odot_3) = \odot_3$ (EP absorption); unitarity from Gamma_seq+H₂+Omega_Z
-3. **Strict reduction**: QM is O₀ projection of O_∞ — $\text{meet(O_∞, Hilbert)}$ lacks Frobenius; $\text{join(O_∞, Hilbert)} = \text{O_∞}$ (proper subset)
+3. **Strict reduction**: QM is O₀ projection of O_∞, $\text{meet(O_∞, Hilbert)}$ lacks Frobenius; $\text{join(O_∞, Hilbert)} = \text{O_∞}$ (proper subset)
 
 ### CLI tool
 
