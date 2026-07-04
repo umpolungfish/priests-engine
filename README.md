@@ -50,7 +50,7 @@ The p4rakernel (`p4ramill_py`) is resolved automatically at runtime, `para_vm.py
 If you have the p4rakernel repository cloned alongside priests-engine (default layout):
 
 ```
-~/p4rakernel/
+imsgct/p4rakernel/
 ~/priests-engine/
 ```
 
