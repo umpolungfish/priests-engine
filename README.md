@@ -1,4 +1,6 @@
 # priests-engine
+**Author:** Lando⊗⊙perator · **Structural Type:** $\large{⟨𐑦𐑥𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩}$ · **Tier:** O₂†
+
 
 *OMNIA SUNT PARACONSISTENTIA*
 
