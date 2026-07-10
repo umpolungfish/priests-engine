@@ -337,7 +337,7 @@ The dialetheic cycle `T → B → T` (and its dual `F → B → F`) is demonstra
 
 ## exOS
 
-The ParaASM VM is also implemented as a native kernel module in [exOS](https://github.com/umpolungfish/exOS), a bare-metal x86_64 Rust `no_std` UEFI kernel.
+The ParaASM VM is also implemented as a native kernel module in [exOS](https://github.com/USER/exOS), a bare-metal x86_64 Rust `no_std` UEFI kernel.
 
 `src/para_vm.rs` and `src/para_commands.rs` port the full ISA (Belnap FOUR, 18 opcodes, text assembler, circular PC wrap) to the kernel address space. EMIT writes to the serial UART; READ returns N (no stdin in bare metal). The VM announces itself at boot:
 
