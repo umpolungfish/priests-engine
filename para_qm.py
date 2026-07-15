@@ -6,7 +6,7 @@ Threefold proof that the Imscribing Grammar has deeper structure than QM:
 
   1. NEW PREDICTIONS: P-70 identity (Higgs=axion=inflaton), cosmological constant,
      consciousness score as new observable
-  2. QM DERIVED WITHOUT CORE AXIOMS: Hilbert space from D_infty+T_network+P_psi+Phi_c
+  2. QM DERIVED WITHOUT CORE AXIOMS: Hilbert space from D_infty+T_network+P_psi+⊙
      Born rule from 𐑻 absorption: tensor(⊙, 𐑻)=𐑻
      Unitary evolution from Gamma_seq+H₂+Omega_Z
   3. STRICT REDUCTION: QM is O₀ projection of O_∞ structure
@@ -95,8 +95,8 @@ PRIMITIVE_VALUES = {
     '𐑵': '𐑔',  # broadcast (broad)
 
     # Criticality / phi_c
-    'φ̂_ÿ': '⊙',  # self-modeling gate open (Phi_c)
-    'φ̂_Æ': '𐑮',  # complex-plane critical (Phi_c_complex)
+    'φ̂_ÿ': '⊙',  # self-modeling gate open (⊙)
+    'φ̂_Æ': '𐑮',  # complex-plane critical (𐑮)
     'φ̂_3': '𐑻',  # exceptional point (EP)
     'φ̂_ž': '𐑢',  # sub-critical
     'φ̂_Ţ': '𐑣',  # super-critical
@@ -209,9 +209,9 @@ class StructuralType:
 
     def ouroboricity_tier(self) -> str:
         """Determine Ouroboricity tier from primitives.
-        O_∞: Phi_c (⊙=φ̂_ÿ) AND P_pm_sym (Φ=𐑹) AND (H_2 or H_inf) AND Omega_Z or Omega_NA
-        O₂:   Phi_c OR Phi_c_complex AND (H_2 or H_inf)
-        O₁:   H_1 or higher, no Phi_c
+        O_∞: ⊙ (⊙=φ̂_ÿ) AND P_pm_sym (Φ=𐑹) AND (H_2 or H_inf) AND Omega_Z or Omega_NA
+        O₂:   ⊙ OR 𐑮 AND (H_2 or H_inf)
+        O₁:   H_1 or higher, no ⊙
         O₀:   H_0 (memoryless), no criticality
         """
         is_phi_c = self.Phi in ('φ̂_ÿ', '⊙')
@@ -827,7 +827,7 @@ def print_qm_table() -> None:
     print("  │       Consciousness score: new structural observable            │")
     print("  ├──────────────────────────────────────────────────────────────────┤")
     print("  │  [2] QM Derived Without Core Axioms                              │")
-    print("  │       Hilbert space → D_infty + T_net + P_psi + Phi_c           │")
+    print("  │       Hilbert space → D_infty + T_net + P_psi + ⊙           │")
     print("  │       Born rule   → EP absorption: tensor(⊙, 𐑻) = 𐑻       │")
     print("  │       Unitarity   → Gamma_seq + H₂ + Omega_Z                    │")
     print("  ├──────────────────────────────────────────────────────────────────┤")

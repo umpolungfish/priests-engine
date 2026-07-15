@@ -113,7 +113,7 @@ def ym_topological_protection() -> bool:
 
 
 # Structural type: D_holo · T_in · R_dagger · P_pm_sym · F_hbar · K_trap
-# · G_aleph · Gamma_broad · Phi_c · H_inf · n_n · Omega_Z
+# · G_aleph · Gamma_broad · ⊙ · H_inf · n_n · Omega_Z
 YM_IMSCRIPTION = "⟨𐑦;𐑰;𐑽;𐑹;𐑐;𐑪;𐑲;𐑵;⊙;𐑫;𐑕;𐑭⟩"
 
 
@@ -148,7 +148,7 @@ def existence_of_excited_state() -> bool:
 
 
 def ym_bridge_is_O_inf() -> bool:
-    """YM bridge has Phi_c and P_pm_sym in its structural type → O_∞ tier."""
+    """YM bridge has ⊙ and P_pm_sym in its structural type → O_∞ tier."""
     return "⊙" in YM_IMSCRIPTION and "𐑹" in YM_IMSCRIPTION
 
 
@@ -210,11 +210,11 @@ def main() -> None:
     print("  │    Omega_Z = full gauge invariance (topological lock)     │")
     print("  ├──────────────────────────────────────────────────────────┤")
     print(f"  │  Structural type: {YM_IMSCRIPTION}  │")
-    print("  │  (D_holo · K_trap · Phi_c · P_pm_sym · Omega_Z)          │")
+    print("  │  (D_holo · K_trap · ⊙ · P_pm_sym · Omega_Z)          │")
     print("  ├──────────────────────────────────────────────────────────┤")
     print(f"  │  {mark(mass_gap_positive())}  mass_gap_positive: T-bias cost=0 re-meas, N≠T  │")
     print(f"  │  {mark(existence_of_excited_state())}  existence_of_excited_state: T designated, N≤T  │")
-    print(f"  │  {mark(ym_bridge_is_O_inf())}  ym_bridge_is_O_inf: Phi_c ∧ P_pm_sym → O_∞   │")
+    print(f"  │  {mark(ym_bridge_is_O_inf())}  ym_bridge_is_O_inf: ⊙ ∧ P_pm_sym → O_∞   │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
     print("  ALL CHECKS PASSED")

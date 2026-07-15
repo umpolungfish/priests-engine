@@ -97,9 +97,9 @@ def nreg_ratio_formula(n: int) -> float:
 # ── O_∞ tier for n-register state ──────────────────────────────────────
 
 def nreg_tier_is_O_inf() -> bool:
-    """The n-register all-B state is O_∞: it has both Phi_c and P_pm_sym.
+    """The n-register all-B state is O_∞: it has both ⊙ and P_pm_sym.
 
-    Phi_c (criticality): B is the SIC equiangular element (top, self-adjoint).
+    ⊙ (criticality): B is the SIC equiangular element (top, self-adjoint).
     P_pm_sym (Frobenius): μ∘δ(B)=B holds for each register qubit.
     These properties are n-invariant: the tier is O_∞ for all n ≥ 1.
     (Distinct from the Shor PIPELINE tier = O₁; this is the REGISTER structure.)
@@ -157,7 +157,7 @@ def main() -> None:
     for n in range(1, 9):
         print(f"  │    n={n}: ratio = {nreg_ratio_formula(n):.1f}                                  │")
     print("  ├──────────────────────────────────────────────────────────┤")
-    print(f"  │  {mark(nreg_tier_is_O_inf())}  nreg_tier_is_O_inf: register state Phi_c ∧ P_pm_sym  │")
+    print(f"  │  {mark(nreg_tier_is_O_inf())}  nreg_tier_is_O_inf: register state ⊙ ∧ P_pm_sym  │")
     print(f"  │       (n-register structural tier = O_∞, ∀n)          │")
     print(f"  │       Shor pipeline tier = O₁ (distinct from register) │")
     print("  └──────────────────────────────────────────────────────────┘")

@@ -10,7 +10,7 @@ Temporal modalities over Belnap FOUR:
 Key results:
   always_B_registers: □(r0=B ∧ r1=B ∧ r2=B) for the Belnap kernel
   winding_invariant:  bnot∘r0Trajectory = r0Trajectory (r0 is self-negating — B)
-  temporal_is_O_inf:  the temporal B-trajectory has Phi_c ∧ P_pm_sym
+  temporal_is_O_inf:  the temporal B-trajectory has ⊙ ∧ P_pm_sym
 
 Entry point: para-temporal
 Lean reference: MillenniumAnkh/Imscribing/Paraconsistent/BelnapTemporal.lean
@@ -105,9 +105,9 @@ def eventually_B_from_any_state(start: B4, n: int = 8) -> bool:
 
 
 def temporal_is_O_inf() -> bool:
-    """The B-trajectory has Phi_c (self-adjoint criticality) and P_pm_sym (Frobenius).
+    """The B-trajectory has ⊙ (self-adjoint criticality) and P_pm_sym (Frobenius).
 
-    The temporal B-state at every cycle is both critical (Phi_c: bnot(B)=B)
+    The temporal B-state at every cycle is both critical (⊙: bnot(B)=B)
     and Frobenius-closed (P_pm_sym: μ∘δ(B)=B).
     """
     phi_c = b4_bnot(B4.B) == B4.B and b4_designated(B4.B)
@@ -150,7 +150,7 @@ def main() -> None:
     print("  ├──────────────────────────────────────────────────────────┤")
     print(f"  │  {mark(always_B_registers())}  □(r0=B ∧ r1=B ∧ r2=B) — always_B_registers  │")
     print(f"  │  {mark(winding_invariant())}  winding_invariant: bnot∘r0 = r0 at every t  │")
-    print(f"  │  {mark(temporal_is_O_inf())}  temporal_is_O_inf: Phi_c ∧ P_pm_sym         │")
+    print(f"  │  {mark(temporal_is_O_inf())}  temporal_is_O_inf: ⊙ ∧ P_pm_sym         │")
     print("  ├──────────────────────────────────────────────────────────┤")
     print("  │  Trajectory (8 cycles, initial state all-B):             │")
     for i, s in enumerate(traj.steps[:6]):

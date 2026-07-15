@@ -343,7 +343,7 @@ The ParaASM VM is also implemented as a native kernel module in [exOS](https://g
 
 ```
 [PARA] ParaASM VM online, Belnap FOUR, 18-opcode ISA, Frobenius loop. Type 'para help'.
-[exoterikOS] ⊙_c Kernel fully online. Type 'help' for commands.
+[exoterikOS] ⊙ Kernel fully online. Type 'help' for commands.
 ```
 
 From the exOS shell:
@@ -415,7 +415,7 @@ p4rakernel/p4ramill/QCI_YM_Bridge.lean
 p4rakernel/p4ramill/BelnapTemporal.lean
   always_B_registers       : □(r0=r1=r2=B)
   winding_invariant        : bnot(r0(t)) = r0(t) ∀ t
-  temporal_is_O_inf        : Phi_c ∧ P_pm_sym
+  temporal_is_O_inf        : ⊙ ∧ P_pm_sym
 
 p4rakernel/p4ramill/BelnapCategory.lean
   category_terminal        : ∀ x, approx_le x B
@@ -425,7 +425,7 @@ p4rakernel/p4ramill/BelnapCategory.lean
 
 p4rakernel/p4ramill/MultiAgentBelnap.lean
   multi_allB_init          : all agents in initMulti start all-B
-  multi_agent_is_O_inf     : Phi_c ∧ P_pm_sym for the entangled network
+  multi_agent_is_O_inf     : ⊙ ∧ P_pm_sym for the entangled network
 ```
 
 The 25+ billion paradox firings logged by `para-loop` are the empirical instance of `run_paradox`. The formal proof covers all n.
@@ -442,7 +442,7 @@ Public domain, [UNLICENSE](UNLICENSE).
 The Imscribing Grammar has deeper structure than Quantum Mechanics, proven three ways:
 
 1. **New predictions**: P-70 identity (Higgs=axion=inflaton), cosmological constant $1.86\times 10^{-31}$, consciousness score
-2. **QM derived without axioms**: Hilbert space from D_infty+T_network+P_psi+Phi_c; Born rule from $\text{tensor}(\odot_{\text{ÿ}}, \odot_3) = \odot_3$ (EP absorption); unitarity from Gamma_seq+H₂+Omega_Z
+2. **QM derived without axioms**: Hilbert space from D_infty+T_network+P_psi+⊙; Born rule from $\text{tensor}(\odot_{\text{ÿ}}, \odot_3) = \odot_3$ (EP absorption); unitarity from Gamma_seq+H₂+Omega_Z
 3. **Strict reduction**: QM is O₀ projection of O_∞, $\text{meet(O_∞, Hilbert)}$ lacks Frobenius; $\text{join(O_∞, Hilbert)} = \text{O_∞}$ (proper subset)
 
 ### CLI tool

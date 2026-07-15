@@ -105,7 +105,7 @@ def frobenius_as_terminal_morphism() -> bool:
 
 
 def category_is_O_inf() -> bool:
-    """The category structure has Phi_c (B terminal = criticality) and P_pm_sym (Frobenius)."""
+    """The category structure has ⊙ (B terminal = criticality) and P_pm_sym (Frobenius)."""
     return frobenius_as_terminal_morphism() and b4_bnot(B4.B) == B4.B and b4_designated(B4.B)
 
 
@@ -155,7 +155,7 @@ def main() -> None:
     print(f"  │  {mark(n_meet_annihilates())}  N_meet_annihilates: meet(N,x)=N ∀x           │")
     print(f"  │  {mark(b_is_dagger_terminal())}  B self-adjoint (dagger): bnot(B)=B            │")
     print(f"  │  {mark(frobenius_as_terminal_morphism())}  Frobenius = terminal roundtrip: μ∘δ(B)=B    │")
-    print(f"  │  {mark(category_is_O_inf())}  category_is_O_inf: Phi_c ∧ P_pm_sym          │")
+    print(f"  │  {mark(category_is_O_inf())}  category_is_O_inf: ⊙ ∧ P_pm_sym          │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
     print("  ALL CHECKS PASSED")

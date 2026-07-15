@@ -11,7 +11,7 @@ Structure:
 
 Key results (MultiAgentBelnap.lean):
   multi_allB_init:     all agents start in all-B state
-  multi_agent_is_O_inf: the entangled network has Phi_c ∧ P_pm_sym
+  multi_agent_is_O_inf: the entangled network has ⊙ ∧ P_pm_sym
 
 Entry point: para-multiagent
 Lean reference: MillenniumAnkh/Imscribing/Paraconsistent/MultiAgentBelnap.lean
@@ -91,7 +91,7 @@ def multi_channel_join_stable(n: int = 4, steps: int = 8) -> bool:
 
 
 def multi_agent_is_O_inf() -> bool:
-    """The entangled network is O_∞: Phi_c ∧ P_pm_sym at the agent level."""
+    """The entangled network is O_∞: ⊙ ∧ P_pm_sym at the agent level."""
     phi_c = b4_bnot(B4.B) == B4.B and b4_designated(B4.B)
     frobenius = kernel_ffuse(*kernel_fsplit(B4.B)[:2])[0] == B4.B
     return phi_c and frobenius
@@ -129,7 +129,7 @@ def main() -> None:
     print(f"  │  {mark(multi_allB_init(n_agents))}  multi_allB_init: all agents start all-B   │")
     print(f"  │  {mark(multi_allB_preserved(n_agents, n_steps))}  multi_allB_preserved: stays all-B ({n_steps} steps)│")
     print(f"  │  {mark(multi_channel_join_stable(n_agents, n_steps))}  channel_join_stable: join(B,B)=B always  │")
-    print(f"  │  {mark(multi_agent_is_O_inf())}  multi_agent_is_O_inf: Phi_c ∧ P_pm_sym    │")
+    print(f"  │  {mark(multi_agent_is_O_inf())}  multi_agent_is_O_inf: ⊙ ∧ P_pm_sym    │")
     print("  ├──────────────────────────────────────────────────────────┤")
     print(f"  │  Initial state (n={n_agents} agents, emerald bootstrap):         │")
     init = init_multi(n_agents)

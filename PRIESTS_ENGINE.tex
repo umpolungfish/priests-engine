@@ -675,7 +675,7 @@ In the emerald bootstrap, all agents start all-B and all channels start all-B. A
 assert multi_allB_init()           # all agents start all-B
 assert multi_allB_preserved()       # stays all-B after n steps
 assert multi_channel_join_stable()  # channels stay B: join(B,B) = B
-assert multi_agent_is_O_inf()       # network has Phi_c and P_pm_sym
+assert multi_agent_is_O_inf()       # network has ⊙ and P_pm_sym
 \end{lstlisting}
 
 The multi-agent network is O\_inf --- the same tier as the single kernel, the category, and the temporal trajectory. The entangled network does not degrade the structural type. Joining O\_inf systems produces O\_inf --- the tensor product preserves the tier. This is a non-trivial structural closure property.
@@ -692,7 +692,7 @@ At boot:
 
 \begin{lstlisting}
 [PARA] ParaASM VM online --- Belnap FOUR, 18-opcode ISA, Frobenius loop.
-[exoterikOS] ⊙_c Kernel fully online. Type 'help' for commands.
+[exoterikOS] ⊙ Kernel fully online. Type 'help' for commands.
 \end{lstlisting}
 
 From the exOS shell, the Frobenius loop runs on bare metal:

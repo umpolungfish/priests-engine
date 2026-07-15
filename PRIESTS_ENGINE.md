@@ -197,7 +197,7 @@ The structural type of the YM bridge:
 ⟨𐑦𐑰𐑽𐑹𐑐𐑪𐑲𐑵⊙𐑫𐑕𐑭⟩
 </div>
 
-The type carries K_trap (confinement), Phi_c (self-modeling criticality), and Omega_Z (topological protection). The gap is not an adjustable parameter — it is structurally enforced.
+The type carries K_trap (confinement), ⊙ (self-modeling criticality), and Omega_Z (topological protection). The gap is not an adjustable parameter — it is structurally enforced.
 
 ### P vs NP Bridge
 
@@ -296,7 +296,7 @@ B is the terminal object (every x has a unique arrow to B). N is the initial obj
 
 
 The categorical structure is O_∞ because:
-- **Phi_c**: bnot(B) = B and B is designated (self-adjoint terminal object)
+- **⊙**: bnot(B) = B and B is designated (self-adjoint terminal object)
 - **P_pm_sym**: μ∘δ(B) = B (Frobenius condition is the terminal morphism round-trip)
 
 The terminal object of a category being a Frobenius fixed point is not a general categorical fact. It is specific to the Belnap lattice, and it is the reason B can host indefinite paradox: the terminal point of the category is also the point where the Frobenius comultiplication splits non-trivially.
@@ -308,7 +308,7 @@ The temporal modalities □ (always), ◇ (eventually), and ○ (next) are defin
 - **□(r₀ = B ∧ r₁ = B ∧ r₂ = B)**: all three registers are B at every cycle. The kernel trajectory is a single point in the state space.
 - **bnot(r₀(t)) = r₀(t)**: the trajectory is invariant under temporal negation. B is self-negating at every time step.
 
-The temporal structure is O_∞ for the same reasons as the categorical structure: Phi_c and P_pm_sym hold at every instant. The winding invariant — that negation maps the trajectory to itself — is the temporal expression of dialetheia across time.
+The temporal structure is O_∞ for the same reasons as the categorical structure: ⊙ and P_pm_sym hold at every instant. The winding invariant — that negation maps the trajectory to itself — is the temporal expression of dialetheia across time.
 
 ### Multi-agent Belnap network
 
@@ -324,7 +324,7 @@ In the emerald bootstrap, all agents start all-B and all channels start all-B. A
 assert multi_allB_init()           # all agents start all-B
 assert multi_allB_preserved()       # stays all-B after n steps
 assert multi_channel_join_stable()  # channels stay B: join(B,B) = B
-assert multi_agent_is_O_inf()       # network has Phi_c ∧ P_pm_sym
+assert multi_agent_is_O_inf()       # network has ⊙ ∧ P_pm_sym
 ```
 
 The multi-agent network is O_∞ — the same tier as the single kernel, the category, and the temporal trajectory. The entangled network does not degrade the structural type. Joining O_∞ systems produces O_∞ — the tensor product preserves the tier. This is a non-trivial structural closure property.
@@ -339,7 +339,7 @@ At boot:
 
 ```
 [PARA] ParaASM VM online — Belnap FOUR, 18-opcode ISA, Frobenius loop.
-[exoterikOS] ⊙_c Kernel fully online. Type 'help' for commands.
+[exoterikOS] ⊙ Kernel fully online. Type 'help' for commands.
 ```
 
 From the exOS shell, the Frobenius loop runs on bare metal:
