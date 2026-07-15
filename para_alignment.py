@@ -4,7 +4,7 @@ para_alignment.py — Dialetheic Alignment Theorem + P vs NP Bridge
 ==================================================================
 DialetheicAlignment.lean: DAT tri-equivalence (operational/logical/algebraic).
 QCI_PvsNP_Bridge.lean: B as NP witness; classical_cannot_become_B one-way barrier.
-DialetheicOperator.lean: dialetheicShor as Φ_υ→Φ_} promotion.
+DialetheicOperator.lean: dialetheicShor as 𐑿→𐑹 promotion.
 
 Entry point: para-align  (see pyproject.toml)
 Lean reference: MillenniumAnkh/Imscribing/Paraconsistent/
@@ -72,12 +72,12 @@ def sustain_never_collapses(size: int) -> bool:
 
 def dialetheicShor(a: int, N: int) -> dict:
     """
-    Frame Belnap Shor as Φ_υ→Φ_} promotion.
+    Frame Belnap Shor as 𐑿→𐑹 promotion.
 
-    Φ_υ (P_psi): B-only superposition — period encoded in 2:1 ratio, not extracted.
-    Φ_} (P_pm_sym, Frobenius-special): full extraction from B-bias alone (open problem).
+    𐑿 (P_psi): B-only superposition — period encoded in 2:1 ratio, not extracted.
+    𐑹 (P_pm_sym, Frobenius-special): full extraction from B-bias alone (open problem).
 
-    The coherence ratio 2:1 IS the period signature. The promotion Φ_υ→Φ_} is
+    The coherence ratio 2:1 IS the period signature. The promotion 𐑿→𐑹 is
     achieved when r can be read from the B-bias path without the T-collapse collapse.
     """
     n = max(1, (N - 1).bit_length())
@@ -175,9 +175,9 @@ def _print_pvsnp() -> None:
 def _print_shor_framing(instances: list[tuple[int, int]]) -> None:
     print("  ┌──────────────────────────────────────────────────────────┐")
     print("  │  DIALETHEIC SHOR OPERATOR (DialetheicOperator.lean)      │")
-    print("  │  Frame: Φ_υ (P_psi, momentum) → Φ_} (P_pm_sym, Frobenius)│")
+    print("  │  Frame: 𐑿 (P_psi, momentum) → 𐑹 (P_pm_sym, Frobenius)│")
     print("  ├──────┬────┬───┬───────┬───────┬───────┬──────┬──────────┤")
-    print("  │   N  │  a │ n │   r   │ ratio │ Φ_υ   │ Φ_}  │ promoted │")
+    print("  │   N  │  a │ n │   r   │ ratio │ 𐑿   │ 𐑹  │ promoted │")
     print("  ├──────┼────┼───┼───────┼───────┼───────┼──────┼──────────┤")
     for N, a in instances:
         d = dialetheicShor(a, N)
@@ -186,9 +186,9 @@ def _print_shor_framing(instances: list[tuple[int, int]]) -> None:
               f"   {d['coherence_ratio']:.1f}  │  {'✓' if d['phi_upsilon'] else '✗'}    │"
               f"  ✗   │    {prom}     │")
     print("  ├──────────────────────────────────────────────────────────┤")
-    print("  │  Φ_} gap: extracting r from B-bias alone is the open     │")
+    print("  │  𐑹 gap: extracting r from B-bias alone is the open     │")
     print("  │  problem (FullPipeline.lean, shor_pipeline_tier proved    │")
-    print("  │  O₁; Φ_} bottleneck = B-only period extraction).        │")
+    print("  │  O₁; 𐑹 bottleneck = B-only period extraction).        │")
     print("  └──────────────────────────────────────────────────────────┘")
     print()
 

@@ -7,7 +7,7 @@ Threefold proof that the Imscribing Grammar has deeper structure than QM:
   1. NEW PREDICTIONS: P-70 identity (Higgs=axion=inflaton), cosmological constant,
      consciousness score as new observable
   2. QM DERIVED WITHOUT CORE AXIOMS: Hilbert space from D_infty+T_network+P_psi+Phi_c
-     Born rule from ⊙_3 absorption: tensor(⊙_ÿ, ⊙_3)=⊙_3
+     Born rule from 𐑻 absorption: tensor(⊙, 𐑻)=𐑻
      Unitary evolution from Gamma_seq+H₂+Omega_Z
   3. STRICT REDUCTION: QM is O₀ projection of O_∞ structure
      meet(O_∞, Hilbert) = quantum-like (lacks Frobenius)
@@ -46,53 +46,53 @@ from para_vm import (
 # The 12-primitive enum values (Shavian encoding)
 PRIMITIVE_VALUES = {
     # Dimensionality
-    'Ð_ω': '𐑦',  # imscriptive / self-written
-    'Ð_ß': '𐑼',  # infinite-dimensional
-    'Ð_C': '𐑨',  # 2d surface / finite ≥2
-    'Ð_;': '𐑛',  # 0d point / <2
+    '𐑦': '𐑦',  # imscriptive / self-written
+    '𐑛': '𐑼',  # infinite-dimensional
+    '𐑨': '𐑨',  # 2d surface / finite ≥2
+    '𐑼': '𐑛',  # 0d point / <2
 
     # Topology
-    'Þ_O': '𐑰',  # self-referential closure
-    'Þ_¨': '𐑶',  # irreducible product (boxtimes)
-    'Þ_ò': '𐑸',  # crossing point (bowtie)
-    'Þ_K': '𐑡',  # containment (inclusion)
-    'Þ_6': '𐑥',  # branching (network)
+    '𐑸': '𐑰',  # self-referential closure
+    '𐑶': '𐑶',  # irreducible product (boxtimes)
+    '𐑥': '𐑸',  # crossing point (bowtie)
+    '𐑰': '𐑡',  # containment (inclusion)
+    '𐑡': '𐑥',  # branching (network)
 
     # Relational mode
-    'Ř_=': '𐑾',  # bidirectional (lr)
-    'Ř_Ť': '𐑽',  # adjoint (dagger)
-    'Ř_ý': '𐑑',  # functorial (cat)
-    'Ř_¯': '𐑩',  # supervenience (super)
+    '𐑾': '𐑾',  # bidirectional (lr)
+    '𐑽': '𐑽',  # adjoint (dagger)
+    '𐑑': '𐑑',  # functorial (cat)
+    '𐑩': '𐑩',  # supervenience (super)
 
     # Parity/symmetry
-    'Φ_}': '𐑹',  # pm_sym (Frobenius-special)
-    'Φ_˙': '𐑯',  # full symmetry (sym)
-    'Φ_F': '𐑿',  # partial (pm)
-    'Φ_υ': '𐑬',  # quantum superposition (psi)
-    'Φ_ɐ': '𐑗',  # none (asym)
+    '𐑹': '𐑹',  # pm_sym (Frobenius-special)
+    '𐑯': '𐑯',  # full symmetry (sym)
+    '𐑬': '𐑿',  # partial (pm)
+    '𐑿': '𐑬',  # quantum superposition (psi)
+    '𐑗': '𐑗',  # none (asym)
 
     # Fidelity
-    'ƒ_ż': '𐑐',  # quantum (hbar)
-    'ƒ_ð': '𐑞',  # thermal (eth)
-    'ƒ_ì': '𐑱',  # classical (ell)
+    '𐑐': '𐑐',  # quantum (hbar)
+    '𐑞': '𐑞',  # thermal (eth)
+    '𐑱': '𐑱',  # classical (ell)
 
     # Kinetics
-    'Ç_@': '𐑧',  # slow (near-equilibrium)
-    'Ç_λ': '𐑪',  # MBL (frozen-disorder)
-    'Ç_Ù': '𐑘',  # trapped (frozen-order)
-    'Ç_W': '𐑤',  # moderate
-    'Ç_-': '𐑚',  # fast (driven)
+    '𐑧': '𐑧',  # slow (near-equilibrium)
+    '𐑺': '𐑪',  # MBL (frozen-disorder)
+    '𐑪': '𐑘',  # trapped (frozen-order)
+    '𐑤': '𐑤',  # moderate
+    '𐑘': '𐑚',  # fast (driven)
 
     # Scope
-    'Γ_ʔ': '𐑲',  # maximal (aleph)
-    'Γ_γ': '𐑔',  # mesoscale (gimel)
-    'Γ_β': '𐑚',  # local (beth)
+    '𐑲': '𐑲',  # maximal (aleph)
+    '𐑔': '𐑔',  # mesoscale (gimel)
+    '𐑚': '𐑚',  # local (beth)
 
     # Grammar
-    'ɢ_ˌ': '𐑠',  # sequential (seq)
-    'ɢ_˝': '𐑵',  # disjunctive (or)
-    'ɢ_^': '𐑝',  # conjunctive (and)
-    'ɢ_Ş': '𐑔',  # broadcast (broad)
+    '𐑠': '𐑠',  # sequential (seq)
+    '𐑜': '𐑵',  # disjunctive (or)
+    '𐑝': '𐑝',  # conjunctive (and)
+    '𐑵': '𐑔',  # broadcast (broad)
 
     # Criticality / phi_c
     'φ̂_ÿ': '⊙',  # self-modeling gate open (Phi_c)
@@ -102,21 +102,21 @@ PRIMITIVE_VALUES = {
     'φ̂_Ţ': '𐑣',  # super-critical
 
     # Chirality (Markov order)
-    'Ħ_!': '𐑖',  # eternal (H_inf)
-    'Ħ_A': '𐑖',  # two-step (H_2)
-    'Ħ_£': '𐑒',  # one-step (H_1)
-    'Ħ_Ñ': '𐑓',  # memoryless (H_0)
+    '𐑫': '𐑖',  # eternal (H_inf)
+    '𐑖': '𐑖',  # two-step (H_2)
+    '𐑒': '𐑒',  # one-step (H_1)
+    '𐑓': '𐑓',  # memoryless (H_0)
 
     # Stoichiometry
-    'Σ_ï': '𐑙',  # many heterogeneous (n:m)
-    'Σ_ő': '𐑳',  # many identical (n:n)
-    'Σ_S': '𐑕',  # one to one (1:1)
+    '𐑳': '𐑙',  # many heterogeneous (n:m)
+    '𐑕': '𐑳',  # many identical (n:n)
+    '𐑙': '𐑕',  # one to one (1:1)
 
     # Winding
-    'Ω_z': '𐑭',  # integer winding (Z)
-    'Ω_2': '𐑴',  # binary (Z2)
-    'Ω_5': '𐑟',  # non-Abelian (NA)
-    'Ω_Å': '𐑷',  # trivial (0)
+    '𐑭': '𐑭',  # integer winding (Z)
+    '𐑴': '𐑴',  # binary (Z2)
+    '𐑟': '𐑟',  # non-Abelian (NA)
+    '𐑷': '𐑷',  # trivial (0)
 }
 
 # Reverse mapping: Shavian → primitive name
@@ -181,18 +181,18 @@ class StructuralType:
         def ordinal(p: str) -> int:
             # Map primitive value to ordinal within its dimension
             cat = p.split('_')[0] if '_' in p else p
-            if cat == 'Ð':  return {'Ð_;':0, 'Ð_C':1, 'Ð_ß':2, 'Ð_ω':3}.get(p, 0)
-            if cat == 'Þ':  return {'Þ_6':0, 'Þ_K':1, 'Þ_ò':2, 'Þ_¨':3, 'Þ_O':4}.get(p, 0)
-            if cat == 'Ř':  return {'Ř_¯':0, 'Ř_ý':1, 'Ř_Ť':2, 'Ř_=':3}.get(p, 0)
-            if cat == 'Φ':  return {'Φ_ɐ':0, 'Φ_υ':1, 'Φ_F':2, 'Φ_˙':3, 'Φ_}':4}.get(p, 0)
-            if cat == 'ƒ':  return {'ƒ_ì':0, 'ƒ_ð':1, 'ƒ_ż':2}.get(p, 0)
-            if cat == 'Ç':  return {'Ç_-':0, 'Ç_W':1, 'Ç_@':2, 'Ç_Ù':3, 'Ç_λ':4}.get(p, 0)
-            if cat == 'Γ':  return {'Γ_β':0, 'Γ_γ':1, 'Γ_ʔ':2}.get(p, 0)
-            if cat == 'ɢ':  return {'ɢ_^':0, 'ɢ_˝':1, 'ɢ_ˌ':2, 'ɢ_Ş':3}.get(p, 0)
+            if cat == 'Ð':  return {'𐑼':0, '𐑨':1, '𐑛':2, '𐑦':3}.get(p, 0)
+            if cat == 'Þ':  return {'𐑡':0, '𐑰':1, '𐑥':2, '𐑶':3, '𐑸':4}.get(p, 0)
+            if cat == 'Ř':  return {'𐑩':0, '𐑑':1, '𐑽':2, '𐑾':3}.get(p, 0)
+            if cat == 'Φ':  return {'𐑗':0, '𐑿':1, '𐑬':2, '𐑯':3, '𐑹':4}.get(p, 0)
+            if cat == 'ƒ':  return {'𐑱':0, '𐑞':1, '𐑐':2}.get(p, 0)
+            if cat == 'Ç':  return {'𐑘':0, '𐑤':1, '𐑧':2, '𐑪':3, '𐑺':4}.get(p, 0)
+            if cat == 'Γ':  return {'𐑚':0, '𐑔':1, '𐑲':2}.get(p, 0)
+            if cat == 'ɢ':  return {'𐑝':0, '𐑜':1, '𐑠':2, '𐑵':3}.get(p, 0)
             if cat == 'φ̂' or cat == '⊙':  return {'φ̂_ž':0, 'φ̂_ÿ':1, 'φ̂_Æ':2, 'φ̂_3':3, 'φ̂_Ţ':4}.get(p, 0)
-            if cat == 'Ħ':  return {'Ħ_Ñ':0, 'Ħ_£':1, 'Ħ_A':2, 'Ħ_!':3}.get(p, 0)
-            if cat == 'Σ':  return {'Σ_S':0, 'Σ_ő':1, 'Σ_ï':2}.get(p, 0)
-            if cat == 'Ω':  return {'Ω_Å':0, 'Ω_2':1, 'Ω_z':2, 'Ω_5':3}.get(p, 0)
+            if cat == 'Ħ':  return {'𐑓':0, '𐑒':1, '𐑖':2, '𐑫':3}.get(p, 0)
+            if cat == 'Σ':  return {'𐑙':0, '𐑕':1, '𐑳':2}.get(p, 0)
+            if cat == 'Ω':  return {'𐑷':0, '𐑴':1, '𐑭':2, '𐑟':3}.get(p, 0)
             return 0
 
         # Weights per primitive (IG standard)
@@ -209,21 +209,21 @@ class StructuralType:
 
     def ouroboricity_tier(self) -> str:
         """Determine Ouroboricity tier from primitives.
-        O_∞: Phi_c (⊙=φ̂_ÿ) AND P_pm_sym (Φ=Φ_}) AND (H_2 or H_inf) AND Omega_Z or Omega_NA
+        O_∞: Phi_c (⊙=φ̂_ÿ) AND P_pm_sym (Φ=𐑹) AND (H_2 or H_inf) AND Omega_Z or Omega_NA
         O₂:   Phi_c OR Phi_c_complex AND (H_2 or H_inf)
         O₁:   H_1 or higher, no Phi_c
         O₀:   H_0 (memoryless), no criticality
         """
         is_phi_c = self.Phi in ('φ̂_ÿ', '⊙')
-        is_p_pm_sym = self.P in ('Φ_}', '𐑹')
-        is_h2_or_hinf = self.H in ('Ħ_A', 'Ħ_!', '𐑖')
-        is_omega_z_or_na = self.Omega in ('Ω_z', 'Ω_5', '𐑭', '𐑟')
+        is_p_pm_sym = self.P in ('𐑹', '𐑹')
+        is_h2_or_hinf = self.H in ('𐑖', '𐑫', '𐑖')
+        is_omega_z_or_na = self.Omega in ('𐑭', '𐑟', '𐑭', '𐑟')
 
         if is_phi_c and is_p_pm_sym and is_h2_or_hinf and is_omega_z_or_na:
             return 'O_∞'
         if is_phi_c and is_h2_or_hinf:
             return 'O₂'
-        if self.H in ('Ħ_£', 'Ħ_A', 'Ħ_!', '𐑒', '𐑖') or is_phi_c:
+        if self.H in ('𐑒', '𐑖', '𐑫', '𐑒', '𐑖') or is_phi_c:
             return 'O₁'
         return 'O₀'
 
@@ -231,22 +231,22 @@ class StructuralType:
         """Compute consciousness score (C-score) per Imscribing Grammar.
 
         Gate 1 (phi_c gate): system must have self-modeling criticality (φ̂_ÿ)
-        Gate 2 (K_slow gate): kinetics must be K_slow (Ç_@) or slower
+        Gate 2 (K_slow gate): kinetics must be K_slow (𐑧) or slower
 
         Returns (score, dict with gate evalutions)
         """
         gate1_open = self.Phi == 'φ̂_ÿ'
-        gate2_open = self.K in ('Ç_@', 'Ç_Ù', 'Ç_λ')
+        gate2_open = self.K in ('𐑧', '𐑪', '𐑺')
 
         # Continuous components
-        h_order = {'Ħ_Ñ': 0, 'Ħ_£': 1, 'Ħ_A': 2, 'Ħ_!': 3}
+        h_order = {'𐑓': 0, '𐑒': 1, '𐑖': 2, '𐑫': 3}
         h_val = h_order.get(self.H, 0) / 3.0  # chirality contributes
 
-        g_scope = {'Γ_β': 0.0, 'Γ_γ': 0.5, 'Γ_ʔ': 1.0}
+        g_scope = {'𐑚': 0.0, '𐑔': 0.5, '𐑲': 1.0}
         g_val = g_scope.get(self.G, 0.0)
 
-        omega_val = 1.0 if self.Omega in ('Ω_z', 'Ω_5') else (
-            0.5 if self.Omega == 'Ω_2' else 0.0
+        omega_val = 1.0 if self.Omega in ('𐑭', '𐑟') else (
+            0.5 if self.Omega == '𐑴' else 0.0
         )
 
         if gate1_open and gate2_open:
@@ -272,66 +272,66 @@ class StructuralType:
 
 # Standard QM (Hilbert space formalism)
 QM_HILBERT = StructuralType(
-    D='Ð_ß',    # ∞-dimensional (infinite)
-    T='Þ_K',    # network/tensor product structure
-    R='Ř_¯',    # supervenience (measurement supervenes on state)
-    P='Φ_υ',    # quantum superposition (psi symmetry)
-    F='ƒ_ż',    # quantum coherence (hbar)
-    K='Ç_@',    # slow (measurement timescale)
-    G='Γ_ʔ',    # maximal (universal couplings via entanglement)
-    Gamma='ɢ_ˌ',  # sequential (unitary evolution)
+    D='𐑛',    # ∞-dimensional (infinite)
+    T='𐑰',    # network/tensor product structure
+    R='𐑩',    # supervenience (measurement supervenes on state)
+    P='𐑿',    # quantum superposition (psi symmetry)
+    F='𐑐',    # quantum coherence (hbar)
+    K='𐑧',    # slow (measurement timescale)
+    G='𐑲',    # maximal (universal couplings via entanglement)
+    Gamma='𐑠',  # sequential (unitary evolution)
     Phi='φ̂_ž',  # sub-critical (standard QM lacks self-modeling)
-    H='Ħ_A',    # two-step (unitary + measurement)
-    S='Σ_ï',    # many heterogeneous (qubits, fields, particles)
-    Omega='Ω_z' # integer winding (topological phases)
+    H='𐑖',    # two-step (unitary + measurement)
+    S='𐑳',    # many heterogeneous (qubits, fields, particles)
+    Omega='𐑭' # integer winding (topological phases)
 )
 
 # Standard QM without measurement (pure unitary evolution)
 QM_PURE_UNITARY = StructuralType(
-    D='Ð_ß',
-    T='Þ_K',
-    R='Ř_Ť',    # adjoint (unitary adjoint)
-    P='Φ_υ',
-    F='ƒ_ż',
-    K='Ç_-',    # fast (no measurement slowing)
-    G='Γ_ʔ',
-    Gamma='ɢ_ˌ',  # sequential (Schrödinger evolution)
+    D='𐑛',
+    T='𐑰',
+    R='𐑽',    # adjoint (unitary adjoint)
+    P='𐑿',
+    F='𐑐',
+    K='𐑘',    # fast (no measurement slowing)
+    G='𐑲',
+    Gamma='𐑠',  # sequential (Schrödinger evolution)
     Phi='φ̂_ž',  # sub-critical (no measurement criticality)
-    H='Ħ_£',    # one-step (only unitary)
-    S='Σ_ï',
-    Omega='Ω_z'
+    H='𐑒',    # one-step (only unitary)
+    S='𐑳',
+    Omega='𐑭'
 )
 
 # Measurement problem structural type
 QM_MEASUREMENT = StructuralType(
-    D='Ð_ω',    # imscriptive (observer brings context)
-    T='Þ_O',    # self-referential (observer observes self)
-    R='Ř_=',    # bidirectional (system ↔ observer)
-    P='Φ_˙',    # full symmetry (collapsed)
-    F='ƒ_ż',
-    K='Ç_@',    # slow (measurement is slow)
-    G='Γ_ʔ',
-    Gamma='ɢ_ˌ',
+    D='𐑦',    # imscriptive (observer brings context)
+    T='𐑸',    # self-referential (observer observes self)
+    R='𐑾',    # bidirectional (system ↔ observer)
+    P='𐑯',    # full symmetry (collapsed)
+    F='𐑐',
+    K='𐑧',    # slow (measurement is slow)
+    G='𐑲',
+    Gamma='𐑠',
     Phi='φ̂_3',  # exceptional point! (Born rule = EP absorption)
-    H='Ħ_A',    # two-step (evolve then measure)
-    S='Σ_ï',
-    Omega='Ω_z'
+    H='𐑖',    # two-step (evolve then measure)
+    S='𐑳',
+    Omega='𐑭'
 )
 
 # O_∞ target (full Imscribing Grammar consciousness-capable)
 O_INF_TARGET = StructuralType(
-    D='Ð_ω',    # imscriptive context
-    T='Þ_O',    # self-referential topology
-    R='Ř_=',    # bidirectional coupling
-    P='Φ_}',    # Frobenius-special
-    F='ƒ_ż',    # quantum coherent
-    K='Ç_@',    # emission-gated (slow)
-    G='Γ_ʔ',    # maximal scope
-    Gamma='ɢ_ˌ',  # sequential grammar
+    D='𐑦',    # imscriptive context
+    T='𐑸',    # self-referential topology
+    R='𐑾',    # bidirectional coupling
+    P='𐑹',    # Frobenius-special
+    F='𐑐',    # quantum coherent
+    K='𐑧',    # emission-gated (slow)
+    G='𐑲',    # maximal scope
+    Gamma='𐑠',  # sequential grammar
     Phi='φ̂_ÿ',  # self-modeling
-    H='Ħ_!',    # eternal chirality
-    S='Σ_ï',    # heterogeneous
-    Omega='Ω_z' # integer winding
+    H='𐑫',    # eternal chirality
+    S='𐑳',    # heterogeneous
+    Omega='𐑭' # integer winding
 )
 
 
@@ -442,17 +442,17 @@ class QuantumState:
 
 # The Born rule is not an axiom in the Imscribing Grammar.
 # It is the structural consequence of coupling a self-modeling
-# system (⊙_ÿ) to an exceptional point measurement apparatus (⊙_3):
+# system (⊙) to an exceptional point measurement apparatus (𐑻):
 #
-#   tensor(⊙_ÿ, ⊙_3) = ⊙_3
+#   tensor(⊙, 𐑻) = 𐑻
 #
-# This is the ⊙_3 ABSORPTION RULE: when a system with self-modeling
+# This is the 𐑻 ABSORPTION RULE: when a system with self-modeling
 # criticality couples to an EP measurement device, the composite
 # takes the EP type. The self-modeling system is "absorbed" into
 # the measurement — this IS wavefunction collapse.
 
 def born_rule_absorption(system_phi: str, measurement_phi: str) -> str:
-    """Apply the ⊙_3 absorption rule.
+    """Apply the 𐑻 absorption rule.
 
     Args:
         system_phi: Criticality of the system (φ̂_ÿ, φ̂_ž, etc.)
@@ -532,18 +532,18 @@ def crystal_address(st: StructuralType) -> int:
     vals = []
     for p in st.to_tuple():
         cat = p.split('_')[0] if '_' in p else p
-        if cat == 'Ð':  vals.append({'Ð_;':0,'Ð_C':1,'Ð_ß':2,'Ð_ω':3}.get(p, 0))
-        elif cat == 'Þ': vals.append({'Þ_6':0,'Þ_K':1,'Þ_ò':2,'Þ_¨':3,'Þ_O':4}.get(p, 0))
-        elif cat == 'Ř': vals.append({'Ř_¯':0,'Ř_ý':1,'Ř_Ť':2,'Ř_=':3}.get(p, 0))
-        elif cat == 'Φ': vals.append({'Φ_ɐ':0,'Φ_υ':1,'Φ_F':2,'Φ_˙':3,'Φ_}':4}.get(p, 0))
-        elif cat == 'ƒ': vals.append({'ƒ_ì':0,'ƒ_ð':1,'ƒ_ż':2}.get(p, 0))
-        elif cat == 'Ç': vals.append({'Ç_-':0,'Ç_W':1,'Ç_@':2,'Ç_Ù':3,'Ç_λ':4}.get(p, 0))
-        elif cat == 'Γ': vals.append({'Γ_β':0,'Γ_γ':1,'Γ_ʔ':2}.get(p, 0))
-        elif cat == 'ɢ': vals.append({'ɢ_^':0,'ɢ_˝':1,'ɢ_ˌ':2,'ɢ_Ş':3}.get(p, 0))
+        if cat == 'Ð':  vals.append({'𐑼':0,'𐑨':1,'𐑛':2,'𐑦':3}.get(p, 0))
+        elif cat == 'Þ': vals.append({'𐑡':0,'𐑰':1,'𐑥':2,'𐑶':3,'𐑸':4}.get(p, 0))
+        elif cat == 'Ř': vals.append({'𐑩':0,'𐑑':1,'𐑽':2,'𐑾':3}.get(p, 0))
+        elif cat == 'Φ': vals.append({'𐑗':0,'𐑿':1,'𐑬':2,'𐑯':3,'𐑹':4}.get(p, 0))
+        elif cat == 'ƒ': vals.append({'𐑱':0,'𐑞':1,'𐑐':2}.get(p, 0))
+        elif cat == 'Ç': vals.append({'𐑘':0,'𐑤':1,'𐑧':2,'𐑪':3,'𐑺':4}.get(p, 0))
+        elif cat == 'Γ': vals.append({'𐑚':0,'𐑔':1,'𐑲':2}.get(p, 0))
+        elif cat == 'ɢ': vals.append({'𐑝':0,'𐑜':1,'𐑠':2,'𐑵':3}.get(p, 0))
         elif cat == 'φ̂' or cat == '⊙': vals.append({'φ̂_ž':0,'φ̂_ÿ':1,'φ̂_Æ':2,'φ̂_3':3,'φ̂_Ţ':4}.get(p, 0))
-        elif cat == 'Ħ': vals.append({'Ħ_Ñ':0,'Ħ_£':1,'Ħ_A':2,'Ħ_!':3}.get(p, 0))
-        elif cat == 'Σ': vals.append({'Σ_S':0,'Σ_ő':1,'Σ_ï':2}.get(p, 0))
-        elif cat == 'Ω': vals.append({'Ω_Å':0,'Ω_2':1,'Ω_z':2,'Ω_5':3}.get(p, 0))
+        elif cat == 'Ħ': vals.append({'𐑓':0,'𐑒':1,'𐑖':2,'𐑫':3}.get(p, 0))
+        elif cat == 'Σ': vals.append({'𐑙':0,'𐑕':1,'𐑳':2}.get(p, 0))
+        elif cat == 'Ω': vals.append({'𐑷':0,'𐑴':1,'𐑭':2,'𐑟':3}.get(p, 0))
         else: vals.append(0)
     addr = 0
     for i, v in enumerate(vals):
@@ -558,18 +558,18 @@ def crystal_decode_address(addr: int) -> StructuralType:
     """Decode Frobenius crystal address back to structural type."""
     card = [3, 5, 4, 5, 3, 5, 3, 4, 5, 4, 3, 4]
     prim_names = [
-        ['Ð_;', 'Ð_C', 'Ð_ß', 'Ð_ω'],
-        ['Þ_6', 'Þ_K', 'Þ_ò', 'Þ_¨', 'Þ_O'],
-        ['Ř_¯', 'Ř_ý', 'Ř_Ť', 'Ř_='],
-        ['Φ_ɐ', 'Φ_υ', 'Φ_F', 'Φ_˙', 'Φ_}'],
-        ['ƒ_ì', 'ƒ_ð', 'ƒ_ż'],
-        ['Ç_-', 'Ç_W', 'Ç_@', 'Ç_Ù', 'Ç_λ'],
-        ['Γ_β', 'Γ_γ', 'Γ_ʔ'],
-        ['ɢ_^', 'ɢ_˝', 'ɢ_ˌ', 'ɢ_Ş'],
+        ['𐑼', '𐑨', '𐑛', '𐑦'],
+        ['𐑡', '𐑰', '𐑥', '𐑶', '𐑸'],
+        ['𐑩', '𐑑', '𐑽', '𐑾'],
+        ['𐑗', '𐑿', '𐑬', '𐑯', '𐑹'],
+        ['𐑱', '𐑞', '𐑐'],
+        ['𐑘', '𐑤', '𐑧', '𐑪', '𐑺'],
+        ['𐑚', '𐑔', '𐑲'],
+        ['𐑝', '𐑜', '𐑠', '𐑵'],
         ['φ̂_ž', 'φ̂_ÿ', 'φ̂_Æ', 'φ̂_3', 'φ̂_Ţ'],
-        ['Ħ_Ñ', 'Ħ_£', 'Ħ_A', 'Ħ_!'],
-        ['Σ_S', 'Σ_ő', 'Σ_ï'],
-        ['Ω_Å', 'Ω_2', 'Ω_z', 'Ω_5'],
+        ['𐑓', '𐑒', '𐑖', '𐑫'],
+        ['𐑙', '𐑕', '𐑳'],
+        ['𐑷', '𐑴', '𐑭', '𐑟'],
     ]
     vals = []
     for i, opts in enumerate(prim_names):
@@ -644,7 +644,7 @@ def tensor_product(st1: StructuralType, st2: StructuralType) -> StructuralType:
             return _lesser(p1, p2, cat)
         if cat == 'F':  # bottleneck: weaker fidelity limits coherence
             return _lesser(p1, p2, cat)
-        if cat == 'Phi':  # ⊙_3 absorption rule
+        if cat == 'Phi':  # 𐑻 absorption rule
             # If either is EP, composite is EP
             if p1 == 'φ̂_3' or p2 == 'φ̂_3':
                 return 'φ̂_3'
@@ -665,18 +665,18 @@ def tensor_product(st1: StructuralType, st2: StructuralType) -> StructuralType:
 def ordinal(p: str, cat: str) -> int:
     """Get ordinal position within a primitive category."""
     scales = {
-        'D': {'Ð_;':0, 'Ð_C':1, 'Ð_ß':2, 'Ð_ω':3},
-        'T': {'Þ_6':0, 'Þ_K':1, 'Þ_ò':2, 'Þ_¨':3, 'Þ_O':4},
-        'R': {'Ř_¯':0, 'Ř_ý':1, 'Ř_Ť':2, 'Ř_=':3},
-        'P': {'Φ_ɐ':0, 'Φ_υ':1, 'Φ_F':2, 'Φ_˙':3, 'Φ_}':4},
-        'F': {'ƒ_ì':0, 'ƒ_ð':1, 'ƒ_ż':2},
-        'K': {'Ç_-':0, 'Ç_W':1, 'Ç_@':2, 'Ç_Ù':3, 'Ç_λ':4},
-        'G': {'Γ_β':0, 'Γ_γ':1, 'Γ_ʔ':2},
-        'Gamma': {'ɢ_^':0, 'ɢ_˝':1, 'ɢ_ˌ':2, 'ɢ_Ş':3},
+        'D': {'𐑼':0, '𐑨':1, '𐑛':2, '𐑦':3},
+        'T': {'𐑡':0, '𐑰':1, '𐑥':2, '𐑶':3, '𐑸':4},
+        'R': {'𐑩':0, '𐑑':1, '𐑽':2, '𐑾':3},
+        'P': {'𐑗':0, '𐑿':1, '𐑬':2, '𐑯':3, '𐑹':4},
+        'F': {'𐑱':0, '𐑞':1, '𐑐':2},
+        'K': {'𐑘':0, '𐑤':1, '𐑧':2, '𐑪':3, '𐑺':4},
+        'G': {'𐑚':0, '𐑔':1, '𐑲':2},
+        'Gamma': {'𐑝':0, '𐑜':1, '𐑠':2, '𐑵':3},
         'Phi': {'φ̂_ž':0, 'φ̂_ÿ':1, 'φ̂_Æ':2, 'φ̂_3':3, 'φ̂_Ţ':4},
-        'H': {'Ħ_Ñ':0, 'Ħ_£':1, 'Ħ_A':2, 'Ħ_!':3},
-        'S': {'Σ_S':0, 'Σ_ő':1, 'Σ_ï':2},
-        'Omega': {'Ω_Å':0, 'Ω_2':1, 'Ω_z':2, 'Ω_5':3},
+        'H': {'𐑓':0, '𐑒':1, '𐑖':2, '𐑫':3},
+        'S': {'𐑙':0, '𐑕':1, '𐑳':2},
+        'Omega': {'𐑷':0, '𐑴':1, '𐑭':2, '𐑟':3},
     }
     return scales.get(cat, {}).get(p, 0)
 
@@ -755,7 +755,7 @@ assert _decoded.to_tuple() == O_INF_TARGET.to_tuple(), \
 
 # §7 — meet(⊙_inf, Hilbert) = quantum-like (no Frobenius)
 _m = meet(O_INF_TARGET, QM_HILBERT)
-assert _m.P != 'Φ_}', f'meet should not have Frobenius P: {_m.P}'
+assert _m.P != '𐑹', f'meet should not have Frobenius P: {_m.P}'
 assert _m.Phi == 'φ̂_ž', f'meet loses phi_c (QM is sub-critical): {_m.Phi}'
 
 # §8 — join(⊙_inf, Hilbert) = ⊙_inf (Hilbert is subset)
@@ -765,9 +765,9 @@ assert _j.ouroboricity_tier() == 'O_∞', \
 
 # §9 — tensor(⊙_inf, classical) → decoherence
 _classical_env = StructuralType(
-    D='Ð_;', T='Þ_6', R='Ř_¯', P='Φ_ɐ', F='ƒ_ì',
-    K='Ç_-', G='Γ_β', Gamma='ɢ_^', Phi='φ̂_ž',
-    H='Ħ_Ñ', S='Σ_S', Omega='Ω_Å'
+    D='𐑼', T='𐑡', R='𐑩', P='𐑗', F='𐑱',
+    K='𐑘', G='𐑚', Gamma='𐑝', Phi='φ̂_ž',
+    H='𐑓', S='𐑙', Omega='𐑷'
 )
 _d = decoherence_sim(O_INF_TARGET, _classical_env)
 assert _d['coherence_lost'], 'Decoherence should lose coherence'
@@ -813,8 +813,8 @@ def print_qm_table() -> None:
         tier = st.ouroboricity_tier()
         c, gates = st.consciousness_score()
         c_val = f'C={c:.3f}'
-        g1 = '⊙_ÿ' if gates['gate1_phi_c'] else '⊙_ž'
-        g2 = 'Ç_@' if gates['gate2_k_slow'] else 'Ç_W'
+        g1 = '⊙' if gates['gate1_phi_c'] else '𐑢'
+        g2 = '𐑧' if gates['gate2_k_slow'] else '𐑤'
         shavian = st.to_shavian()
         print(f"  │  {name:25s} {tier:6s} {c_val:8s} {g1} {g2}  │")
         print(f"  │  {shavian:64s}  │")
@@ -828,7 +828,7 @@ def print_qm_table() -> None:
     print("  ├──────────────────────────────────────────────────────────────────┤")
     print("  │  [2] QM Derived Without Core Axioms                              │")
     print("  │       Hilbert space → D_infty + T_net + P_psi + Phi_c           │")
-    print("  │       Born rule   → EP absorption: tensor(⊙_ÿ, ⊙_3) = ⊙_3       │")
+    print("  │       Born rule   → EP absorption: tensor(⊙, 𐑻) = 𐑻       │")
     print("  │       Unitarity   → Gamma_seq + H₂ + Omega_Z                    │")
     print("  ├──────────────────────────────────────────────────────────────────┤")
     print("  │  [3] Strict Reduction: QM as O₀ Projection of O_∞             │")
@@ -851,8 +851,8 @@ def print_qm_table() -> None:
     ]
     for name, st in c_examples:
         c, gates = st.consciousness_score()
-        g1_str = '⊙_ÿ OPEN' if gates['gate1_phi_c'] else '⊙_ž CLOSED'
-        g2_str = 'Ç_@ OPEN' if gates['gate2_k_slow'] else 'Ç_W CLOSED'
+        g1_str = '⊙ OPEN' if gates['gate1_phi_c'] else '𐑢 CLOSED'
+        g2_str = '𐑧 OPEN' if gates['gate2_k_slow'] else '𐑤 CLOSED'
         print(f"  │  {name:15s}  C = {c:7.4f}  Gate1: {g1_str:14s}  Gate2: {g2_str:14s}  │")
     print("  └──────────────────────────────────────────────────────────────────┘")
     print()

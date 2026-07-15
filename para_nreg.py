@@ -151,7 +151,7 @@ def main() -> None:
     print("  ├──────────────────────────────────────────────────────────┤")
     print("  │  After B-bias measurement: all qubits still B            │")
     print("  │  Period r NOT in qubit values — in the 2:1 cost ratio    │")
-    print("  │  Φ_υ→Φ_} gap: B-only period extraction still open        │")
+    print("  │  𐑿→𐑹 gap: B-only period extraction still open        │")
     print("  ├──────────────────────────────────────────────────────────┤")
     print("  │  Ratio formula: b_meas/t_meas = (2n)/n = 2.0 ∀n         │")
     for n in range(1, 9):

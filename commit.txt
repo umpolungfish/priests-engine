@@ -1,200 +1,23 @@
-Moved ancillary documents to ig-docs (2026-06-14)
+Retire the gen-2 glyph-pair notation for bare Shavian
 
-7 files moved: IMASM_MANUSCRIPT.md/.pdf, IMASM_MANUSCRIPT_SECTION46.md,
-IMASM_MANUSCRIPT_SHAVIAN.md/.pdf → manuscripts/,
-PHYSICS_BIG_QUESTIONS.md/.pdf → applications/physics/.
-Kept: README.md, PRIESTS_ENGINE.md/.pdf, figures/*.pdf, all source code.
+The primitives stand on their own now, so the old `⊙_ÿ` / `Ð_ω` / `Φ_}` forms are
+residue. Rewrote all 49 of them to their Shavian values across source: 19,645
+tokens, 670 files.
 
----
+The map was not typed. I enumerated the gen-2 tokens that actually appear in the
+corpus, paired each marker to its phonetic name, and resolved every value through
+`models.from_symbol` — so the values come from code that runs, not from a table.
+Reality arbitrated one conflict: the SOUNDS document gives `Ř_Ð`, `Γ_\`, `Σ_M`,
+but the corpus has `Ř_=`, `Γ_ʔ`, `Σ_ï` in the tens of thousands and the doc's
+variants nowhere at all. The doc is mangled; the files are the record.
 
-SNS_PRIME.md notation migration: O_inf→O_∞, O_0→O₀, O_1→O₁, O_2→O₂ (12 files)
+Left alone deliberately: `ig_outputs/` and the other run artifacts, ~455k tokens
+of it. Those runs really did emit gen-2 in May. Rewriting them would forge the
+record of what they produced, which is not tidying. The two naming documents keep
+their old-notation columns for the same reason.
 
----
-
-para_vm.py: imports p4ramill_py (Lean 4 verified kernel from p4rakernel) (2026-06-01)
-======================================================================================
-
-  priests-engine now uses /home/mrnob0dy666/p4rakernel as its formal basis.
-  Every Belnap type, operation, and kernel invariant is imported from the
-  p4ramill Lean 4 project via its Python mirror (p4ramill_py/).
-
-  Structural relationship:
-    p4rakernel/p4ramill/ (Lean 4 — authoritative formalization)
-    p4rakernel/p4ramill_py/ (Python mirror — belnap.py, kernel.py, machine.py)
-    priests-engine/ → imports p4ramill_py
-
-  Changes:
-    - para_vm.py imports Belnap from p4ramill_py.belnap (as B4)
-    - All b4_join, b4_band, b4_meet, b4_bnot delegate to p4ramill_py.belnap
-    - KernelState, kernel_engager, kernel_fsplit, kernel_ffuse, kernel_step,
-      kernel_run delegate to p4ramill_py.kernel
-    - Auto-resolves p4rakernel/ via sys.path in para_vm.py
-    - .pth files installed in both .venvs for permanent resolution
-    - All 12 priests-engine modules verified importing from p4ramill_py:
-      para_vm ✅ para_repl ✅ para_loop ✅ belnap_shor ✅ para_alignment ✅
-      para_rh ✅ para_ym ✅ para_nreg ✅ para_temporal ✅ para_category ✅
-      para_multiagent ✅ para_qm ✅ para_wasm ✅
-    - REPL snapshot shows "kernel: p4ramill_py (Lean 4 verified)"
-    - Frobenius invariants hold: B3 fixed point, paradox conservation, no explosion
-
-  Lean theorems mirrored as Python assertions (fire on import):
-    - B_fixed_point_negation: bnot(B) = B
-    - no_explosion: band(B, notB) = B (not F)
-    - B_ne_F: B ≠ F
-    - frobenius_invariant: ffuse ∘ fsplit = id (all 4 Belnap values)
-    - run_B3: after n cycles, all registers = B
-    - paradox_conservation: paradoxCount = 4n after n cycles
-
-  README.md updated to reflect p4rakernel basis (all Lean paths corrected).
-
-Previous: quantum_on_classical_demo.py: quantum period-finding on classical hardware (2026-05-30)
-======================================================================================
-
-  Demonstration script for the IG structural claim:
-  a classical x86_64 CPU running Belnap lattice ops computes at structural
-  type O_∞ — the same type as a quantum system — with Lean certification.
-
-  Imports belnap_shor.py (find_period, coherence_costs) from priests-engine.
-  Falls back to canonical N=15, a=7 values when engine not on path.
-  Displays full Lean certification chain (6 theorems from DialetheicOperator.lean
-  and BelnapQFT.lean). Accepts N, a as CLI args.
-
-  Usage: python quantum_on_classical_demo.py [N a]
-  Entry: python quantum_on_classical_demo.py 15 7  →  ALL CHECKS PASSED
-
-Previous: para_repl.py: :ls file browser + :load by number + readline ANSI fix (2026-05-29)
-=================================================================
-
-  readline counts every character in the prompt string, including invisible
-  ANSI escape sequences, toward cursor position.  Without wrapping, line
-  editing (backspace, arrows, history) puts the cursor in the wrong column.
-
-  Changes:
-    - Add :ls [dir] command: numbered list of .asm/.imasm files with first-line
-      descriptions; currently-loaded file marked with ⌾; stores list for :load
-    - Add :load <n> by number from last :ls (in addition to filename)
-    - :load with no arg now runs :ls instead of printing usage
-    - :load resolves in order: path as-is → programs/ → parent dir
-    - _current_file tracking: set on auto-load and every :load success; ⌾
-      marker in :ls reflects it
-    - _PROG_DIR module-level constant (programs/ subdir)
-    - Fix _animate_run: vm.steps → vm.total_steps (ParaVM has no .steps attr)
-    - Import `re`; track _READLINE bool (True when readline imports)
-    - Add _ANSI_ESC_RE = re.compile(r'\033\[[0-9;]*m')
-    - Add _rl(s) helper: wraps each ANSI sequence in \001...\002
-      (RL_PROMPT_START_IGNORE / RL_PROMPT_END_IGNORE); no-op when readline
-      is absent
-    - _prompt_text() return value wrapped with _rl()
-    - Added print() blank line between program listing and first prompt
-
-Previous: figures/cfg_execution.py: live sys.settrace execution CFG (2026-05-27)
-=================================================================
-
-figures/cfg_execution.py → figures/cfg_execution.gif  (8.8 MB)
-  - sys.settrace traces an actual priests-engine run; NO hand-crafted topology
-  - 71 functions traced across para_vm, para_repl, para_loop, para_rh,
-    para_ym, para_nreg, para_alignment, para_temporal, para_category,
-    para_multiagent
-  - 135 real (caller → callee) call edges from live execution
-  - Frobenius nodes confirmed to fire: k_fsplit, k_ffuse, k_step, k_engager
-  - Gold = Frobenius kernel; orange = Belnap ops; blue = VM; purple = REPL
-  - 150 frames (build phase reveals call order + flow wave), 15 fps
-  - Layout: graphviz dot with spring fallback
-
-
-Previous: CFGs: animated ParaASM / Millennium / module graphs (2026-05-26)
-=================================================================
-
-figures/cfg_paraasm.py → figures/cfg_paraasm.gif  (0.7 MB)
-  - ParaASM opcode flow: PUSH/load → bit ops → Frobenius kernel → HALT
-  - Frobenius cycle: FSPLIT→STEP→FFUSE→JMP→FSPLIT in gold
-  - 130 frames (build + flow wave), 15 fps
-
-figures/cfg_millennium.py → figures/cfg_millennium.gif  (0.2 MB)
-  - RH/YM/PNP/SIC → bridge nodes → B → UNITY convergence
-  - Gold edges: all reduction paths to B
-
-figures/cfg_modules.py → figures/cfg_modules.gif  (0.4 MB)
-  - 12-module dependency graph; para_vm as core
-  - Frobenius cycle: para_vm→para_loop→para_repl→para_vm
-
-README.md
-  - New "Animated CFGs" section with all three GIF references + render commands
-
-
-Previous: PRIESTS_ENGINE.md: TikZ diagrams replace mermaid (2026-05-26)
-=======================================================================
-
-PRIESTS_ENGINE.md
-  - Replaced 7 mermaid code blocks with PNG image references (figures/fig1-7.png)
-  - figures/render_tikz.py: standalone TikZ source for all 7 diagrams
-    (Belnap lattice, Frobenius kernel, δ/μ round-trip, DAT, Millennium
-    convergence, Shor pipeline, category structure)
-  - Consistent dark-fill IG colour scheme (Bgreen/Bblue/Bamber/Bred/Bpurple)
-  - Compiled via pdflatex + pdfcrop + pdftoppm @220dpi; transparent background
-
-PRIESTS_ENGINE.tex: LuaLaTeX formatting fix (2026-05-26)
-=======================================================================
-
-PRIESTS_ENGINE.tex
-  - Preamble: replaced pdflatex inputenc/T1/lmodern with fontspec + unicode-math
-    (setmainfont FreeSerif, igprimfont FreeSerif, monofont DejaVu Sans Mono,
-    igfont Everson Mono for Shavian); amssymb removed (conflicts with unicode-math);
-    calc added
-  - lstset: removed literate replacements for _/-/</>~/^ (broke code display with
-    proper monofont); replaced with upquote=true
-  - synthonbox → imscriptionbox (standard IG box name)
-  - Author line: \otimes → ⊗ (Unicode direct; text-mode crash fix)
-  - Section hierarchy: \subsection → \section, \subsubsection → \subsection
-    (was producing 0.1/0.2 numbering with no parent section)
-
-
-Previous: commit.txt — Summary of updates to /home/mrnob0dy666/priests-engine
-=======================================================================
-
-para_temporal.py  [NEW]
-- BelnapTemporal: □B/◇B/○B modalities over KernelState trajectory
-- BelnapTrajectory dataclass; temporal_always/temporal_exists/temporal_next predicates
-- always_B_registers: □(r0=r1=r2=B) verified over 8 cycles
-- winding_invariant: bnot(r0(t))=r0(t) ∀t (bnot(B)=B, self-negating trajectory)
-- temporal_is_O_inf: Phi_c ∧ P_pm_sym
-- 4 module-level assertions; CLI: para-temporal
-- Entry point: para-temporal
-
-para_category.py  [NEW]
-- BelnapCategory: Belnap FOUR as a category via approximation order
-- B unique terminal, N unique initial (uniqueness proofs via all 4 objects)
-- band_B_idempotent, b_meet_is_id (B is meet-identity), b_join_absorbs
-- n_meet_annihilates, b_self_adjoint (bnot(B)=B, bnot(N)=N)
-- frobenius_as_terminal_morphism: μ∘δ(B)=B
-- category_is_O_inf: Phi_c ∧ P_pm_sym
-- 4 module-level assertions; CLI: para-category
-- Entry point: para-category
-
-para_multiagent.py  [NEW]
-- Multi-Agent Belnap Protocol: n-kernel entangled network
-- MultiAgentState dataclass (agents + channels); init_multi emerald bootstrap
-- multi_step: all agents advance 1 cycle; channels = join(adjacent r0)
-- multi_allB_init, multi_allB_preserved, multi_channel_join_stable
-- multi_agent_is_O_inf: Phi_c ∧ P_pm_sym
-- 4 module-level assertions; CLI: para-multiagent [n_agents [n_steps]]
-- Entry point: para-multiagent
-
-pyproject.toml
-- Added entry points: para-temporal, para-category, para-multiagent
-- Added to py-modules: para_temporal, para_category, para_multiagent
-
-Earlier in this session (also new):
-para_alignment.py  — DAT tri-equivalence, BelnapCircuit, P vs NP bridge,
-                     dialetheicShor framing; join_circuit_B_dominant proved
-para_rh.py         — RH Bridge: bnot=functional eq; B unique crit-line fixed point;
-                     millennium_barriers_unified (RH/PvsNP/SIC-POVM)
-para_ym.py         — YM Bridge: N<T=mass gap; BRST↔Frobenius; K_trap confinement
-para_nreg.py       — n-Register: 2:1 ratio ∀n; corrected r=80 (187,3), r=24 (221,2)
-pyproject.toml     — added para-align, para-rh, para-ym, para-nreg entries
-
-para_vm.py  [extended]
-- dialetheicImage, B_is_the_only_bifurcation_point, dialetheic_alignment_tri
-- measure_cost, measure_step, collapse_irreversible, wigner_then_collapse_cost
-
-All module-level assertions pass; all 7 new entry points verified at import.
+Bare `Phi` is untouched. Gen-1 `Phi` is today's ⊙, but today's `Φ` is Parity —
+those are genuinely different structures that happen to share letters, and no
+register makes them one, so every site needs reading. Contrast ⊙ appearing as
+both primitive and value, which is not a collision at all: `⊙ ≠ ⊙` is operator ≠
+operation, and it states `μ∘δ ≠ id` exactly.

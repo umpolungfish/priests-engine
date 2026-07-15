@@ -114,7 +114,7 @@ def ym_topological_protection() -> bool:
 
 # Structural type: D_holo · T_in · R_dagger · P_pm_sym · F_hbar · K_trap
 # · G_aleph · Gamma_broad · Phi_c · H_inf · n_n · Omega_Z
-YM_IMSCRIPTION = "⟨Ð_ω;Þ_K;Ř_Ť;Φ_};ƒ_ż;Ç_Ù;Γ_ʔ;ɢ_Ş;⊙_ÿ;Ħ_!;Σ_ő;Ω_z⟩"
+YM_IMSCRIPTION = "⟨𐑦;𐑰;𐑽;𐑹;𐑐;𐑪;𐑲;𐑵;⊙;𐑫;𐑕;𐑭⟩"
 
 
 def mass_gap_positive() -> bool:
@@ -149,7 +149,7 @@ def existence_of_excited_state() -> bool:
 
 def ym_bridge_is_O_inf() -> bool:
     """YM bridge has Phi_c and P_pm_sym in its structural type → O_∞ tier."""
-    return "⊙_ÿ" in YM_IMSCRIPTION and "Φ_}" in YM_IMSCRIPTION
+    return "⊙" in YM_IMSCRIPTION and "𐑹" in YM_IMSCRIPTION
 
 
 assert ym_gap_exists(),              "ym_gap_exists violated"

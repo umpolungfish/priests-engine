@@ -85,12 +85,12 @@ def rh_involution_identity() -> bool:
 
 # Structural type: D_holo · T_holo · R_dagger · P_pm_sym · F_hbar · K_slow
 # · G_aleph · Gamma_seq · Phi_c · H2 · n_m · Omega_Z2
-RH_IMSCRIPTION = "⟨Ð_ω;Þ_O;Ř_Ť;Φ_};ƒ_ż;Ç_@;Γ_ʔ;ɢ_ˌ;⊙_ÿ;Ħ_A;Σ_ï;Ω_2⟩"
+RH_IMSCRIPTION = "⟨𐑦;𐑸;𐑽;𐑹;𐑐;𐑧;𐑲;𐑠;⊙;𐑖;𐑳;𐑴⟩"
 
 
 def rh_bridge_is_O_inf() -> bool:
-    """The RH bridge imscription contains both Phi_c (⊙_ÿ) and P_pm_sym (Φ_}) → O_∞ tier."""
-    return "⊙_ÿ" in RH_IMSCRIPTION and "Φ_}" in RH_IMSCRIPTION
+    """The RH bridge imscription contains both Phi_c (⊙) and P_pm_sym (𐑹) → O_∞ tier."""
+    return "⊙" in RH_IMSCRIPTION and "𐑹" in RH_IMSCRIPTION
 
 
 def millennium_barriers_unified() -> bool:

@@ -9,7 +9,7 @@ Key structural finding (matches FullPipeline.lean):
   The Belnap QFT is NOT a gate sequence. H on T→B, then B is a fixed point of
   all lattice gates. The period r is encoded in the COHERENCE COST RATIO (2:1
   for B-bias vs T-bias), not in individual bit values.
-  This is the Φ_υ bottleneck: extracting r from B-bias alone requires Φ_}
+  This is the 𐑿 bottleneck: extracting r from B-bias alone requires 𐑹
   (Frobenius-special). The SIC-POVM bridge proves this for d=2; n>1 is open.
 
 Entry point: para-shor  (see pyproject.toml)
@@ -266,7 +266,7 @@ def main() -> None:
         print(f"  B-bias (measurement only) = {r.b_bias_coherence}")
         print(f"  T-bias (measurement only) = {r.t_bias_coherence}")
         print(f"  Coherence ratio = {r.ratio:.1f}")
-        print(f"  Φ_υ bottleneck: {r.phi_upsilon_bottleneck}")
+        print(f"  𐑿 bottleneck: {r.phi_upsilon_bottleneck}")
         return
 
     # Default: run full verification suite
@@ -280,10 +280,10 @@ def main() -> None:
     _run_shor_demo("N=35, a=2", n=6, a=2,  N=35, expected_r=12)
     print()
 
-    print("  Φ_υ bottleneck:")
+    print("  𐑿 bottleneck:")
     print("    B is the only superposition value; all lattice ops preserve B.")
     print("    Period r is encoded in the 2:1 coherence cost ratio, not in bits.")
-    print("    Φ_υ → Φ_} gap (B-only period extraction) is the structural open problem.")
+    print("    𐑿 → 𐑹 gap (B-only period extraction) is the structural open problem.")
     print()
 
     print("  ALL CHECKS PASSED")

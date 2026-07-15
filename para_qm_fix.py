@@ -58,7 +58,7 @@ def tensor_product(st1: StructuralType, st2: StructuralType) -> StructuralType:
             return _lesser(p1, p2, cat)
         if cat == 'F':  # bottleneck: weaker fidelity limits coherence
             return _lesser(p1, p2, cat)
-        if cat == 'Phi':  # ⊙_3 absorption rule
+        if cat == 'Phi':  # 𐑻 absorption rule
             # If either is EP, composite is EP
             if p1 == 'φ̂_3' or p2 == 'φ̂_3':
                 return 'φ̂_3'

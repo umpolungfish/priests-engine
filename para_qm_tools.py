@@ -159,9 +159,9 @@ def cmd_tensor(args: list[str]) -> int:
     named = {'hilbert': QM_HILBERT, 'measure': QM_MEASUREMENT,
              'oinf': O_INF_TARGET, 'unitary': QM_PURE_UNITARY,
              'classical': StructuralType(
-                 D='Ð_;', T='Þ_6', R='Ř_¯', P='Φ_ɐ', F='ƒ_ì',
-                 K='Ç_-', G='Γ_β', Gamma='ɢ_^', Phi='φ̂_ž',
-                 H='Ħ_Ñ', S='Σ_S', Omega='Ω_Å'
+                 D='𐑼', T='𐑡', R='𐑩', P='𐑗', F='𐑱',
+                 K='𐑘', G='𐑚', Gamma='𐑝', Phi='φ̂_ž',
+                 H='𐑓', S='𐑙', Omega='𐑷'
              )}
     
     def resolve(name: str) -> StructuralType:
@@ -241,9 +241,9 @@ def cmd_decohere(args: list[str]) -> int:
             return 1
     
     classical_env = StructuralType(
-        D='Ð_;', T='Þ_6', R='Ř_¯', P='Φ_ɐ', F='ƒ_ì',
-        K='Ç_-', G='Γ_β', Gamma='ɢ_^', Phi='φ̂_ž',
-        H='Ħ_Ñ', S='Σ_S', Omega='Ω_Å'
+        D='𐑼', T='𐑡', R='𐑩', P='𐑗', F='𐑱',
+        K='𐑘', G='𐑚', Gamma='𐑝', Phi='φ̂_ž',
+        H='𐑓', S='𐑙', Omega='𐑷'
     )
     
     result = decoherence_sim(st, classical_env)
@@ -293,7 +293,7 @@ def cmd_born(args: list[str]) -> int:
     
     # EP absorption interpretation
     if state_str == 'B' and bias_str != 'B':
-        print(f"\n  ⊙_3 absorption: tensor(⊙_ÿ, ⊙_3) → ⊙_3")
+        print(f"\n  𐑻 absorption: tensor(⊙, 𐑻) → 𐑻")
         print(f"  This IS wavefunction collapse in structural form.")
     elif state_str == 'B' and bias_str == 'B':
         print(f"\n  Wigner's Friend measurement: B preserved")

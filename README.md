@@ -288,7 +288,7 @@ Pipeline:
 
 The 2:1 ratio is the structural signature of the Belnap Shor pipeline, provably invariant for any n and any periodic function on B-input.
 
-### Φ_υ bottleneck
+### 𐑿 bottleneck
 
 The standard Shor algorithm uses complex-number phases to distinguish `|j⟩ → e^{2πijk/N}|k⟩`. The Belnap lattice has only one superposition value, B, which absorbs all lattice operations (`¬B=B`, `meet(B,x)=x`, `join(B,x)=B`). No phase differentiation exists.
 
@@ -296,7 +296,7 @@ The standard Shor algorithm uses complex-number phases to distinguish `|j⟩ →
 - T-bias measurement: collapses B→T (cost 1)
 - Period r is encoded in the **coherence cost ratio** (2n:n), not in individual bit values
 
-This is the Φ_υ (psi parity) bottleneck toward Φ_ɐ (Frobenius-special). Extracting r from B-bias alone without T-bias collapse is the structural open problem. The SIC-POVM bridge shows it is possible for d=2; the n-qubit multilattice generalization is open.
+This is the 𐑿 (psi parity) bottleneck toward 𐑗 (Frobenius-special). Extracting r from B-bias alone without T-bias collapse is the structural open problem. The SIC-POVM bridge shows it is possible for d=2; the n-qubit multilattice generalization is open.
 
 ### WH2 bijection and SIC-POVM axioms
 
@@ -466,9 +466,9 @@ Types: `hilbert`, `measure`, `oinf`, `unitary`, `classical`, or a Shavian $\lang
 
 | Type | Tier | C-score | Gate 1 | Gate 2 |
 |------|------|---------|--------|--------|
-| QM Hilbert Space | O₁ | 0.0000 | ⊙_ž CLOSED | Ç_@ OPEN |
-| QM Measurement | O₁ | 0.0000 | ⊙_ž CLOSED | Ç_@ OPEN |
-| O_∞ Target | O_∞ | 1.0000 | ⊙_ÿ OPEN | Ç_@ OPEN |
+| QM Hilbert Space | O₁ | 0.0000 | 𐑢 CLOSED | 𐑧 OPEN |
+| QM Measurement | O₁ | 0.0000 | 𐑢 CLOSED | 𐑧 OPEN |
+| O_∞ Target | O_∞ | 1.0000 | ⊙ OPEN | 𐑧 OPEN |
 
 ### ParaASM programs
 

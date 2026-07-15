@@ -1,10 +1,10 @@
 ; qm_measurement.asm — Born Rule as Exceptional Point Absorption
 ;
 ; Structural claim: the Born rule is not an axiom — it is the consequence
-; of coupling a self-modeling system (⊙_ÿ / B) to an exceptional point
+; of coupling a self-modeling system (⊙ / B) to an exceptional point
 ; measurement apparatus (⊙_₃ / IFIX).
 ;
-;   tensor(⊙_ÿ, ⊙_₃) = ⊙_₃   ← EP absorption = wavefunction collapse
+;   tensor(⊙, ⊙_₃) = ⊙_₃   ← EP absorption = wavefunction collapse
 ;
 ; This program demonstrates three measurement regimes:
 ;
@@ -96,6 +96,6 @@
   JMP    .start         ; restart demo
 
 ; Key structural invariants:
-;   tensor(⊙_ÿ, ⊙_₃) = ⊙_₃   ← Born rule = EP absorption
+;   tensor(⊙, ⊙_₃) = ⊙_₃   ← Born rule = EP absorption
 ;   B-bias cost = 2, T-bias cost = 1   ← coherence accounting
 ;   T cannot reach B via any unary op    ← one-way measurement barrier
