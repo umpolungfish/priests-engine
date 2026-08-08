@@ -523,28 +523,36 @@ def compute_c_score_from_shavian(shavian_tuple: str) -> tuple[float, dict]:
 # The crystal of types has 3^3 × 4^5 × 5^4 = 17,280,000 possible
 # structural types. QM occupies a specific region of this space.
 
+# Per-axis value lists in ordinal order — the single source of truth for both
+# encode and decode, so crystal_decode_address ∘ crystal_address = id.
+_CRYSTAL_PRIM_NAMES = [
+    ['𐑛', '𐑨', '𐑼', '𐑦'],
+    ['𐑡', '𐑰', '𐑥', '𐑶', '𐑸'],
+    ['𐑩', '𐑑', '𐑽', '𐑾'],
+    ['𐑗', '𐑿', '𐑬', '𐑯', '𐑹'],
+    ['𐑱', '𐑞', '𐑐'],
+    ['𐑘', '𐑤', '𐑧', '𐑪', '𐑺'],
+    ['𐑚', '𐑔', '𐑲'],
+    ['𐑝', '𐑜', '𐑠', '𐑵'],
+    ['φ̂_ž', 'φ̂_ÿ', 'φ̂_Æ', 'φ̂_3', 'φ̂_Ţ'],
+    ['𐑓', '𐑒', '𐑖', '𐑫'],
+    ['𐑙', '𐑕', '𐑳'],
+    ['𐑷', '𐑴', '𐑭', '𐑟'],
+]
+
+
 def crystal_address(st: StructuralType) -> int:
     """Compute Frobenius crystal address (0–17279999).
 
     Address = sum_{i} value_i * product_{j>i} cardinality_j
     """
-    card = [3, 5, 4, 5, 3, 5, 3, 4, 5, 4, 3, 4]  # cardinalities per dim
+    # Value lists per axis, in ordinal order. This is the inverse of the table
+    # crystal_decode_address uses; the two must stay identical for round-trip.
+    prim_names = _CRYSTAL_PRIM_NAMES
+    card = [len(opts) for opts in prim_names]
     vals = []
-    for p in st.to_tuple():
-        cat = p.split('_')[0] if '_' in p else p
-        if cat == 'Ð':  vals.append({'𐑼':0,'𐑨':1,'𐑛':2,'𐑦':3}.get(p, 0))
-        elif cat == 'Þ': vals.append({'𐑡':0,'𐑰':1,'𐑥':2,'𐑶':3,'𐑸':4}.get(p, 0))
-        elif cat == 'Ř': vals.append({'𐑩':0,'𐑑':1,'𐑽':2,'𐑾':3}.get(p, 0))
-        elif cat == 'Φ': vals.append({'𐑗':0,'𐑿':1,'𐑬':2,'𐑯':3,'𐑹':4}.get(p, 0))
-        elif cat == 'ƒ': vals.append({'𐑱':0,'𐑞':1,'𐑐':2}.get(p, 0))
-        elif cat == 'Ç': vals.append({'𐑘':0,'𐑤':1,'𐑧':2,'𐑪':3,'𐑺':4}.get(p, 0))
-        elif cat == 'Γ': vals.append({'𐑚':0,'𐑔':1,'𐑲':2}.get(p, 0))
-        elif cat == 'ɢ': vals.append({'𐑝':0,'𐑜':1,'𐑠':2,'𐑵':3}.get(p, 0))
-        elif cat == 'φ̂' or cat == '⊙': vals.append({'φ̂_ž':0,'φ̂_ÿ':1,'φ̂_Æ':2,'φ̂_3':3,'φ̂_Ţ':4}.get(p, 0))
-        elif cat == 'Ħ': vals.append({'𐑓':0,'𐑒':1,'𐑖':2,'𐑫':3}.get(p, 0))
-        elif cat == 'Σ': vals.append({'𐑙':0,'𐑕':1,'𐑳':2}.get(p, 0))
-        elif cat == 'Ω': vals.append({'𐑷':0,'𐑴':1,'𐑭':2,'𐑟':3}.get(p, 0))
-        else: vals.append(0)
+    for p, opts in zip(st.to_tuple(), prim_names):
+        vals.append(opts.index(p) if p in opts else 0)
     addr = 0
     for i, v in enumerate(vals):
         prod = 1
@@ -556,21 +564,8 @@ def crystal_address(st: StructuralType) -> int:
 
 def crystal_decode_address(addr: int) -> StructuralType:
     """Decode Frobenius crystal address back to structural type."""
-    card = [3, 5, 4, 5, 3, 5, 3, 4, 5, 4, 3, 4]
-    prim_names = [
-        ['𐑼', '𐑨', '𐑛', '𐑦'],
-        ['𐑡', '𐑰', '𐑥', '𐑶', '𐑸'],
-        ['𐑩', '𐑑', '𐑽', '𐑾'],
-        ['𐑗', '𐑿', '𐑬', '𐑯', '𐑹'],
-        ['𐑱', '𐑞', '𐑐'],
-        ['𐑘', '𐑤', '𐑧', '𐑪', '𐑺'],
-        ['𐑚', '𐑔', '𐑲'],
-        ['𐑝', '𐑜', '𐑠', '𐑵'],
-        ['φ̂_ž', 'φ̂_ÿ', 'φ̂_Æ', 'φ̂_3', 'φ̂_Ţ'],
-        ['𐑓', '𐑒', '𐑖', '𐑫'],
-        ['𐑙', '𐑕', '𐑳'],
-        ['𐑷', '𐑴', '𐑭', '𐑟'],
-    ]
+    prim_names = _CRYSTAL_PRIM_NAMES
+    card = [len(opts) for opts in prim_names]
     vals = []
     for i, opts in enumerate(prim_names):
         prod = 1
