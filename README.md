@@ -6,9 +6,9 @@
 
 A paraconsistent computer. It runs programs that sustain contradiction permanently and proves they cannot collapse.
 
-**What it is.** A Belnap FOUR (N/T/F/B) machine with a full ParaASM assembly language, interactive REPL, and VM — the operational face of p4rakernel.
+**What it is.** A Belnap FOUR (N/T/F/B) machine with a full ParaASM assembly language, interactive REPL, and VM - the operational face of p4rakernel.
 
-**What it does.** Executes ParaASM programs whose contradictory (B) states never collapse; a long-running demo has logged 25B+ paradox firings. Every Belnap type and kernel invariant is *imported from* p4rakernel (`p4ramill_py` mirror of Lean 4 `Belnap.lean`/`Kernel.lean`), enforced at import time as Python assertions — proofs by delegation, not re-assertion.
+**What it does.** Executes ParaASM programs whose contradictory (B) states never collapse; a long-running demo has logged 25B+ paradox firings. Every Belnap type and kernel invariant is *imported from* p4rakernel (`p4ramill_py` mirror of Lean 4 `Belnap.lean`/`Kernel.lean`), enforced at import time as Python assertions - proofs by delegation, not re-assertion.
 
 **Invariants (proved once in Lean 4 at `p4rakernel/p4ramill/`, 0 sorrys):** `frobenius_invariant` (ffuse∘fsplit=id on all 4 values), `run_B3` (∀n, run stays B/B/B), `run_paradox` (paradox count = 4n exactly), `only_B_is_dialetheic`.
 
